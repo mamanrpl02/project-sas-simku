@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('nama');
             $table->string('jenis_kelamin');
             $table->longText('alamat');
+            $table->string('email')->unique();
+            $table->string('password');
             $table->timestamps();
         });
     }

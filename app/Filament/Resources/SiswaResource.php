@@ -38,6 +38,8 @@ class SiswaResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('nisn')->numeric()->required(),
                 Forms\Components\TextInput::make('nama')->required(),
+                Forms\Components\TextInput::make('email')->required(),
+                Forms\Components\TextInput::make('password')->required(),
                 Forms\Components\Select::make('jenis_kelamin')
                     ->required()
                     ->options([
