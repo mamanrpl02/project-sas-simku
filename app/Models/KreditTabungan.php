@@ -16,5 +16,5 @@ class KreditTabungan extends Model
         return $this->belongsTo(Siswa::class);
     }
 
-    
+
 }
