@@ -70,6 +70,106 @@ body {
 #hamburger-menu {
     display: none;
 }
+.container {
+    margin-top: 10rem;
+}
+
+.container .card-saldo {
+    padding: 2rem;
+    border-radius: 5px;
+    width: 90%;
+    margin: auto;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: #523434;
+    display: flex;
+    justify-content: space-between; /* Elemen isi di kiri dan kanan */
+    align-items: center; /* Rata tengah vertikal */
+}
+
+.container .card-saldo .isi {
+    display: flex;
+    align-items: center; /* Rata tengah vertikal untuk konten */
+    gap: 8px; /* Jarak antara ikon dan teks */
+    font-size: 1.2rem;
+    color: #ffffff;
+}
+
+/* Gaya untuk tombol Riwayat */
+.container .card-saldo .riwayat {
+    padding: 0.5rem 1rem;
+    background-color: #f4d03f;
+    border: none;
+    border-radius: 20px;
+    font-size: 1rem;
+    color: #523434;
+    font-weight: bold;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.container .card-saldo .riwayat:hover {
+    background-color: #e3b12f;
+    transform: scale(1.05);
+}
+
+.kalenderKas {
+    width: 90%;
+    margin: 3rem auto;
+}
+
+.calendar {
+    width: 80%;
+    max-width: 600px;
+    background: #ffffff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.calendar-header {
+    background-color: #4caf50;
+    color: white;
+    text-align: center;
+    padding: 1rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr); /* 7 kolom untuk 7 hari */
+    gap: 1px;
+    background-color: #dddddd;
+}
+
+.calendar-day,
+.calendar-date {
+    background: white;
+    padding: 1rem;
+    text-align: center;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.calendar-day {
+    background: #f4f4f4;
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.calendar-date:hover {
+    background-color: #4caf50;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.calendar-date.empty {
+    background: #eeeeee;
+    cursor: default;
+}
 
 /* media queries */
 
@@ -78,13 +178,7 @@ body {
     html {
         font-size: 75%;
     }
-}
 
-/* tablet */
-@media (max-width: 768px) {
-    html {
-        font-size: 62.5%;
-    }
     #hamburger-menu {
         display: inline-block;
     }
@@ -161,6 +255,13 @@ body {
 
     .action-button:hover {
         background-color: #0056b3;
+    }
+}
+
+/* tablet */
+@media (max-width: 858px) {
+    html {
+        font-size: 62.5%;
     }
 }
 

@@ -36,17 +36,24 @@ class SiswaResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('nisn')->numeric()->required(),
-                Forms\Components\TextInput::make('nama')->required(),
-                Forms\Components\TextInput::make('email')->required(),
-                Forms\Components\TextInput::make('password')->required(),
-                Forms\Components\Select::make('jenis_kelamin')
+                TextInput::make('nisn')->numeric()->required(),
+                TextInput::make('nama')->required(),
+                TextInput::make('email')->required(),
+                TextInput::make('password')
+                    ->password()
+                    ->rules([
+                        'required_if:record.id,null', // Required jika record.id null (saat create)
+                        'nullable', // Boleh kosong saat edit
+                    ])
+                    ->label('Password')
+                    ->helperText('Isi password hanya jika ingin mengubah.'),
+                Select::make('jenis_kelamin')
                     ->required()
                     ->options([
                         'Laki - Laki' => 'Laki - Laki',
                         'Perempuan' => 'Perempuan',
                     ]),
-                Forms\Components\Textarea::make('alamat')->required()->placeholder('Contoh : Dsn. Pusakajati Ds. Pusakaratu RT.09 RW.02 Kec. Pusakanagara Kab. Subang Prov. Jawa Barat'),
+                Textarea::make('alamat')->required()->placeholder('Contoh : Dsn. Pusakajati Ds. Pusakaratu RT.09 RW.02 Kec. Pusakanagara Kab. Subang Prov. Jawa Barat'),
             ]);
     }
 

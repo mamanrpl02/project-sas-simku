@@ -19,16 +19,16 @@
     <script src="https://unpkg.com/feather-icons"></script>
 
     <!-- My Style -->
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="siswaCss/style.css">
 
-   
+
 </head>
 
 <body>
 
     <!-- Ini Bagian Navbar -->
     <nav class="navbar">
-        <a href="#" class="navbar-logo">Manz Store</a>
+        <a href="#" class="navbar-logo">SIMKU</a>
         <div class="navbar-nav">
             <a href="#">Beranda</a>
             <a href="#">Tentang Saya</a>
@@ -37,49 +37,22 @@
             <a href="#">Contct</a>
         </div>
         <div class="navbar-exstra">
-            <a href="#" id="search"><i data-feather="search"></i>
-            </a>
+            {{-- <a href="#" id="search"><i data-feather="search"></i>
+            </a> --}}
             <a href="#" id="hamburger-menu"><i data-feather="menu"></i>
             </a>
         </div>
     </nav>
     <!-- Ini Bagian Akhir Navbar -->
 
-    <div class="card">
-        <div class="card-content">
-            <div class="saldo">
-                <h2>Saldo: Rp 1.000.000</h2>
-            </div>
-            <div class="button-container">
-                <button class="action-button">Lihat Detail</button>
-            </div>
-        </div>
-    </div>
-
-
+    @yield('content')
 
 
     <!-- Feather Icons -->
     <script>
         feather.replace();
     </script>
-    <script>
-        // toggle class active
-        const navbarNav = document.querySelector('.navbar-nav');
-        // ketika hamburger di klik
-        document.querySelector('#hamburger-menu').onclick = () => {
-            navbarNav.classList.toggle('active');
-        };
-
-        // klik di luar slidebar untuk menghilangkan nav
-
-        const hamburger = document.querySelector('#hamburger-menu');
-        document.addEventListener('click', function(e) {
-            if (!hamburger.contains(e.target) && !navbarNav.contains(e.target)) {
-                navbarNav.classList.remove('active');
-            }
-        });
-    </script>
+    <script src="siswaJs/script.js"></script>
 </body>
 
 </html>
