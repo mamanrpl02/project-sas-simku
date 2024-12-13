@@ -74,6 +74,7 @@ body {
     margin-top: 10rem;
 }
 
+/* Default untuk layar besar */
 .container .card-saldo {
     padding: 2rem;
     border-radius: 5px;
@@ -82,8 +83,13 @@ body {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     background-color: #523434;
     display: flex;
-    justify-content: space-between; /* Elemen isi di kiri dan kanan */
-    align-items: center; /* Rata tengah vertikal */
+    flex-direction: column; /* Mengatur elemen dalam kolom */
+    align-items: flex-start; /* Rata kiri untuk semua elemen */
+}
+
+.container .card-saldo .header {
+    margin-bottom: 1rem; /* Jarak antara header dan isi */
+    display: block;
 }
 
 .container .card-saldo .isi {
@@ -106,6 +112,7 @@ body {
     text-align: center;
     cursor: pointer;
     transition: all 0.3s ease;
+    right: 0;
 }
 
 .container .card-saldo .riwayat:hover {
@@ -113,62 +120,122 @@ body {
     transform: scale(1.05);
 }
 
-.kalenderKas {
-    width: 90%;
-    margin: 3rem auto;
-}
-
-.calendar {
-    width: 80%;
-    max-width: 600px;
+.informasi {
+    margin: 2rem auto;
+    padding: 1.5rem;
     background: #ffffff;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
-    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    /* max-width: 900px; */
 }
 
-.calendar-header {
-    background-color: #4caf50;
-    color: white;
-    text-align: center;
-    padding: 1rem;
-    font-size: 1.5rem;
-    font-weight: bold;
+.informasi .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
 }
 
-.calendar-grid {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr); /* 7 kolom untuk 7 hari */
-    gap: 1px;
-    background-color: #dddddd;
-}
-
-.calendar-day,
-.calendar-date {
-    background: white;
-    padding: 1rem;
-    text-align: center;
-    font-size: 1rem;
+.informasi .header .judul {
+    font-size: 1.2rem;
     font-weight: bold;
     color: #333;
 }
 
-.calendar-day {
-    background: #f4f4f4;
+.informasi .header .judul.button {
     font-size: 0.9rem;
-    color: #555;
-}
-
-.calendar-date:hover {
-    background-color: #4caf50;
-    color: white;
+    color: #fff;
+    background: #00bcd4;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    text-transform: uppercase;
+    text-align: center;
     cursor: pointer;
-    transition: 0.3s;
+    transition: background 0.3s;
 }
 
-.calendar-date.empty {
-    background: #eeeeee;
-    cursor: default;
+.informasi .header .judul.button:hover {
+    background: #0097a7;
+}
+
+.informasi .content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.informasi .content .item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+}
+
+.informasi .content .item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.informasi .content .item .info {
+    flex: 1;
+}
+
+.informasi .content .item .info .judul {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+/* Section Informasi */
+.informasi .content .item .info .detail {
+    font-size: 0.9rem;
+    color: #666;
+    line-height: 1.5;
+    width: 40rem; /* Ubah ini agar fleksibel di media queries */
+}
+
+.informasi .content .item .tanggal {
+    font-size: 0.8rem;
+    color: #999;
+    text-align: right;
+}
+
+.containerTransaksi {
+    margin: 8rem auto;
+    padding: 1.5rem;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 5px; /* Menambahkan sudut melengkung */
+    overflow: hidden; /* Menghindari elemen melampaui sudut */
+}
+
+thead {
+    border-radius: 50px;
+    background-color: #7369f6;
+    color: white;
+}
+tbody {
+    background-color: white;
+    color: black;
+}
+.baris:hover {
+    background-color: #cbcbcb;
+    transition: 0.2s;
+}
+
+th,
+td {
+    text-align: center;
+    padding: 10px;
 }
 
 /* media queries */
@@ -187,7 +254,7 @@ body {
         top: 100%;
         right: -100%;
         background-color: #fff;
-        width: 30rem;
+        width: 40rem;
         height: 100vh;
         transition: 0.3s;
     }
@@ -200,7 +267,7 @@ body {
         display: block;
         color: var(--bg);
         margin: 1.5rem;
-        padding: 0.5rem;
+        /* padding: 0.5rem; */
         font-size: 2rem;
         font-weight: 500;
     }
@@ -250,7 +317,7 @@ body {
         padding: 10px 20px;
         cursor: pointer;
         font-family: "Poppins", sans-serif;
-        font-weight: 500;
+        font-weight: bold;
     }
 
     .action-button:hover {
@@ -258,16 +325,120 @@ body {
     }
 }
 
-/* tablet */
-@media (max-width: 858px) {
-    html {
-        font-size: 62.5%;
+@media (max-width: 768px) {
+    .navbar .navbar-nav {
+        position: absolute;
+        top: 100%;
+        right: -100%;
+        background-color: #fff;
+        width: 20rem;
+        height: 100vh;
+        transition: 0.3s;
+    }
+
+    .navbar .navbar-nav .logout {
+        margin-top: 2rem;
+        border-radius: 10px;
+        color: brown;
+        padding: 0;
+    }
+
+    .navbar .navbar-nav a {
+        display: block;
+        color: var(--bg);
+        margin: 1.5rem;
+        /* padding: 0.5rem; */
+        font-size: 1rem;
+        font-weight: 500;
+    }
+
+    .container .card-saldo {
+        flex-direction: column; /* Susunan vertikal untuk konten */
+        text-align: center;
+        gap: 1rem; /* Beri jarak antar elemen */
+    }
+
+    .informasi .content {
+        gap: 1rem; /* Sesuaikan jarak antar item */
+    }
+
+    .informasi .content .item {
+        flex-direction: column; /* Susunan vertikal untuk konten */
+        gap: 1rem;
+        align-items: flex-start;
+    }
+
+    .informasi .content .item .info .detail {
+        width: 100%; /* Buat detail memenuhi lebar penuh */
+    }
+
+    .informasi .content .item .tanggal {
+        text-align: left; /* Ubah agar rata kiri */
+        margin-top: auto; /* Pastikan tetap di bagian bawah */
+    }
+
+    table {
+        font-size: 0.9rem;
+    }
+
+    th,
+    td {
+        padding: 8px;
     }
 }
 
-/* mobile phone */
+/* Ponsel */
 @media (max-width: 450px) {
-    html {
-        font-size: 55%;
+    table {
+        font-size: 0.8rem;
+    }
+
+    th,
+    td {
+        padding: 5px;
+    }
+
+    .container {
+        margin-top: 7rem; /* Kurangi margin atas */
+    }
+
+    .container .card-saldo {
+        width: 90%;
+        padding: 1rem;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .container .card-saldo .isi {
+        font-size: 1rem; /* Sesuaikan ukuran font */
+    }
+
+    .informasi {
+        padding: 1rem; /* Kurangi padding */
+        width: 95%; /* Lebar hampir penuh */
+    }
+
+    .informasi .header {
+        flex-direction: column; /* Header vertikal */
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    .informasi .content .item {
+        padding: 0.5rem 0; /* Kurangi padding bawah */
+    }
+
+    .informasi .content .item .info .judul {
+        font-size: 0.9rem; /* Kurangi ukuran font */
+    }
+
+    .informasi .content .item .info .detail {
+        font-size: 0.8rem; /* Kurangi ukuran font */
+        width: 100%; /* Buat detail fleksibel */
+    }
+
+    .informasi .content .item .tanggal {
+        font-size: 0.7rem; /* Kurangi ukuran font tanggal */
+        text-align: right;
     }
 }

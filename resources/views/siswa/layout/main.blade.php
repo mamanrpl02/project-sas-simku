@@ -30,11 +30,11 @@
     <nav class="navbar">
         <a href="#" class="navbar-logo">SIMKU</a>
         <div class="navbar-nav">
-            <a href="#">Beranda</a>
-            <a href="#">Tentang Saya</a>
-            <a href="#">Melayani</a>
-            <a href="#">Berita Terkini</a>
-            <a href="#">Contct</a>
+            <a href="{{ route('dashboard') }}">Beranda</a>
+            <a href="{{ route('transaksi') }}">Riwayat Saldo</a>
+            <a href="#">Pengeluaran Kas</a>
+            <a href="#">Pemberitahuan</a>
+            <a href="#" class="logout">Logout</a>
         </div>
         <div class="navbar-exstra">
             {{-- <a href="#" id="search"><i data-feather="search"></i>

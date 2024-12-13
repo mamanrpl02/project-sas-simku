@@ -11,4 +11,9 @@ class DashboardSiswaController extends Controller
     {
         return view('siswa.index');
     }
+
+    public function riwayat()
+    {
+        return view('siswa.transaksi');
+    }
 }
