@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Navbar Responsisve</title>
+    <title>SIMKU - RPL B</title>
 
     <!-- My Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -17,6 +17,10 @@
 
     <!-- Feather Icons -->
     <script src="https://unpkg.com/feather-icons"></script>
+
+    {{-- Bootsrap Icons --}}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
 
     <!-- My Style -->
     <link rel="stylesheet" href="siswaCss/style.css">
@@ -32,9 +36,15 @@
         <div class="navbar-nav">
             <a href="{{ route('dashboard') }}">Beranda</a>
             <a href="{{ route('transaksi') }}">Riwayat Saldo</a>
-            <a href="#">Pengeluaran Kas</a>
-            <a href="#">Pemberitahuan</a>
-            <a href="#" class="logout">Logout</a>
+            <a href="{{ route('pengeluaran-kas') }}">Pengeluaran Kas</a>
+            <a href="{{ route('notif.kas') }}">Pemberitahuan</a>
+            <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                Logout
+            </a>
+
+            <form id="logout-form" action="{{ route('siswa.logout') }}" method="POST" style="display: none;">
+                @csrf
+            </form>
         </div>
         <div class="navbar-exstra">
             {{-- <a href="#" id="search"><i data-feather="search"></i>

@@ -12,7 +12,15 @@ class Siswa extends Authenticatable
 
     protected $table = 'siswas'; // Ini harus sama dengan nama tabel Anda di database
 
-    protected $fillable = ['name', 'email', 'password']; // Kolom yang bisa diisi
+    protected $fillable = [
+        'nisn',
+        'nama',
+        'jenis_kelamin',
+        'alamat',
+        'email',
+        'password',
+    ];
+
     protected $hidden = ['password', 'remember_token']; // Kolom yang perlu disembunyikan
     protected $casts = [
         'email_verified_at' => 'datetime',

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->longText('alamat');
             $table->string('email')->unique();
             $table->string('password');
+            $table->rememberToken();
             $table->timestamps();
         });
     }

@@ -70,6 +70,7 @@ body {
 #hamburger-menu {
     display: none;
 }
+
 .container {
     margin-top: 10rem;
 }
@@ -157,6 +158,10 @@ body {
     transition: background 0.3s;
 }
 
+.informasi .header .judul.button a {
+    color: #fff;
+}
+
 .informasi .header .judul.button:hover {
     background: #0097a7;
 }
@@ -208,7 +213,26 @@ body {
 
 .containerTransaksi {
     margin: 8rem auto;
-    padding: 1.5rem;
+    width: 90%;
+}
+form select {
+    width: auto;
+    display: inline-block;
+    margin: 0;
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    font-size: 0.9rem;
+    color: #333;
+    transition: all 0.3s ease;
+}
+
+form select:focus {
+    outline: none;
+    border-color: #7369f6;
+    background-color: #fff;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 table {
@@ -236,6 +260,84 @@ th,
 td {
     text-align: center;
     padding: 10px;
+}
+
+.boxAlert {
+    margin: 8rem 2rem;
+    background-color: #cbcbcb;
+    padding: 1rem;
+    border-radius: 10px;
+    width: 90%;
+    margin: 9rem auto;
+}
+.alert {
+    padding: 20px;
+    background-color: #f44336; /* Merah */
+    color: white;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    margin-top: 1rem;
+    border: 1px solid rgb(210, 210, 210);
+    transition: transform 0.3s ease; /* Menambahkan transisi untuk efek yang halus */
+}
+.alert:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Menambahkan bayangan halus */
+}
+
+.alert .closebtn {
+    margin-left: 15px;
+    color: white;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+}
+
+.alert .closebtn:hover {
+    color: black;
+}
+
+.alert-dashboard {
+    padding: 14px;
+    background-color: #f44336; /* Merah */
+    color: white;
+    border-radius: 5px;
+    border: 1px solid rgb(210, 210, 210);
+    width: 90%;
+    transition: transform 0.3s ease; /* Menambahkan transisi untuk efek yang halus */
+    margin: auto;
+}
+.alert-dashboard:hover {
+    transform: translateY(
+        -5px
+    ); /* Menggeser elemen ke atas sebesar 5px saat di-hover */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Menambahkan bayangan halus */
+}
+
+.alert-dashboard .closebtn {
+    margin-left: 15px;
+    color: white;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+}
+
+.alert-dashboard .closebtn:hover {
+    color: black;
+}
+
+.text-success {
+    color: green;
+    font-weight: bold;
+}
+
+.text-danger {
+    color: red;
+    font-weight: bold;
 }
 
 /* media queries */
