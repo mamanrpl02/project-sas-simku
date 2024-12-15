@@ -8,6 +8,13 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/login2', function () {
+    return view('auth.login2');
+});
+
+Route::get('/tes', function () {
+    return view('siswa.404');
+});
 
 Route::middleware(['auth:siswa'])->group(function () {
     Route::get('/dashboard', [DashboardSiswaController::class, 'index'])->name('dashboard');
@@ -19,6 +26,10 @@ Route::middleware(['auth:siswa'])->group(function () {
         ->name('siswa.logout');
 });
 
+Route::middleware(['guest'])->group(function () {
+    Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
+    Route::post('/login', [AuthenticatedSessionController::class, 'store']);
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
