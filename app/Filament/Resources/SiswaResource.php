@@ -45,8 +45,7 @@ class SiswaResource extends Resource
                         'required_if:record.id,null', // Required jika record.id null (saat create)
                         'nullable', // Boleh kosong saat edit
                     ])
-                    ->label('Password')
-                    ->helperText('Isi password hanya jika ingin mengubah.'),
+                    ->label('Password'),
                 Select::make('jenis_kelamin')
                     ->required()
                     ->options([

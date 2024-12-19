@@ -52,4 +52,10 @@ class Siswa extends Authenticatable
         // Menghitung saldo (debit - kredit)
         return $debit - $kredit;
     }
+
+    // Relasi ke TagihanKas
+    public function tagihans()
+    {
+        return $this->hasMany(Tagihan::class);
+    }
 }

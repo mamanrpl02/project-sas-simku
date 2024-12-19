@@ -455,8 +455,7 @@ td {
     }
 
     .container .card-saldo {
-        flex-direction: column; /* Susunan vertikal untuk konten */
-        text-align: center;
+        flex-direction: column; /* Susunan vertikal untuk konten */ 
         gap: 1rem; /* Beri jarak antar elemen */
     }
 
