@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
@@ -14,8 +13,14 @@ class AuthenticatedSessionController extends Controller
     /**
      * Display the login view.
      */
-    public function create(): View
+    public function create(): RedirectResponse|View
     {
+        // Cek apakah siswa sudah login
+        if (Auth::guard('siswa')->check()) {
+            // Redirect ke halaman dashboard
+            return redirect()->route('dashboard');
+        }
+
         return view('auth.login');
     }
 

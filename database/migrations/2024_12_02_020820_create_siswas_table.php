@@ -22,6 +22,16 @@ return new class extends Migration
             $table->rememberToken();
             $table->timestamps();
         });
+        if (!Schema::hasTable('sessions')) {
+            Schema::create('sessions', function (Blueprint $table) {
+                $table->string('id')->primary();
+                $table->unsignedBigInteger('siswas_id')->nullable();
+                $table->string('ip_address', 45)->nullable();
+                $table->text('siswas_agent')->nullable();
+                $table->longText('payload');
+                $table->integer('last_activity');
+            });
+        }
     }
 
     /**

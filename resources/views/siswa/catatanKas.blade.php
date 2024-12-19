@@ -8,7 +8,7 @@
                 <p>Total Saldo Kas keseluruhan Sebesar </p>
             </div>
             <div class="isi">
-                <div class="isi"><i class="bi bi-credit-card-fill"></i> <strong>Rp : </strong> 200.000</div>
+                <div class="isi"><i class="bi bi-credit-card-fill"></i> <strong>Rp : </strong> 300.000</div>
             </div>
         </div>
     </div>

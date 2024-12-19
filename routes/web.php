@@ -7,13 +7,10 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
 Route::get('/', function () {
     return view('welcome');
-});
-Route::get('/login2', function () {
-    return view('auth.login2');
-});
+});  
 
-Route::get('/tes', function () {
-    return view('siswa.404');
+Route::fallback(function () {
+    return response()->view('errors.404', [], 404);
 });
 
 Route::middleware(['auth:siswa'])->group(function () {
