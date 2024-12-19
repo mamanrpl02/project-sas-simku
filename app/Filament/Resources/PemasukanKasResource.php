@@ -4,18 +4,19 @@ namespace App\Filament\Resources;
 
 use Filament\Forms;
 use Filament\Tables;
+use App\Models\Siswa;
+use App\Models\Tagihan;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use App\Models\PemasukanKas;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\Select;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\PemasukanKasResource\Pages;
 use App\Filament\Resources\PemasukanKasResource\RelationManagers;
-use App\Models\Siswa;
-use App\Models\Tagihan;
-use Filament\Tables\Columns\TextColumn;
 
 class PemasukanKasResource extends Resource
 {
@@ -34,7 +35,8 @@ class PemasukanKasResource extends Resource
                 Select::make('siswa_id')
                     ->label('Siswa')
                     ->options(Siswa::all()->pluck('nama', 'id'))
-                    ->searchable()
+                    ->searchable(),
+                TextInput::make('nominal')->numeric(),
             ]);
     }
 
@@ -58,7 +60,7 @@ class PemasukanKasResource extends Resource
                     ->date('D, d M Y')
                     ->sortable(),
 
-                TextColumn::make('tagihan.nominal')
+                TextColumn::make('nominal')
                     ->label('Nominal')
                     ->sortable()
                     ->money('IDR')

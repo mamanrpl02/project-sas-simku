@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('tagihans', function (Blueprint $table) {
             $table->id();
-            $table->integer('nominal');
             $table->date('tanggal');
             $table->string('pesan');
             $table->timestamps();

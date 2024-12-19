@@ -26,12 +26,6 @@ class TagihanResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('nominal')
-                    ->label('Nominal')
-                    ->required()
-                    ->maxLength(255)
-                    ->numeric()
-                    ->placeholder('Masukkan Nominal'),
 
                 DatePicker::make('tanggal')
                     ->label('Tanggal')
@@ -50,8 +44,7 @@ class TagihanResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->columns([
-                TextColumn::make('nominal'),
+            ->columns([ 
                 TextColumn::make('tanggal'),
                 TextColumn::make('pesan'),
             ])

@@ -2,9 +2,11 @@
 
 namespace App\Filament\Resources\PengeluaranKasResource\Pages;
 
-use App\Filament\Resources\PengeluaranKasResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
+use App\Filament\Resources\PengeluaranKasResource;
+use App\Filament\Resources\PemasukanKasResource\Widgets\CountPemasukanKas;
+use App\Filament\Resources\PengeluaranKasResource\Widgets\CountPengeluaranKas;
 
 class ListPengeluaranKas extends ListRecords
 {
@@ -14,6 +16,13 @@ class ListPengeluaranKas extends ListRecords
     {
         return [
             Actions\CreateAction::make(),
+        ];
+    }
+
+    protected function getHeaderWidgets(): array
+    {
+        return [
+            CountPengeluaranKas::class,
         ];
     }
 }
