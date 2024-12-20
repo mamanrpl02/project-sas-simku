@@ -38,8 +38,8 @@ class AuthenticatedSessionController extends Controller
 
         // Jika gagal login
         return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
-        ]);
+            'email' => 'Email atau password Anda salah.',
+        ])->onlyInput('email');
     }
 
     /**
