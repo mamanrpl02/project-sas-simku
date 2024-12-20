@@ -21,8 +21,9 @@ use App\Filament\Resources\PengeluaranKasResource\RelationManagers;
 class PengeluaranKasResource extends Resource
 {
     protected static ?string $model = PengeluaranKas::class;
-
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationGroup = 'Kas';
+    protected static ?string $navigationIcon = 'heroicon-o-document-minus';
+    protected static ?string $navigationLabel = 'Pengeluaran Kas';
 
     public static function form(Form $form): Form
     {

@@ -24,8 +24,9 @@ class DebitTabunganResource extends Resource
     protected static ?string $model = DebitTabungan::class;
 
     protected static ?string $navigationGroup = 'Tabungan';
+    protected static ?string $navigationLabel = 'Debit Tabungan';
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-credit-card';
 
     public static function form(Form $form): Form
     {

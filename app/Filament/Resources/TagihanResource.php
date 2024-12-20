@@ -20,7 +20,8 @@ class TagihanResource extends Resource
 {
     protected static ?string $model = Tagihan::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-document-currency-dollar';
+    protected static ?string $navigationLabel = 'Tagihan Kas';
 
     public static function form(Form $form): Form
     {
@@ -44,7 +45,7 @@ class TagihanResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->columns([ 
+            ->columns([
                 TextColumn::make('tanggal'),
                 TextColumn::make('pesan'),
             ])

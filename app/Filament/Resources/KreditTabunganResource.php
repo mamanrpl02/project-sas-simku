@@ -24,9 +24,10 @@ class KreditTabunganResource extends Resource
     protected static ?string $model = KreditTabungan::class;
 
     protected static ?string $navigationGroup = 'Tabungan';
+    protected static ?string $navigationLabel = 'Kredit Tabungan';
 
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-banknotes';
 
     public static function form(Form $form): Form
     {
@@ -54,7 +55,7 @@ class KreditTabunganResource extends Resource
             ->filters([
                 SelectFilter::make('siswa_id')
                     ->relationship('siswa', 'nama')
-                
+
             ])
             ->actions([])
             ->bulkActions([
