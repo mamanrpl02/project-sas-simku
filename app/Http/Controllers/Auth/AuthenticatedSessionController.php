@@ -38,7 +38,7 @@ class AuthenticatedSessionController extends Controller
 
         // Jika gagal login
         return back()->withErrors([
-            'email' => 'Email atau password Anda salah.',
+            'email' => 'Email atau password Anda Salah Broo.',
         ])->onlyInput('email');
     }
 

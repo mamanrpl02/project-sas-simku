@@ -132,11 +132,15 @@
             color: #fff;
             text-decoration: underline;
         }
-        .gagal{
+
+        .gagal {
             color: red;
             font-size: 12px;
             font-weight: 400;
-            text-shadow: 2px 2px  rgba(0, 163, 196, 0.922);
+            background-color: rgba(176, 241, 255, 0.614);
+            border-radius: 5px;
+            display: inline;
+            padding: 5px 10px;
         }
 
         @media(max-width:520px) {
@@ -175,10 +179,10 @@
                 <label for="password">Enter your password</label>
             </div>
             @if ($errors->any())
-            <div class="gagal">
-                <strong>{{ $errors->first('email') }}</strong>
-            </div>
-        @endif
+                <div class="gagal">
+                    <strong>{{ $errors->first('email') }}</strong>
+                </div>
+            @endif
             <!-- Remember Me -->
             <div class="forget">
                 <label for="remember_me">
@@ -196,5 +200,4 @@
         </form>
     </div>
 </body>
-
 </html>
