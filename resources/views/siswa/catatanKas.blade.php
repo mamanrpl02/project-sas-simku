@@ -8,42 +8,26 @@
                 <p>Total Saldo Kas keseluruhan Sebesar </p>
             </div>
             <div class="isi">
-                <div class="isi"><i class="bi bi-credit-card-fill"></i> <strong>Rp : </strong>{{ number_format($totalSaldo, 0, ',', '.') }}</div>
+                <div class="isi"><i class="bi bi-credit-card-fill"></i> <strong>Rp .
+                    </strong>{{ number_format($totalSaldo, 0, ',', '.') }}</div>
             </div>
         </div>
     </div>
 
     <div class="containerTransaksi mt-5">
-        <a href="/pemasukanKas"><h2 class="text-center mb-4">Jumlah Pemasukan Kas Sebesar <br> Rp. {{ number_format($pemasukan, 0, ',', '.') }}</h2></a>
+        <div class="text-center count warning mb-4">
+            <h2>Jumlah Pengeluaran Kas Sebesar <br><span> Rp.
+                    {{ number_format($pengeluaranKas, 0, ',', '.') }}
+                </span></h2><br>
+            <a href="{{ route('pemasukan-kas') }}">Lihat Pemasukan >> </a>
+        </div>
 
         <div class="table-responsive">
             <table class="table table-striped table-bordered">
                 <thead class="thead-dark">
                     <tr>
                         <th scope="col">
-                            <form method="GET" action="">
-                                <select name="bulan" class="form-control form-control-sm" onchange="this.form.submit()">
-                                    <option value="" {{ request('bulan') == '' ? 'selected' : '' }}>Tanggal</option>
-                                    <option value="01" {{ request('bulan') == '01' ? 'selected' : '' }}>Januari</option>
-                                    <option value="02" {{ request('bulan') == '02' ? 'selected' : '' }}>Februari
-                                    </option>
-                                    <option value="03" {{ request('bulan') == '03' ? 'selected' : '' }}>Maret</option>
-                                    <option value="04" {{ request('bulan') == '04' ? 'selected' : '' }}>April</option>
-                                    <option value="05" {{ request('bulan') == '05' ? 'selected' : '' }}>Mei</option>
-                                    <option value="06" {{ request('bulan') == '06' ? 'selected' : '' }}>Juni</option>
-                                    <option value="07" {{ request('bulan') == '07' ? 'selected' : '' }}>Juli</option>
-                                    <option value="08" {{ request('bulan') == '08' ? 'selected' : '' }}>Agustus
-                                    </option>
-                                    <option value="09" {{ request('bulan') == '09' ? 'selected' : '' }}>September
-                                    </option>
-                                    <option value="10" {{ request('bulan') == '10' ? 'selected' : '' }}>Oktober
-                                    </option>
-                                    <option value="11" {{ request('bulan') == '11' ? 'selected' : '' }}>November
-                                    </option>
-                                    <option value="12" {{ request('bulan') == '12' ? 'selected' : '' }}>Desember
-                                    </option>
-                                </select>
-                            </form>
+                            Tanggal
                         </th>
                         <th scope="col">Nominal</th>
                         <th scope="col">Keterangan</th>
@@ -51,13 +35,13 @@
                 </thead>
                 <tbody>
                     @forelse ($pengeluaran as $data)
-                    <tr class="baris">
-                        <td>{{ $data->tanggal }}</td>
-                        <td>- {{ number_format($data->nominal, 0, ',', '.')}}</td>
-                        <td>{{ $data->keterangan }}</td>
-                    </tr>
+                        <tr class="baris">
+                            <td>{{ \Carbon\Carbon::parse($data->tanggal)->translatedFormat('    ') ?? '-' }}</td>
+                            <td>- {{ number_format($data->nominal, 0, ',', '.') }}</td>
+                            <td>{{ $data->keterangan }}</td>
+                        </tr>
                     @empty
-                    <tr>
+                        <tr>
                             <td colspan="4" class="text-center">Tidak ada data</td>
                         </tr>
                     @endforelse

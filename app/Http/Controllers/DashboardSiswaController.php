@@ -16,8 +16,10 @@ class DashboardSiswaController extends Controller
         // Mendapatkan data siswa yang login
         $siswa = Auth::user();
 
+        $pengeluaran = PengeluaranKas::all();
+
         // Mengirimkan data siswa ke view
-        return view('siswa.index', compact('siswa'));
+        return view('siswa.index', compact('siswa','pengeluaran'));
     }
 
     public function riwayat()
@@ -48,7 +50,6 @@ class DashboardSiswaController extends Controller
 
     public function pengeluaranKas()
     {
-
         $siswa = Auth::user();
         $pengeluaran = PengeluaranKas::all();
 
@@ -56,7 +57,7 @@ class DashboardSiswaController extends Controller
         $pengeluaranKas = PengeluaranKas::sum('nominal');
         $totalSaldo = $pemasukan - $pengeluaranKas;
 
-        return view('siswa.catatanKas', compact('pengeluaran','pemasukan','totalSaldo'));
+        return view('siswa.catatanKas', compact('pengeluaran','pengeluaranKas','pemasukan','totalSaldo'));
     }
 
     public function pemasukanKas()
@@ -69,7 +70,7 @@ class DashboardSiswaController extends Controller
 
 
 
-        return view('siswa.pemasukanKas', compact('pemasukanKas','totalSaldo')); // Ganti 'nama_view' dengan nama file Blade
+        return view('siswa.pemasukanKas', compact('pemasukanKas','totalSaldo','pemasukan')); // Ganti 'nama_view' dengan nama file Blade
     }
 
     public function notifkas()

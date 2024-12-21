@@ -31,31 +31,15 @@
             <div class="judul button"><a href="{{ route('pengeluaran-kas') }}">Lihat Selengkapnya >>></a></div>
         </div>
         <div class="content">
-            <div class="item">
-                <div class="info">
-                    <div class="judul">Iuran Untuk Hari Guru</div>
-                    <div class="detail">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Accusantium iusto
-                        porro
-                        dolorem molestias a numquam, dolores deserunt, error itaque, corrupti laboriosam nemo nostrum
-                        excepturi adipisci odio asperiores unde consequatur eos voluptates nihil aspernatur laborum
-                        eaque.
-                        Laborum dolorum molestias laboriosam, quas amet deserunt consequatur nam quis dolor soluta illo
-                        voluptatem magni?</div>
+            @foreach ($pengeluaran as $data)
+                <div class="item">
+                    <div class="info">
+                        <div class="judul">{{ $data->judul }}</div>
+                        <div class="detail">{{ $data->keterangan }}</div>
+                    </div>
+                   <div class="tanggal"><b>{{ \Carbon\Carbon::parse($data->tanggal)->translatedFormat('D, d M Y') ?? '-' }}</b></div>
                 </div>
-                <div class="tanggal">28 November 2024, 12:54:42</div>
-            </div>
-            <div class="item">
-                <div class="info">
-                    <div class="judul">Beli Kue Untuk Hari Guru</div>
-                    <div class="detail">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quis, aperiam
-                        dignissimos!
-                        Corporis, inventore. Tempora, at pariatur. Fuga fugiat consectetur quas! Eum, iure tempora iusto
-                        eius in suscipit optio ea praesentium. Quos, sed! Praesentium modi optio, dicta quae culpa
-                        soluta
-                        excepturi iusto a non veniam aspernatur delectus iure minima autem laborum!</div>
-                </div>
-                <div class="tanggal">25 November 2024, 14:51:10</div>
-            </div>
+            @endforeach
         </div>
     </section>
 @endsection

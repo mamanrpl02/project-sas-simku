@@ -29,7 +29,7 @@
                 <tbody>
                     @forelse ($transaksi as $data)
                         <tr class="baris {{ $data['keterangan'] == 'Debit' ? 'text-success' : 'text-danger' }}">
-                            <td>{{ $data['tanggal']->format('d M Y') }}</td>
+                            <td>{{ $data['tanggal']->translatedFormat('l, d M Y') }}</td>
                             <td>Rp {{ number_format($data['nominal'], 0, ',', '.') }}</td>
                             <td>{{ $data['keterangan'] }}</td>
                         </tr>

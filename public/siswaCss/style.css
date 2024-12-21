@@ -216,16 +216,35 @@ body {
     width: 90%;
 }
 
-.containerTransaksi h2{
+.containerTransaksi .count{
     background-color: rgb(1, 103, 40);
     display: inline-block;
     padding: 1rem;
     border-radius: 5px;
     margin-bottom: 1.2rem;
 }
-.containerTransaksi a{
-    color: white;
-    
+.containerTransaksi .count-masuk{
+    background-color: rgb(1, 103, 40);
+    display: inline-block;
+    padding: 1rem;
+    border-radius: 5px;
+    margin-bottom: 1.2rem;
+}
+
+.containerTransaksi .warning{
+    display: inline-block;
+    background-color:#ce9a00;
+    color: rgb(255, 255, 255);
+    border: 1px solid rgba(0, 0, 0, 0.568);
+}
+
+.containerTransaksi span{
+    text-decoration: underline;
+}
+
+.containerTransaksi a {
+    color: rgb(255, 255, 255);
+    text-shadow: 1px 1px 0.5px #666;
 }
 form select {
     width: auto;
@@ -281,6 +300,13 @@ td {
     border-radius: 10px;
     width: 90%;
     margin: 9rem auto;
+}
+
+.boxAlert h1{
+    color: #545454;
+}
+.boxAlert p{
+    color: #523434;
 }
 .alert {
     padding: 20px;

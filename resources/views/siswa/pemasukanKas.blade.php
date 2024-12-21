@@ -8,12 +8,20 @@
                 <p>Total Saldo Kas keseluruhan Sebesar </p>
             </div>
             <div class="isi">
-                <div class="isi"><i class="bi bi-credit-card-fill"></i> <strong>Rp : </strong>{{ number_format($totalSaldo, 0, ',', '.') }}</div>
+                <div class="isi"><i class="bi bi-credit-card-fill"></i> <strong>Rp :
+                    </strong>{{ number_format($totalSaldo, 0, ',', '.') }}</div>
             </div>
         </div>
     </div>
 
     <div class="containerTransaksi mt-5">
+
+        <div class="text-center count-masuk mb-4"><h2>Jumlah Pemasukan Kas Sebesar <br><span> Rp.
+                {{ number_format($pemasukan, 0, ',', '.') }}
+            </span></h2><br>
+            <a href="{{ route('pengeluaran-kas') }}">Lihat Pengeluaran >> </a>
+        </div>
+
         <div class="table-responsive">
             <table class="table table-striped table-bordered">
                 <thead class="thead-dark">
@@ -29,9 +37,9 @@
                         <tr>
                             <td class="border border-gray-300 px-4 py-2">{{ $kas->siswa->nama ?? 'Tidak Diketahui' }}</td>
                             <td class="border border-gray-300 px-4 py-2">
-                                {{ \Carbon\Carbon::parse($kas->tagihan->tanggal)->format('D, d M Y') ?? '-' }}</td>
+                                {{ \Carbon\Carbon::parse($kas->tagihan->tanggal)->translatedFormat('l, d M Y') ?? '-' }}</td>
                             <td class="border border-gray-300 px-4 py-2">
-                                {{ \Carbon\Carbon::parse($kas->created_at)->format('D, d M Y') }}</td>
+                                {{ \Carbon\Carbon::parse($kas->created_at)->translatedFormat('l, d M Y') }}</td>
                             <td class="border border-gray-300 px-4 py-2">Rp {{ number_format($kas->nominal, 0, ',', '.') }}
                             </td>
                         </tr>
