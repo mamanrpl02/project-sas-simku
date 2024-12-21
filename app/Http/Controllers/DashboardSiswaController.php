@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Siswa;
+use App\Models\PemasukanKas;
 use Illuminate\Http\Request;
+use App\Models\PengeluaranKas;
 use Illuminate\Support\Facades\Auth;
 
 class DashboardSiswaController extends Controller
@@ -44,11 +46,32 @@ class DashboardSiswaController extends Controller
         return view('siswa.transaksi', compact('siswa', 'transaksi'));
     }
 
-    public function catatankas()
+    public function pengeluaranKas()
     {
+
         $siswa = Auth::user();
-        return view('siswa.catatanKas');
+        $pengeluaran = PengeluaranKas::all();
+
+        $pemasukan = PemasukanKas::sum('nominal');
+        $pengeluaranKas = PengeluaranKas::sum('nominal');
+        $totalSaldo = $pemasukan - $pengeluaranKas;
+
+        return view('siswa.catatanKas', compact('pengeluaran','pemasukan','totalSaldo'));
     }
+
+    public function pemasukanKas()
+    {
+        $pemasukanKas = PemasukanKas::with(['siswa', 'tagihan'])->get(); // Ambil data dengan relasi
+
+        $pemasukan = PemasukanKas::sum('nominal');
+        $pengeluaranKas = PengeluaranKas::sum('nominal');
+        $totalSaldo = $pemasukan - $pengeluaranKas;
+
+
+
+        return view('siswa.pemasukanKas', compact('pemasukanKas','totalSaldo')); // Ganti 'nama_view' dengan nama file Blade
+    }
+
     public function notifkas()
     {
         $siswa = Auth::user();

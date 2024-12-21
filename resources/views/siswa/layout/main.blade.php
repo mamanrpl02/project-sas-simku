@@ -24,8 +24,6 @@
 
     <!-- My Style -->
     <link rel="stylesheet" href="siswaCss/style.css">
-
-
 </head>
 
 <body>
@@ -37,6 +35,7 @@
             <a href="{{ route('dashboard') }}">Beranda</a>
             <a href="{{ route('transaksi') }}">Riwayat Saldo</a>
             <a href="{{ route('pengeluaran-kas') }}">Pengeluaran Kas</a>
+            <a href="{{ route('pemasukan-kas') }}">Pemasukan Kas</a>
             <a href="{{ route('notif.kas') }}">Pemberitahuan</a>
             <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                 Logout

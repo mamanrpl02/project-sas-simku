@@ -215,6 +215,18 @@ body {
     margin: 8rem auto;
     width: 90%;
 }
+
+.containerTransaksi h2{
+    background-color: rgb(1, 103, 40);
+    display: inline-block;
+    padding: 1rem;
+    border-radius: 5px;
+    margin-bottom: 1.2rem;
+}
+.containerTransaksi a{
+    color: white;
+    
+}
 form select {
     width: auto;
     display: inline-block;
@@ -455,7 +467,7 @@ td {
     }
 
     .container .card-saldo {
-        flex-direction: column; /* Susunan vertikal untuk konten */ 
+        flex-direction: column; /* Susunan vertikal untuk konten */
         gap: 1rem; /* Beri jarak antar elemen */
     }
 

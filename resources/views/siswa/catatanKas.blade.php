@@ -8,19 +8,18 @@
                 <p>Total Saldo Kas keseluruhan Sebesar </p>
             </div>
             <div class="isi">
-                <div class="isi"><i class="bi bi-credit-card-fill"></i> <strong>Rp : </strong> 300.000</div>
+                <div class="isi"><i class="bi bi-credit-card-fill"></i> <strong>Rp : </strong>{{ number_format($totalSaldo, 0, ',', '.') }}</div>
             </div>
         </div>
     </div>
 
     <div class="containerTransaksi mt-5">
-        <h2 class="text-center mb-4">Catatan Pengeluaran Kas</h2>
+        <a href="/pemasukanKas"><h2 class="text-center mb-4">Jumlah Pemasukan Kas Sebesar <br> Rp. {{ number_format($pemasukan, 0, ',', '.') }}</h2></a>
 
         <div class="table-responsive">
             <table class="table table-striped table-bordered">
                 <thead class="thead-dark">
                     <tr>
-                        <th scope="col">#</th>
                         <th scope="col">
                             <form method="GET" action="">
                                 <select name="bulan" class="form-control form-control-sm" onchange="this.form.submit()">
@@ -51,18 +50,17 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {{-- @forelse ($transaksi as $index => $data) --}}
+                    @forelse ($pengeluaran as $data)
                     <tr class="baris">
-                        <td>1</td>
-                        <td>12 Desember 20224</td>
-                        <td>Rp 200.000</td>
-                        <td>Sukses</td>
+                        <td>{{ $data->tanggal }}</td>
+                        <td>- {{ number_format($data->nominal, 0, ',', '.')}}</td>
+                        <td>{{ $data->keterangan }}</td>
                     </tr>
-                    {{-- @empty --}}
-                    {{-- <tr>
+                    @empty
+                    <tr>
                             <td colspan="4" class="text-center">Tidak ada data</td>
                         </tr>
-                    @endforelse --}}
+                    @endforelse
                 </tbody>
             </table>
         </div>

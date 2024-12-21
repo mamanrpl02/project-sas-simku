@@ -34,7 +34,7 @@ class KreditTabunganResource extends Resource
         return $form
             ->schema([
                 Select::make('siswa_id')
-                    ->searchable()
+                    ->required()
                     ->relationship('siswa', 'nama'),
                 TextInput::make('nominal')->numeric(),
             ]);

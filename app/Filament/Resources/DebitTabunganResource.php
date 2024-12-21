@@ -33,8 +33,7 @@ class DebitTabunganResource extends Resource
         return $form
             ->schema([
                 Select::make('siswa_id')
-                    ->required()
-                    ->searchable()
+                    ->required() 
                     ->relationship('siswa', 'nama'),
                 TextInput::make('nominal')->numeric()->required(),
             ]);
