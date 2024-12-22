@@ -2,12 +2,22 @@
 
 @section('content')
     <div class="container">
-        <div class="alert-dashboard">
+        {{-- <div class="alert-dashboard">
             <a href="{{ route('notif.kas') }}"> <span class="closebtn"
                     onclick="this.parentElement.style.display='none';">&times;</span></a>
             <strong>Pemberitahuan! :</strong><br>Kamu belum membayar kas pada tanggal 12 Dessember 2024. Harap membayar
             kass yaa
-        </div>
+        </div> --}}
+        @foreach ($tagihanBelumDibayar as $tagihan)
+            <div class="alert-dashboard">
+                <a href="{{ route('notif.kas') }}"> <span class="closebtn"
+                        onclick="this.parentElement.style.display='none';">&times;</span></a>
+                <strong>Pemberitahuan! :</strong><br>
+                Kamu belum membayar kas pada tanggal {{ \Carbon\Carbon::parse($tagihan->tanggal)->format('d F Y') }}.
+                Harap membayar kas yaa
+            </div>
+        @endforeach
+
         <div class="card-saldo">
             <div class="header">
                 <h1>Halo {{ $siswa->nama }}</h1>
@@ -37,7 +47,9 @@
                         <div class="judul">{{ $data->judul }}</div>
                         <div class="detail">{{ $data->keterangan }}</div>
                     </div>
-                   <div class="tanggal"><b>{{ \Carbon\Carbon::parse($data->tanggal)->translatedFormat('D, d M Y') ?? '-' }}</b></div>
+                    <div class="tanggal">
+                        <b>{{ \Carbon\Carbon::parse($data->tanggal)->translatedFormat('D, d M Y') ?? '-' }}</b>
+                    </div>
                 </div>
             @endforeach
         </div>

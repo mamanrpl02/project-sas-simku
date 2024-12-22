@@ -18,8 +18,16 @@ class DashboardSiswaController extends Controller
     {
         // Mendapatkan data siswa yang login
         $siswa = Auth::user();
+        $pengeluaran = PengeluaranKas::orderBy('created_at','desc')->get();
 
-        $pengeluaran = PengeluaranKas::all();
+        $siswaId = auth()->user()->id; // Sesuaikan dengan sistem autentikasi Anda
+
+        // Ambil semua tagihan yang belum dibayar, dengan pagination
+        $tagihanBelumDibayar = Tagihan::whereDoesntHave('pemasukanKas', function ($query) use ($siswaId) {
+            $query->where('siswa_id', $siswaId);
+        })->paginate(1); // 1 data per halaman
+
+        return view('siswa.index', compact('tagihanBelumDibayar', 'siswa', 'pengeluaran'));
 
         // Mengirimkan data siswa ke view
         return view('siswa.index', compact('siswa', 'pengeluaran'));
@@ -54,7 +62,7 @@ class DashboardSiswaController extends Controller
     public function pengeluaranKas()
     {
         $siswa = Auth::user();
-        $pengeluaran = PengeluaranKas::all();
+        $pengeluaran = PengeluaranKas::orderBy('created_at', 'desc')->get(); // Urutkan berdasarkan 'created_at' terbaru
 
         $pemasukan = PemasukanKas::sum('nominal');
         $pengeluaranKas = PengeluaranKas::sum('nominal');
@@ -65,15 +73,17 @@ class DashboardSiswaController extends Controller
 
     public function pemasukanKas()
     {
-        $pemasukanKas = PemasukanKas::with(['siswa', 'tagihan'])->get(); // Ambil data dengan relasi
+        // Ambil data pemasukan kas dengan relasi 'siswa' dan 'tagihan', diurutkan berdasarkan 'created_at' (terbaru)
+        $pemasukanKas = PemasukanKas::with(['siswa', 'tagihan'])
+            ->orderBy('created_at', 'desc') // Urutkan berdasarkan 'created_at' terbaru
+            ->get();
 
+        // Total pemasukan dan pengeluaran
         $pemasukan = PemasukanKas::sum('nominal');
         $pengeluaranKas = PengeluaranKas::sum('nominal');
         $totalSaldo = $pemasukan - $pengeluaranKas;
 
-
-
-        return view('siswa.pemasukanKas', compact('pemasukanKas', 'totalSaldo', 'pemasukan')); // Ganti 'nama_view' dengan nama file Blade
+        return view('siswa.pemasukanKas', compact('pemasukanKas', 'totalSaldo', 'pemasukan'));
     }
 
     public function notifkas()
@@ -88,6 +98,6 @@ class DashboardSiswaController extends Controller
             $query->where('siswa_id', $siswaId);
         })->get();
 
-        return view('siswa.pemberitahuan', compact('tagihanBelumDibayar','siswa'));
+        return view('siswa.pemberitahuan', compact('tagihanBelumDibayar', 'siswa'));
     }
 }

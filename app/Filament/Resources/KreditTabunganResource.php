@@ -40,8 +40,7 @@ class KreditTabunganResource extends Resource
                     ->numeric()
                     ->required()
                     ->minValue(1000)
-                    ->maxValue(100000)
-                    ->rule('regex:/^[1-9][0-9]*500$/')
+                    ->maxValue(100000) 
                     ->placeholder('Masukkan nominal')
                     ->helperText('Nominal harus kelipatan 500, minimal 1.000, dan maksimal 100.000'),
             ]);
