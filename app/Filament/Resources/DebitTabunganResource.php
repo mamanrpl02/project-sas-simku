@@ -33,9 +33,16 @@ class DebitTabunganResource extends Resource
         return $form
             ->schema([
                 Select::make('siswa_id')
-                    ->required() 
+                    ->required()
                     ->relationship('siswa', 'nama'),
-                TextInput::make('nominal')->numeric()->required(),
+                TextInput::make('nominal')
+                    ->numeric()
+                    ->required()
+                    ->minValue(1000)
+                    ->maxValue(100000)
+                    ->rule('regex:/^[1-9][0-9]*500$/')
+                    ->placeholder('Masukkan nominal')
+                    ->helperText('Nominal harus kelipatan 500, minimal 1.000, dan maksimal 100.000'),
             ]);
     }
 
@@ -45,7 +52,7 @@ class DebitTabunganResource extends Resource
             ->columns([
                 TextColumn::make('siswa.nama')->label('Nama'),
                 TextColumn::make('nominal')->numeric()->label('Nominal'),
-                TextColumn::make('created_at')->dateTime('D d M Y')->label('Tanggal'),
+                TextColumn::make('created_at')->dateTime('l, d F Y')->label('Tanggal'),
             ])
             ->filters([
                 SelectFilter::make('siswa_id')->label('Nama Siswa')
@@ -53,6 +60,7 @@ class DebitTabunganResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

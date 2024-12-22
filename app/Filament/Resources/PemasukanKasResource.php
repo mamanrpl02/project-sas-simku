@@ -53,12 +53,12 @@ class PemasukanKasResource extends Resource
                 TextColumn::make('tagihan.tanggal')
                     ->label('Tanggal Tagihan')
                     ->sortable()
-                    ->date('D , d M Y')
+                    ->date('l, d F Y')
                     ->searchable(),
 
                 TextColumn::make('created_at')
                     ->label('Tanggal Pelunasan')
-                    ->date('D, d M Y')
+                    ->date('l, d F Y')
                     ->sortable(),
 
                 TextColumn::make('nominal')

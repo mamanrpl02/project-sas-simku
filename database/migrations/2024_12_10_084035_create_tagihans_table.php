@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('tagihans', function (Blueprint $table) {
             $table->id();
             $table->date('tanggal');
-            $table->string('pesan');
             $table->timestamps();
         });
     }

@@ -69,7 +69,7 @@ class PengeluaranKasResource extends Resource
                 TextColumn::make('tanggal')
                     ->label('Tanggal Pengeluaran')
                     ->sortable()
-                    ->date('D , d M Y')
+                    ->date('l, d F Y')
                     ->searchable(),
 
                 TextColumn::make('nominal')

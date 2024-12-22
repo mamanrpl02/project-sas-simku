@@ -36,7 +36,14 @@ class KreditTabunganResource extends Resource
                 Select::make('siswa_id')
                     ->required()
                     ->relationship('siswa', 'nama'),
-                TextInput::make('nominal')->numeric(),
+                TextInput::make('nominal')
+                    ->numeric()
+                    ->required()
+                    ->minValue(1000)
+                    ->maxValue(100000)
+                    ->rule('regex:/^[1-9][0-9]*500$/')
+                    ->placeholder('Masukkan nominal')
+                    ->helperText('Nominal harus kelipatan 500, minimal 1.000, dan maksimal 100.000'),
             ]);
     }
 
@@ -50,14 +57,17 @@ class KreditTabunganResource extends Resource
             ->columns([
                 TextColumn::make('siswa.nama'),
                 TextColumn::make('nominal')->numeric(),
-                TextColumn::make('created_at')->dateTime('D d M Y')->label('Tanggal'),
+                TextColumn::make('created_at')->dateTime('l, d F Y')->label('Tanggal'),
             ])
             ->filters([
                 SelectFilter::make('siswa_id')
                     ->relationship('siswa', 'nama')
 
             ])
-            ->actions([])
+            ->actions([
+                Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
+            ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),

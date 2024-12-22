@@ -36,9 +36,9 @@
                 <tbody>
                     @forelse ($pengeluaran as $data)
                         <tr class="baris">
-                            <td>{{ \Carbon\Carbon::parse($data->tanggal)->translatedFormat('    ') ?? '-' }}</td>
-                            <td>- {{ number_format($data->nominal, 0, ',', '.') }}</td>
-                            <td>{{ $data->keterangan }}</td>
+                            <td>{{ \Carbon\Carbon::parse($data->tanggal)->translatedFormat('l, d M Y') ?? '-' }}</td>
+                            <td class="text-warning"><b>{{ number_format($data->nominal, 0, ',', '.') }}</b></td>
+                            <td class="text-left">{{ $data->keterangan }}</td>
                         </tr>
                     @empty
                         <tr>

@@ -238,6 +238,13 @@ body {
     border: 1px solid rgba(0, 0, 0, 0.568);
 }
 
+.text-warning{
+    color: #ce9a00;
+}
+.text-left{
+    text-align: left;
+}
+
 .containerTransaksi span{
     text-decoration: underline;
 }
@@ -246,6 +253,7 @@ body {
     color: rgb(255, 255, 255);
     text-shadow: 1px 1px 0.5px #666;
 }
+
 form select {
     width: auto;
     display: inline-block;

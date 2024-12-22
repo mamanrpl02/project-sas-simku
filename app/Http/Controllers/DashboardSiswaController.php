@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Siswa;
+use App\Models\Tagihan;
 use App\Models\PemasukanKas;
 use Illuminate\Http\Request;
+use App\Models\DebitTabungan;
+use App\Models\KreditTabungan;
 use App\Models\PengeluaranKas;
 use Illuminate\Support\Facades\Auth;
 
@@ -19,7 +22,7 @@ class DashboardSiswaController extends Controller
         $pengeluaran = PengeluaranKas::all();
 
         // Mengirimkan data siswa ke view
-        return view('siswa.index', compact('siswa','pengeluaran'));
+        return view('siswa.index', compact('siswa', 'pengeluaran'));
     }
 
     public function riwayat()
@@ -57,7 +60,7 @@ class DashboardSiswaController extends Controller
         $pengeluaranKas = PengeluaranKas::sum('nominal');
         $totalSaldo = $pemasukan - $pengeluaranKas;
 
-        return view('siswa.catatanKas', compact('pengeluaran','pengeluaranKas','pemasukan','totalSaldo'));
+        return view('siswa.catatanKas', compact('pengeluaran', 'pengeluaranKas', 'pemasukan', 'totalSaldo'));
     }
 
     public function pemasukanKas()
@@ -70,12 +73,21 @@ class DashboardSiswaController extends Controller
 
 
 
-        return view('siswa.pemasukanKas', compact('pemasukanKas','totalSaldo','pemasukan')); // Ganti 'nama_view' dengan nama file Blade
+        return view('siswa.pemasukanKas', compact('pemasukanKas', 'totalSaldo', 'pemasukan')); // Ganti 'nama_view' dengan nama file Blade
     }
 
     public function notifkas()
     {
+        // return view('siswa.pemberitahuan');
+
         $siswa = Auth::user();
-        return view('siswa.pemberitahuan');
+        $siswaId = auth()->user()->id; // Sesuaikan dengan sistem autentikasi Anda
+
+        // Ambil semua tagihan
+        $tagihanBelumDibayar = Tagihan::whereDoesntHave('pemasukanKas', function ($query) use ($siswaId) {
+            $query->where('siswa_id', $siswaId);
+        })->get();
+
+        return view('siswa.pemberitahuan', compact('tagihanBelumDibayar','siswa'));
     }
 }

@@ -10,4 +10,9 @@ class Tagihan extends Model
     {
         return $this->hasMany(Siswa::class);
     }
+
+    public function pemasukanKas()
+    {
+        return $this->hasMany(PemasukanKas::class, 'tagihan_id');
+    }
 }

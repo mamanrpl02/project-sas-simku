@@ -32,13 +32,7 @@ class TagihanResource extends Resource
                     ->label('Tanggal')
                     ->required()
                     ->default(now()) // Default tanggal saat ini
-                    ->placeholder('Pilih Tanggal'),
-
-                TextInput::make('pesan')
-                    ->label('Pesan')
-                    ->required()
-                    ->maxLength(255)
-                    ->placeholder('Masukkan Pesan'),
+                    ->placeholder('Pilih Tanggal'), 
             ]);
     }
 
@@ -46,14 +40,14 @@ class TagihanResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('tanggal'),
-                TextColumn::make('pesan'),
+                TextColumn::make('tanggal')->searchable()->sortable()->date('l, d F Y'),
             ])
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
