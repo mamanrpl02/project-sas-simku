@@ -30,15 +30,20 @@ class AuthenticatedSessionController extends Controller
     public function store(LoginRequest $request): RedirectResponse
     {
         // Pastikan menggunakan guard 'siswa'
-        if (Auth::guard('siswa')->attempt($request->only('email', 'password'), $request->boolean('remember'))) {
+        $credentials = $request->only('email', 'password');
+
+        // Menggunakan Auth::guard('siswa')->attempt() untuk login siswa
+        if (Auth::guard('siswa')->attempt($credentials, $request->boolean('remember'))) {
+            // Regenerasi session untuk menghindari session fixation
             $request->session()->regenerate();
 
-            return redirect()->intended(route('dashboard', absolute: false)); // Atur rute dashboard untuk siswa
+            // Redirect ke halaman dashboard jika login berhasil
+            return redirect()->route('dashboard'); // pastikan 'dashboard' adalah rute yang benar
         }
 
-        // Jika gagal login
+        // Jika gagal login, kembalikan error
         return back()->withErrors([
-            'email' => 'Email atau password Anda Salah Broo.',
+            'email' => 'Email atau password Anda salah.',
         ])->onlyInput('email');
     }
 
@@ -50,10 +55,11 @@ class AuthenticatedSessionController extends Controller
         // Logout guard 'siswa'
         Auth::guard('siswa')->logout();
 
+        // Hapus session dan token CSRF
         $request->session()->invalidate();
-
         $request->session()->regenerateToken();
 
+        // Redirect ke halaman utama setelah logout
         return redirect('/');
     }
 }

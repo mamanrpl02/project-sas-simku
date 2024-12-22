@@ -23,7 +23,8 @@
 
 
     <!-- My Style -->
-    <link rel="stylesheet" href="siswaCss/style.css">
+    <link rel="stylesheet" href="{{ asset('siswaCss/style.css') }}">
+
 </head>
 
 <body>
@@ -33,6 +34,7 @@
         <a href="#" class="navbar-logo">SIMKU</a>
         <div class="navbar-nav">
             <a href="{{ route('dashboard') }}">Beranda</a>
+            <a href="{{ route('profile.edit') }}">Ubah Password</a>
             <a href="{{ route('transaksi') }}">Riwayat Saldo</a>
             <a href="{{ route('pengeluaran-kas') }}">Pengeluaran Kas</a>
             <a href="{{ route('pemasukan-kas') }}">Pemasukan Kas</a>
@@ -61,7 +63,7 @@
     <script>
         feather.replace();
     </script>
-    <script src="siswaJs/script.js"></script>
+    <script src="{{ asset('siswaJs/script.js') }}"></script>
 </body>
 
 </html>
