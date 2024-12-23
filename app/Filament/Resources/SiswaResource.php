@@ -9,6 +9,7 @@ use App\Models\Siswa;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
+use Illuminate\Support\Facades\Hash;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Tables\Actions\EditAction;
@@ -16,6 +17,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use Filament\Tables\Actions\DeleteAction;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Validation\Rules\Password;
 use Filament\Tables\Actions\BulkActionGroup;
 use Filament\Tables\Actions\DeleteBulkAction;
 use App\Filament\Resources\SiswaResource\Pages;
@@ -37,16 +39,16 @@ class SiswaResource extends Resource
     {
         return $form
             ->schema([
+
                 TextInput::make('nisn')->numeric()->required(),
                 TextInput::make('nama')->required(),
                 TextInput::make('email')->required(),
                 TextInput::make('password')
                     ->password()
-                    ->rules([
-                        'required_if:record.id,null', // Required jika record.id null (saat create)
-                        'nullable', // Boleh kosong saat edit
-                    ])
+                    ->revealable()  
+                    ->dehydrated(fn(?string $state): bool => filled($state))
                     ->label('Password'),
+
                 Select::make('jenis_kelamin')
                     ->required()
                     ->options([
