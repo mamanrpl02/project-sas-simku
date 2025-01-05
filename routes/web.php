@@ -7,7 +7,7 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
 Route::get('/', function () {
     return view('index');
-});
+})->name('landing');
 
 Route::fallback(function () {
     return response()->view('errors.404', [], 404);
