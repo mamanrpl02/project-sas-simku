@@ -6,7 +6,7 @@ use App\Http\Controllers\DashboardSiswaController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('index');
 });
 
 Route::fallback(function () {
