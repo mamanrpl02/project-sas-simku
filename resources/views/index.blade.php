@@ -5,8 +5,10 @@
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title>SIMKU - Sistem InforMasi Keuangan Unesco</title>
-    <meta name="description" content="" />
-    <meta name="keywords" content="" />
+    <meta name="description"
+        content="SIMKU adalah Sistem Informasi Manajemen Keuangan yang mempermudah pencatatan keuangan kelas secara transparan dan efisien. Cocok untuk pengelolaan kas dan tabungan siswa." />
+    <meta name="keywords"
+        content="SIMKU, simku unesco, keuangan kelas, manajemen keuangan, tabungan siswa, sistem kas, transparansi keuangan, smkn 1 pusakanagara" />
 
     <!-- Favicons -->
     <link href="{{ asset('img/logoUnesco.png') }}" rel="icon" />
@@ -33,34 +35,33 @@
 <body class="index-page">
     <header id="header" class="header d-flex align-items-center sticky-top">
         <div class="container-fluid container-xl position-relative d-flex align-items-center">
-            <a href="index.html" class="logo d-flex align-items-center me-auto" style="padding-right:2rem;">
-                <!-- Uncomment the line below if you also wish to use an image logo -->
-                <!-- <img src="assets/img/logo.png" alt=""> -->
+            <a href="{{ route('landing') }}" class="logo d-flex align-items-center me-auto" style="padding-right:2rem;">
                 <h1 class="sitename">SIMKU</h1>
             </a>
 
             <nav id="navmenu" class="navmenu">
                 <ul>
                     <li>
-                        <a href="{{ route('landing') }}" class="active">Home<br /></a>
+                        <a href="#hero">Home</a>
                     </li>
                     <li>
-                        <a href="{{ route('landing') }}#about" class="active">Tentng Kami</a>
+                        <a href="#about">About</a>
                     </li>
                     <li>
-                        <a href="{{ route('landing') }}#kenapa-kami" class="active">Tentng Kami</a>
+                        <a href="#kenapa-kami">Why</a>
                     </li>
                 </ul>
                 <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
             </nav>
-            <a class="btn-getstarted" href="/login">Login</a>
+
+            <a class="btn-getstarted" href="{{ route('login') }}">Login</a>
         </div>
     </header>
 
     <main class="main">
         <!-- Hero Section -->
         <section id="hero" class="hero section dark-background">
-            <img src="assets/img/hero-bg.jpg" alt="" data-aos="fade-in" />
+            <img src="{{ asset('assets/img/hero-bg.jpg') }}" alt="" data-aos="fade-in" />
 
             <div class="container">
                 <h2 data-aos="fade-up" data-aos-delay="100">
@@ -71,18 +72,18 @@
                     secara efisien.
                 </p>
                 <div class="d-flex mt-4" data-aos="fade-up" data-aos-delay="300">
-                    <a href="#tentang-kami" class="btn-get-started">Tentang Kami</a>
+                    <a href="#about" class="btn-get-started">Tentang Kami</a>
                 </div>
             </div>
         </section>
         <!-- /Hero Section -->
 
         <!-- About Section -->
-        <section id="about" class="about section" style="padding-top: 15rem;">
+        <section id="about" class="about section" style="padding-top: 5rem;">
             <div class="container">
                 <div class="row gy-4">
                     <div class="col-lg-6 order-1 order-lg-2" data-aos="fade-up" data-aos-delay="100">
-                        <img src="assets/img/about.png" class="img-fluid" alt="UNESCO" style="height: 500px" />
+                        <img src="{{ asset('assets/img/about.png') }}" class="img-fluid" alt="UNESCO" />
                     </div>
 
                     <div class="col-lg-6 order-2 order-lg-1 content" data-aos="fade-up" data-aos-delay="200">
@@ -111,7 +112,7 @@
                                     keuangan kapan saja dan di mana saja.</span>
                             </li>
                         </ul>
-                        <a href="#kenapa-kami" class="read-more"><span>Read More</span><i
+                        <a href="#kenapa-kami" class="read-more"><span>Kenapa SIMKU?</span><i
                                 class="bi bi-arrow-right"></i></a>
                     </div>
                 </div>
@@ -133,11 +134,7 @@
                                 online, pengguna (Siswa) dapat melihat laporan keuangan kapan
                                 saja dan di mana saja, sehingga lebih praktis dan cepat untuk
                                 mengambil keputusan.
-                            </p>
-                            <div class="text-center">
-                                <a href="#" class="more-btn"><span>Learn More</span> <i
-                                        class="bi bi-chevron-right"></i></a>
-                            </div>
+                            </p>  
                         </div>
                     </div>
                     <!-- End Why Box -->
@@ -200,47 +197,22 @@
                     <div class="footer-contact pt-3">
                         <p>RPL - SMKN 1 Pusakanagara</p>
                         <p>Kec. Pusakanagara , Kab. Subang , Jawa Barat</p>
-                        <!-- <p class="mt-3">
-                <strong>Instagram </strong><a href="https://www.instagram.com/xii.unesco22/" target="_blank">@xii.unesco22</a>
-              </p> -->
                     </div>
                     <div class="social-links d-flex mt-4">
                         <a href=""><i class="bi bi-instagram"></i></a>
                     </div>
                 </div>
-
-                {{-- <div class="col-lg-2 col-md-3 footer-links">
-            <h4>Useful Links</h4>
-            <ul>
-              <li><a href="#">Home</a></li>
-              <li><a href="#">About us</a></li>
-              <li><a href="#">Services</a></li>
-              <li><a href="#">Terms of service</a></li>
-              <li><a href="#">Privacy policy</a></li>
-            </ul>
-          </div> --}}
-
                 <div class="col-lg-2 col-md-3 footer-links">
-                    <h4>Kelasmu Mau Juga? Hubungi Kami</h4>
+                    <h4>Kelasmu Mau Juga? <a href="https://www.instagram.com/xii.unesco22/" target="_blank">Hubungi
+                            Kami</a></h4>
                 </div>
             </div>
         </div>
 
         <div class="container copyright text-center mt-4" style="bottom: 0">
             <p>
-                © <span>Copyright</span>
-                <strong class="px-1 sitename">Mentor</strong>
-                <span>All Rights Reserved</span>
+                © <span>As a Final Semester Summative project</span>
             </p>
-            <div class="credits">
-                <!-- All the links in the footer should remain intact. -->
-                <!-- You can delete the links only if you've purchased the pro version. -->
-                <!-- Licensing information: https://bootstrapmade.com/license/ -->
-                <!-- Purchase the pro version with working PHP/AJAX contact form: [buy-url] -->
-                Designed by
-                <a href="https://bootstrapmade.com/">BootstrapMade</a> Distributed by
-                <a href=“https://themewagon.com>ThemeWagon
-            </div>
         </div>
     </footer>
 
