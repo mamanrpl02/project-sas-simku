@@ -32,20 +32,19 @@ class SiswaResource extends Resource
 {
     protected static ?string $model = Siswa::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-users';
+    protected static ?string $navigationIcon = 'heroicon-o-user-group';
     protected static ?string $navigationLabel = 'Siswa';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-
                 TextInput::make('nisn')->numeric()->required(),
                 TextInput::make('nama')->required(),
                 TextInput::make('email')->required(),
                 TextInput::make('password')
                     ->password()
-                    ->revealable()  
+                    ->revealable()
                     ->dehydrated(fn(?string $state): bool => filled($state))
                     ->label('Password'),
 

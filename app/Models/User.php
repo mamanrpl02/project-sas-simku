@@ -3,14 +3,16 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Filament\Panel;
+use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -21,6 +23,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role', // Tambahkan jika ingin menyimpan role di database
     ];
 
     /**
@@ -46,5 +49,13 @@ class User extends Authenticatable
         ];
     }
 
-     
+    // public function canAccessPannel(Panel $panel):bool{
+    //     if(!$this->hasrole('panel_user') && $panel->getId() == 'admin'){
+    //         return true;
+    //     }
+    //     if(!$this->hasrole('panel_user') && $panel->getId() == 'petugas'){
+    //         return true;
+    //     }
+    //     return $this->hasRole('super_admin') ||$this->hasRole('admin');
+    // }
 }
