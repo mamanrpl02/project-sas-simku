@@ -477,6 +477,19 @@ td {
     font-weight: bold;
 }
 
+/* footer{
+    background-color: #f2f2f2;
+    padding: 10px;
+    color: #010101;
+    text-align: center;
+    clear: both;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    height: 60px;
+    border-top: 1px solid #ccc;
+} */
+
 /* media queries */
 
 /* laptop */
