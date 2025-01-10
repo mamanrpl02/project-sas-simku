@@ -32,12 +32,17 @@ class PemasukanKasResource extends Resource
                 Select::make('tagihan_id')
                     ->label('Pilih Tunggakan')
                     ->options(Tagihan::all()->pluck('tanggal', 'id'))
-                    ->searchable(),
+                    ->searchable()->required(),
                 Select::make('siswa_id')
                     ->label('Siswa')
                     ->options(Siswa::all()->pluck('nama', 'id'))
-                    ->searchable(),
-                TextInput::make('nominal')->numeric(),
+                    ->searchable()->required(),
+                TextInput::make('nominal')
+                    ->numeric()
+                    ->required()
+                    ->minValue(2000)
+                    ->maxValue(100000)
+                    ->helperText('Minimal 2.000, dan maksimal 100.000'),
             ]);
     }
 

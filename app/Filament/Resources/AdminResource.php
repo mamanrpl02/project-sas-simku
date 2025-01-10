@@ -27,13 +27,13 @@ class AdminResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('name'),
-                TextInput::make('email'),
+                TextInput::make('name')->required(),
+                TextInput::make('email')->required(),
                 Select::make('role')
-                    ->relationship('roles', 'name'),
+                    ->relationship('roles', 'name')->required(),
                 TextInput::make('password')
                     ->password()
-                    ->label('Password'),
+                    ->label('Password')->required(),
             ]);
     }
 
@@ -50,6 +50,7 @@ class AdminResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
