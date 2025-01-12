@@ -31,14 +31,13 @@
                         {{ number_format($siswa->saldo, 0, ',', '.') }}
                     </span>
                     <button id="toggle-saldo" class="eyes" onclick="toggleSaldo()"
-                        style="padding: 5px; border-radius:5px;background-color:#f4d03f;">
+                        style="padding: 10px; border-radius:5px;background-color:#f4d03f;">
                         <i class="bi bi-eye"></i>
                     </button>
                 </div>
 
                 <a href="{{ route('transaksi') }}">
                     <div class="isi riwayat"><i class="bi bi-arrow-counterclockwise" style="font-size: 16px"></i> Riwayat
-                        Saldo
                     </div>
                 </a>
             </div>
@@ -65,27 +64,51 @@
         </div>
     </section>
 @endsection
-
 <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const saldoElement = document.getElementById('saldo');
+        const toggleButton = document.getElementById('toggle-saldo');
+        const eyeIcon = toggleButton.querySelector('i');
+
+        // Ambil status dari localStorage
+        const isHidden = localStorage.getItem('saldoHidden') === 'true';
+
+        if (saldoElement.dataset.original === undefined) {
+            saldoElement.dataset.original = saldoElement.textContent; // Simpan nilai asli
+        }
+
+        // Atur tampilan awal berdasarkan status dari localStorage
+        if (isHidden) {
+            hideSaldo(saldoElement, eyeIcon);
+        } else {
+            showSaldo(saldoElement, eyeIcon);
+        }
+    });
+
     function toggleSaldo() {
         const saldoElement = document.getElementById('saldo');
         const toggleButton = document.getElementById('toggle-saldo');
         const eyeIcon = toggleButton.querySelector('i');
 
-        if (saldoElement.dataset.original === undefined) {
-            // Simpan nilai saldo asli ke dalam atribut data-original
-            saldoElement.dataset.original = saldoElement.textContent;
-        }
-
         if (saldoElement.textContent.includes('*')) {
             // Tampilkan saldo asli
-            saldoElement.textContent = saldoElement.dataset.original;
-            eyeIcon.className = 'bi bi-eye';
+            showSaldo(saldoElement, eyeIcon);
+            localStorage.setItem('saldoHidden', 'false'); // Simpan status di localStorage
         } else {
-            // Sembunyikan saldo dengan string * sebanyak digit saldo
-            const originalSaldo = saldoElement.dataset.original.replace(/[^\d]/g, ''); // Hanya angka
-            saldoElement.textContent = '*'.repeat(originalSaldo.length);
-            eyeIcon.className = 'bi bi-eye-slash';
+            // Sembunyikan saldo
+            hideSaldo(saldoElement, eyeIcon);
+            localStorage.setItem('saldoHidden', 'true'); // Simpan status di localStorage
         }
+    }
+
+    function hideSaldo(saldoElement, eyeIcon) {
+        const originalSaldo = saldoElement.dataset.original.replace(/[^\d]/g, ''); // Ambil hanya angka
+        saldoElement.textContent = '*'.repeat(originalSaldo.length); // Ganti saldo dengan '*'
+        eyeIcon.className = 'bi bi-eye-slash'; // Ganti ikon menjadi mata tertutup
+    }
+
+    function showSaldo(saldoElement, eyeIcon) {
+        saldoElement.textContent = saldoElement.dataset.original; // Tampilkan saldo asli
+        eyeIcon.className = 'bi bi-eye'; // Ganti ikon menjadi mata terbuka
     }
 </script>
