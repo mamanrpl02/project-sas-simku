@@ -114,11 +114,23 @@ body {
     cursor: pointer;
     transition: all 0.3s ease;
     right: 0;
+    margin-left: 0.5rem;
 }
 
 .container .card-saldo .riwayat:hover {
     background-color: #e3b12f;
     transform: scale(1.05);
+}
+
+.eyes {
+    transition: all 0.3s ease;
+    margin-left: 0.5rem;
+}
+
+.eyes:hover {
+    /* transform: scale(1.05); */
+    transform: translateY(-3px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 .informasi {
@@ -359,7 +371,7 @@ td {
     transform: translateY(
         -5px
     ); /* Menggeser elemen ke atas sebesar 5px saat di-hover */
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Menambahkan bayangan halus */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 .alert-dashboard .closebtn {
@@ -476,19 +488,6 @@ td {
 .alert-success strong {
     font-weight: bold;
 }
-
-/* footer{
-    background-color: #f2f2f2;
-    padding: 10px;
-    color: #010101;
-    text-align: center;
-    clear: both;
-    position: relative;
-    bottom: 0;
-    width: 100%;
-    height: 60px;
-    border-top: 1px solid #ccc;
-} */
 
 /* media queries */
 
