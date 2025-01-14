@@ -374,6 +374,21 @@ td {
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
+#saldo {
+    display: inline-block;
+    transition: transform 0.6s ease;
+    transform-style: preserve-3d;
+}
+
+#saldo.hidden {
+    transform: rotateY(180deg);
+}
+
+#saldo.visible {
+    transform: rotateY(0deg);
+}
+
+
 .alert-dashboard .closebtn {
     margin-left: 15px;
     color: white;

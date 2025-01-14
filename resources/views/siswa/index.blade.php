@@ -64,6 +64,7 @@
         </div>
     </section>
 @endsection
+
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         const saldoElement = document.getElementById('saldo');
@@ -79,9 +80,9 @@
 
         // Atur tampilan awal berdasarkan status dari localStorage
         if (isHidden) {
-            hideSaldo(saldoElement, eyeIcon);
+            hideSaldo(saldoElement, eyeIcon, false);
         } else {
-            showSaldo(saldoElement, eyeIcon);
+            showSaldo(saldoElement, eyeIcon, false);
         }
     });
 
@@ -92,23 +93,42 @@
 
         if (saldoElement.textContent.includes('*')) {
             // Tampilkan saldo asli
-            showSaldo(saldoElement, eyeIcon);
+            showSaldo(saldoElement, eyeIcon, true);
             localStorage.setItem('saldoHidden', 'false'); // Simpan status di localStorage
         } else {
             // Sembunyikan saldo
-            hideSaldo(saldoElement, eyeIcon);
+            hideSaldo(saldoElement, eyeIcon, true);
             localStorage.setItem('saldoHidden', 'true'); // Simpan status di localStorage
         }
     }
 
-    function hideSaldo(saldoElement, eyeIcon) {
+    function hideSaldo(saldoElement, eyeIcon, animate = true) {
         const originalSaldo = saldoElement.dataset.original.replace(/[^\d]/g, ''); // Ambil hanya angka
-        saldoElement.textContent = '*'.repeat(originalSaldo.length); // Ganti saldo dengan '*'
+
+        if (animate) {
+            saldoElement.classList.add('hidden'); // Tambahkan kelas hidden untuk animasi
+            setTimeout(() => {
+                saldoElement.textContent = '*'.repeat(originalSaldo.length); // Ganti saldo dengan '*'
+                saldoElement.classList.remove('hidden'); // Reset animasi setelah selesai
+            }, 600); // Waktu animasi sesuai CSS
+        } else {
+            saldoElement.textContent = '*'.repeat(originalSaldo.length);
+        }
+
         eyeIcon.className = 'bi bi-eye-slash'; // Ganti ikon menjadi mata tertutup
     }
 
-    function showSaldo(saldoElement, eyeIcon) {
-        saldoElement.textContent = saldoElement.dataset.original; // Tampilkan saldo asli
+    function showSaldo(saldoElement, eyeIcon, animate = true) {
+        if (animate) {
+            saldoElement.classList.add('hidden'); // Tambahkan kelas hidden untuk animasi
+            setTimeout(() => {
+                saldoElement.textContent = saldoElement.dataset.original; // Tampilkan saldo asli
+                saldoElement.classList.remove('hidden'); // Reset animasi setelah selesai
+            }, 600); // Waktu animasi sesuai CSS
+        } else {
+            saldoElement.textContent = saldoElement.dataset.original;
+        }
+
         eyeIcon.className = 'bi bi-eye'; // Ganti ikon menjadi mata terbuka
     }
 </script>
