@@ -6,6 +6,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
+    <meta name="description"
+        content="SIMKU adalah Sistem Informasi Manajemen Keuangan yang mempermudah pencatatan keuangan kelas secara transparan dan efisien. Cocok untuk pengelolaan kas dan tabungan siswa." />
+    <meta name="keywords"
+        content="SIMKU, simku unesco, keuangan kelas, manajemen keuangan, tabungan siswa, sistem kas, transparansi keuangan, smkn 1 pusakanagara" />
+
     <link rel="icon" href="img/logoUnesco.png">
     <style>
         @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@200;300;400;500;600;700&display=swap");
