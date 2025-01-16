@@ -4,11 +4,11 @@
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>SIMKU - Sistem InforMasi Keuangan Unesco</title>
+    <title>SIMKU - Sistem Informasi Manajemen Keuangan Unesco</title>
     <meta name="description"
         content="SIMKU adalah Sistem Informasi Manajemen Keuangan yang mempermudah pencatatan keuangan kelas secara transparan dan efisien. Cocok untuk pengelolaan kas dan tabungan siswa." />
     <meta name="keywords"
-        content="SIMKU, simku unesco, keuangan kelas, manajemen keuangan, tabungan siswa, sistem kas, transparansi keuangan, smkn 1 pusakanagara" />
+        content="SIMKU, simku rpl, keuangan kelas, manajemen keuangan, tabungan siswa, sistem kas, transparansi keuangan, smkn 1 pusakanagara" />
 
     <!-- Favicons -->
     <link href="{{ asset('img/logoUnesco.png') }}" rel="icon" />
@@ -92,7 +92,7 @@
                             SIMKU kependekan dari Sistem Informasi Manajemen Keuangan
                             Unesco, yang dimana UNESCO adalah singkatan dari kelas kami
                             yaitu
-                            <span class="italic">UNitEd class Smart and COol</span>
+                            <span class="italic">United Class Smart and Cool</span>
                         </p>
                         <p>Kenapa SIMKU dibuat? <br /></p>
                         <ul>
@@ -134,7 +134,7 @@
                                 online, pengguna (Siswa) dapat melihat laporan keuangan kapan
                                 saja dan di mana saja, sehingga lebih praktis dan cepat untuk
                                 mengambil keputusan.
-                            </p>  
+                            </p>
                         </div>
                     </div>
                     <!-- End Why Box -->
