@@ -2,12 +2,6 @@
 
 @section('content')
     <div class="container">
-        {{-- <div class="alert-dashboard">
-            <a href="{{ route('notif.kas') }}"> <span class="closebtn"
-                    onclick="this.parentElement.style.display='none';">&times;</span></a>
-            <strong>Pemberitahuan! :</strong><br>Kamu belum membayar kas pada tanggal 12 Dessember 2024. Harap membayar
-            kass yaa
-        </div> --}}
         @foreach ($tagihanBelumDibayar as $tagihan)
             <div class="alert-dashboard">
                 <a href="{{ route('notif.kas') }}"> <span class="closebtn"

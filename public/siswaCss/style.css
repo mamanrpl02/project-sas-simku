@@ -510,24 +510,34 @@ td {
     width: 90%;
     margin: auto; /* Memberikan jarak vertikal dan horizontal */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    background-color: #523434;
+    background-color: #ffffff;
+    color: #333;
     display: flex;
     flex-direction: column; /* Mengatur elemen dalam kolom */
     align-items: flex-start; /* Elemen lainnya rata kiri */
 }
 
 .card-header {
-    padding-bottom: 2rem;
-    color: #fff;
+    /* padding-bottom: 1rem; */
+    color: #333;
     text-align: left; /* Judul tetap rata kiri */
 }
 
+.card-date {
+    padding-top: 1rem;
+    border-top: 1px solid #3333338c;
+    margin: 0.5rem 0; /* Jarak vertikal antar elemen */
+    display: block;
+}
+
 .container .card-presensi .card-button {
+    padding-top: 2rem;
     display: flex;
     justify-content: space-evenly; /* Memusatkan tombol secara horizontal */
     align-items: center; /* Memusatkan tombol secara vertikal */
     width: 100%; /* Membuat tombol mengikuti lebar penuh parent */
-    margin: 1rem 0; /* Jarak vertikal antar elemen */
+    margin-bottom: 2rem; /* Jarak vertikal antar elemen */
+    /* border-top: 1px solid #3333338c; */
 }
 
 .container .card-presensi .card-button button {
@@ -545,6 +555,7 @@ td {
 .container .card-presensi .card-button .masuk {
     background-color: #007bff;
 }
+
 .container .card-presensi .card-button .keluar {
     background-color: #ff0000;
 }
@@ -553,7 +564,6 @@ td {
     background-color: #0056b3; /* Warna saat hover */
     transform: scale(1.05); /* Efek zoom saat hover */
 }
-
 
 .container .card-presensi .card-button .masuk:hover {
     background-color: #0056b3; /* Warna saat hover */
@@ -564,11 +574,9 @@ td {
     transform: scale(1.05); /* Efek zoom saat hover */
 }
 
-
-
 .card-deskripsi {
     margin-top: 1rem;
-    color: #ddd;
+    color: #333;
     text-align: left; /* Deskripsi tetap rata kiri */
     line-height: 1.5;
     font-size: 0.9rem;
@@ -659,9 +667,71 @@ td {
     .action-button:hover {
         background-color: #0056b3;
     }
+
+    .presensi{
+        width: 90%;
+        margin: 3rem auto;
+        padding: 20px;
+        background-color: #f9f9f9;
+        color: #292929;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.475);
+
+    }
+
+    .presensi h3 {
+        margin-bottom: 15px;
+        color: #333;
+    }
+
+    .filter-bulan {
+        margin-bottom: 20px;
+    }
+
+    .filter-bulan label {
+        margin-right: 10px;
+        font-weight: bold;
+        color: #555;
+    }
+
+    .filter-bulan select {
+        padding: 5px 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        outline: none;
+        background-color: #fff;
+    }
+
+    .tabel-presensi {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .tabel-presensi th,
+    .tabel-presensi td {
+        text-align: left;
+        padding: 10px;
+        border: 1px solid #ddd;
+    }
+
+    .tabel-presensi th {
+        background-color: #f2f2f2;
+        color: #333;
+    }
+
+    .tabel-presensi tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    .tabel-presensi tr:hover {
+        background-color: #f1f1f1;
+    }
 }
 
 @media (max-width: 768px) {
+    .card-presensi {
+        margin-top: 9rem;
+    }
     .navbar .navbar-nav {
         position: absolute;
         top: 100%;
