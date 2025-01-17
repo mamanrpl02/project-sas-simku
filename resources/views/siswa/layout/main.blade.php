@@ -34,6 +34,7 @@
         <div class="navbar-nav">
             <a href="{{ route('dashboard') }}">Beranda</a>
             <a href="{{ route('presensi') }}">Presensi</a>
+            <a href="{{ route('pengajuan') }}">Pengajuan Izin</a>
             <a href="{{ route('profile.edit') }}">Ubah Password</a>
             <a href="{{ route('transaksi') }}">Riwayat Saldo</a>
             <a href="{{ route('pengeluaran-kas') }}">Pengeluaran Kas</a>

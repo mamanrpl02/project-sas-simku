@@ -668,7 +668,7 @@ td {
         background-color: #0056b3;
     }
 
-    .presensi{
+    .presensi {
         width: 90%;
         margin: 3rem auto;
         padding: 20px;
@@ -676,7 +676,6 @@ td {
         color: #292929;
         border-radius: 8px;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.475);
-
     }
 
     .presensi h3 {
