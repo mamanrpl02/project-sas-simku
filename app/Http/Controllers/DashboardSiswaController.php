@@ -32,6 +32,16 @@ class DashboardSiswaController extends Controller
         // Mengirimkan data siswa ke view
         return view('siswa.index', compact('siswa', 'pengeluaran'));
     }
+    public function presensi()
+    {
+        // Mendapatkan data siswa yang login
+        $siswa = Auth::user();
+        // $siswaId = auth()->user()->id; // Sesuaikan dengan sistem autentikasi Anda
+
+
+        // Mengirimkan data siswa ke view
+        return view('siswa.presensi', compact('siswa'));
+    }
 
     public function riwayat()
     {

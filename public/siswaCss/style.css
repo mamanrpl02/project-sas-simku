@@ -388,7 +388,6 @@ td {
     transform: rotateY(0deg);
 }
 
-
 .alert-dashboard .closebtn {
     margin-left: 15px;
     color: white;
@@ -502,6 +501,77 @@ td {
 
 .alert-success strong {
     font-weight: bold;
+}
+
+/* Presensi */
+.card-presensi {
+    padding: 2rem;
+    border-radius: 5px;
+    width: 90%;
+    margin: auto; /* Memberikan jarak vertikal dan horizontal */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: #523434;
+    display: flex;
+    flex-direction: column; /* Mengatur elemen dalam kolom */
+    align-items: flex-start; /* Elemen lainnya rata kiri */
+}
+
+.card-header {
+    padding-bottom: 2rem;
+    color: #fff;
+    text-align: left; /* Judul tetap rata kiri */
+}
+
+.container .card-presensi .card-button {
+    display: flex;
+    justify-content: space-evenly; /* Memusatkan tombol secara horizontal */
+    align-items: center; /* Memusatkan tombol secara vertikal */
+    width: 100%; /* Membuat tombol mengikuti lebar penuh parent */
+    margin: 1rem 0; /* Jarak vertikal antar elemen */
+}
+
+.container .card-presensi .card-button button {
+    background-color: #007bff;
+    color: #fff; /* Warna teks tombol */
+    padding: 1rem 2rem; /* Padding tombol */
+    border-radius: 5px;
+    border: none; /* Menghilangkan border */
+    cursor: pointer; /* Menampilkan pointer saat hover */
+    font-size: 1rem;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    font-weight: 500;
+}
+
+.container .card-presensi .card-button .masuk {
+    background-color: #007bff;
+}
+.container .card-presensi .card-button .keluar {
+    background-color: #ff0000;
+}
+
+.container .card-presensi .card-button button:hover {
+    background-color: #0056b3; /* Warna saat hover */
+    transform: scale(1.05); /* Efek zoom saat hover */
+}
+
+
+.container .card-presensi .card-button .masuk:hover {
+    background-color: #0056b3; /* Warna saat hover */
+    transform: scale(1.05); /* Efek zoom saat hover */
+}
+.container .card-presensi .card-button .keluar:hover {
+    background-color: #c00000; /* Warna saat hover */
+    transform: scale(1.05); /* Efek zoom saat hover */
+}
+
+
+
+.card-deskripsi {
+    margin-top: 1rem;
+    color: #ddd;
+    text-align: left; /* Deskripsi tetap rata kiri */
+    line-height: 1.5;
+    font-size: 0.9rem;
 }
 
 /* media queries */
