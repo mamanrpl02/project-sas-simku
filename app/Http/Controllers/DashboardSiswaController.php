@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Siswa;
 use App\Models\Tagihan;
 use App\Models\Presensi;
@@ -36,11 +37,34 @@ class DashboardSiswaController extends Controller
 
 
 
-    public function presensi()
+    public function presensi(Request $request)
     {
         $siswa = Auth::user();
 
-        return view('siswa.presensi', compact('siswa'));
+        $bulanList = [
+            '01' => 'Januari',
+            '02' => 'Februari',
+            '03' => 'Maret',
+            '04' => 'April',
+            '05' => 'Mei',
+            '06' => 'Juni',
+            '07' => 'Juli',
+            '08' => 'Agustus',
+            '09' => 'September',
+            '10' => 'Oktober',
+            '11' => 'Novmber',
+            '12' => 'Desember'
+        ];
+
+        // Ambil bulan yang dipilih atau gunakan bulan sekarang
+        $bulanDipilih = $request->input('bulan', Carbon::now()->format('m'));
+
+        // Ambil presensi siswa untuk bulan yang dipilih
+        $presensiList = Presensi::where('siswa_id', $siswa->id)
+            ->whereMonth('date', $bulanDipilih)
+            ->get();
+
+        return view('siswa.presensi', compact('siswa', 'bulanList', 'presensiList'));
     }
 
 

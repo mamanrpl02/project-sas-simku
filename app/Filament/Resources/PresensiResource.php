@@ -8,13 +8,10 @@ use App\Models\Presensi;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
-use Filament\Tables\Filters\Filter;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Toggle;
-use Filament\Forms\Components\Textarea;
-use Filament\Tables\Columns\IconColumn;
+use Filament\Forms\Components\Checkbox;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Forms\Components\DatePicker;
+use Filament\Tables\Columns\BadgeColumn;
 use Filament\Forms\Components\TimePicker;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\PresensiResource\Pages;
@@ -31,36 +28,23 @@ class PresensiResource extends Resource
     {
         return $form
             ->schema([
-                Select::make('user_id')
-                    ->relationship('user', 'name')
-                    ->label('Nama Siswa')
-                    ->required()
-                    ->disabled(), // Nonaktifkan edit oleh wali kelas
-                DatePicker::make('date')
-                    ->label('Tanggal')
-                    ->required()
-                    ->disabled(), // Nonaktifkan edit oleh wali kelas
                 Select::make('status')
                     ->options([
                         'masuk' => 'Masuk',
                         'keluar' => 'Keluar',
-                        'izin' => 'Izin',
-                        'sakit' => 'Sakit',
                     ])
-                    ->required()
-                    ->disabled(),
-                TimePicker::make('time_in')->label('Jam Masuk')->disabled(),
-                TimePicker::make('time_out')->label('Jam Keluar')->disabled(),
-                Toggle::make('is_approved')
-                    ->label('Disetujui')
+                    ->required(),
+                TimePicker::make('time_in')
+                    ->label('Waktu Masuk')
+                    ->nullable()
+                    ->required(),
+                TimePicker::make('time_out')
+                    ->label('Waktu Keluar')
+                    ->nullable()
+                    ->required(),
+                Checkbox::make('is_approved')
+                    ->label('Disetujui oleh Wali Kelas')
                     ->default(false),
-                Select::make('approved_by')
-                    ->label('Disetujui Oleh')
-                    ->relationship('approvedBy', 'name')
-                    ->required()
-                    ->default(auth()->user()->id)
-                    ->disabled(),
-                Textarea::make('note')->label('Keterangan')->nullable(),
             ]);
     }
 
@@ -68,18 +52,22 @@ class PresensiResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('user.name')->label('Nama Siswa'),
-                TextColumn::make('date')->date('d M Y')->label('Tanggal'),
-                TextColumn::make('status')->label('Status'),
-                IconColumn::make('is_approved')
-                    ->boolean()
-                    ->label('Disetujui'),
-                TextColumn::make('approvedBy.name')->label('Disetujui Oleh')->nullable(),
+                TextColumn::make('date')
+                    ->label('Tanggal')
+                    ->sortable(),
+                TextColumn::make('status')
+                    ->label('Status')
+                    ->sortable(),
+                BadgeColumn::make('is_approved')
+                    ->label('Status Persetujuan')
+                    ->enum([
+                        true => 'Disetujui',
+                        false => 'Belum Disetujui',
+                    ])
+                    ->color(fn(string $state) => $state === 'true' ? 'success' : 'danger'),
             ])
             ->filters([
-                Filter::make('is_approved')
-                    ->label('Belum Disetujui')
-                    ->query(fn(Builder $query) => $query->where('is_approved', false)),
+                //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

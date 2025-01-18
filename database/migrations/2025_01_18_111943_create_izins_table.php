@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('presensis', function (Blueprint $table) {
+        Schema::create('izins', function (Blueprint $table) {
             $table->id();
             $table->foreignId('siswa_id')->constrained()->onDelete('cascade'); // Relasi ke user (siswa)
-            $table->date('date'); 
-            $table->time('time_in')->nullable();
-            $table->time('time_out')->nullable();
+            $table->enum('jenis', ['Sakit', 'Izin']);
+            $table->text('alasan');
             $table->boolean('is_approved')->default(false); // Status disetujui atau tidak
+            $table->string('bukti')->nullable(); // Kolom untuk menyimpan file bukti
             $table->timestamps();
         });
     }
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('presensis');
+        Schema::dropIfExists('izins');
     }
 };

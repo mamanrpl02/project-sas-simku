@@ -540,7 +540,14 @@ td {
     /* border-top: 1px solid #3333338c; */
 }
 
-.container .card-presensi .card-button button {
+.container .card-presensi .card-button form {
+    display: flex; /* Atur <form> sebagai flex container */
+    justify-content: space-evenly; /* Terapkan jarak yang merata */
+    align-items: center; /* Pastikan elemen berada di tengah secara vertikal */
+    width: 100%; /* Sesuaikan lebar <form> */
+}
+
+.container .card-presensi .card-button form button {
     background-color: #007bff;
     color: #fff; /* Warna teks tombol */
     padding: 1rem 2rem; /* Padding tombol */
@@ -552,11 +559,11 @@ td {
     font-weight: 500;
 }
 
-.container .card-presensi .card-button .masuk {
+.container .card-presensi .card-button form .masuk {
     background-color: #007bff;
 }
 
-.container .card-presensi .card-button .keluar {
+.container .card-presensi .card-button form .keluar {
     background-color: #ff0000;
 }
 
@@ -614,7 +621,9 @@ td {
 }
 
 /* Input, textarea, dan radio button */
-input[type="text"], input[type="file"], textarea {
+input[type="text"],
+input[type="file"],
+textarea {
     width: 100%;
     padding: 10px;
     margin-top: 5px;
@@ -636,7 +645,7 @@ input[type="radio"] {
 /* Button Kirim */
 .submit-pengajuan {
     padding: 10px 20px;
-    background-color: #4CAF50;
+    background-color: #4caf50;
     color: white;
     font-weight: 600;
     border: none;
@@ -659,8 +668,6 @@ input[type="radio"] {
     margin-top: 10px;
     display: none;
 }
-
-
 
 /* media queries */
 

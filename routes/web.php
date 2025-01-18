@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PresensiController;
 use App\Http\Controllers\DashboardSiswaController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
@@ -15,9 +16,13 @@ Route::fallback(function () {
 
 Route::middleware(['auth:siswa'])->group(function () {
     Route::get('/dashboard', [DashboardSiswaController::class, 'index'])->name('dashboard');
+    
     Route::get('/presensi', [DashboardSiswaController::class, 'presensi'])->name('presensi');
-    // Route::get('/siswa/presensi', [DashboardSiswaController::class, 'presensi'])->name('siswa.presensi');
-    Route::get('/pengajuan-ketidakhadiran', [DashboardSiswaController::class, 'pengajpuan'])->name('pengajuan');
+    Route::post('/presensi/masuk', [PresensiController::class, 'presensiMasuk'])->name('presensi.masuk');
+    Route::post('/presensi/keluar', [PresensiController::class, 'presensiKeluar'])->name('presensi.keluar');
+
+
+    Route::get('/pengajuan-ketidakhadiran', [DashboardSiswaController::class, 'pengajuan'])->name('pengajuan');
     Route::get('/riwayat-transaksi', [DashboardSiswaController::class, 'riwayat'])->name('transaksi');
     Route::get('/pengeluaran-kas', [DashboardSiswaController::class, 'pengeluaranKas'])->name('pengeluaran-kas');
     Route::get('/pemasukan-kas', [DashboardSiswaController::class, 'pemasukanKas'])->name('pemasukan-kas');
@@ -25,7 +30,7 @@ Route::middleware(['auth:siswa'])->group(function () {
 
 
 
-    
+
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
 
