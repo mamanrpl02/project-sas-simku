@@ -13,12 +13,11 @@ return new class extends Migration
     {
         Schema::create('presensis', function (Blueprint $table) {
             $table->id(); // Primary key
-            $table->foreignId('user_id')->constrained()->onDelete('cascade'); // Relasi ke tabel users
+            $table->foreignId('siswa_id')->constrained()->onDelete('cascade'); // Relasi ke tabel users
             $table->date('date'); // Tanggal presensi
             $table->enum('jenis', ['hadir', 'izin', 'sakit'])->default('hadir'); // Jenis presensi
             $table->boolean('is_approved')->default(false); // Status persetujuan
             $table->string('keterangan')->nullable(); // Keterangan tambahan
-            $table->foreignId('approved_by')->nullable()->constrained('users')->nullOnDelete(); // Relasi ke user yang menyetujui
             $table->timestamps(); // Kolom created_at dan updated_at
         });
     }
