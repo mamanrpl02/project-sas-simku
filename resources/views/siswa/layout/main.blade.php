@@ -31,7 +31,6 @@
     <!-- My Style -->
     <link rel="stylesheet" href="{{ asset('siswaCss/style.css') }}">
 
-    @livewireStyles
 
 </head>
 
@@ -67,17 +66,15 @@
     <!-- Ini Bagian Akhir Navbar -->
 
     @yield('content')
-    @livewireScripts
 
-
-    {{-- <footer>
-        <p>&copy; 2022 SIMKU</p>
-    </footer> --}}
-    <!-- Feather Icons -->
     <script>
         feather.replace();
     </script>
     <script src="{{ asset('siswaJs/script.js') }}"></script>
+
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.3.9/dist/sweetalert2.min.js"></script>
+
 </body>
 
 </html>

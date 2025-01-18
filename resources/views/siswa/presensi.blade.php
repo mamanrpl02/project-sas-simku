@@ -51,48 +51,50 @@
                     </thead>
                     <tbody>
                         @foreach ($presensiList as $presensi)
-                            @if ($presensi->is_approved == 1)
-                                <!-- Kondisi untuk memeriksa is_approved -->
-                                <tr>
-                                    <td>{{ \Carbon\Carbon::parse($presensi->date)->format('d F Y') }}</td>
-                                    <td>{{ \Carbon\Carbon::parse($presensi->date)->translatedFormat('l') }}</td>
-                                    <td>
-                                        @if ($presensi->time_in)
-                                            <!-- Status dengan warna hijau jika datang tepat waktu, merah jika terlambat -->
-                                            <span
-                                                class="{{ \Carbon\Carbon::parse($presensi->time_in)->greaterThan(\Carbon\Carbon::parse('07:00:00')) ? 'text-danger' : 'text-success' }}">
-                                                @if (\Carbon\Carbon::parse($presensi->time_in)->greaterThan(\Carbon\Carbon::parse('07:00:00')))
-                                                    Terlambat
-                                                @else
-                                                    Tepat Waktu
-                                                @endif
-                                            </span>
-                                        @else
-                                            Tidak Hadir
-                                        @endif
-                                    </td>
-                                    <td>
-                                        @if ($presensi->time_in && $presensi->time_out)
-                                            <!-- Keterangan pulang setelah jam 16:00 -->
-                                            @if (\Carbon\Carbon::parse($presensi->time_out)->greaterThanOrEqualTo(\Carbon\Carbon::parse('16:00:00')))
-                                                Full
-                                            @else
-                                                <!-- Mengambil keterangan dari database (kolom keterangan_pulang) jika tidak pulang setelah jam 16:00 -->
-                                                Kamu pulang jam {{ $presensi->time_out  }}
-                                            @endif
-                                        @elseif($presensi->time_in)
-                                            <!-- Jika hanya time_in ada, keterangan tetap Datang Tepat Waktu atau Terlambat -->
+                            <tr>
+                                <td>{{ \Carbon\Carbon::parse($presensi->date)->format('d F Y') }}</td>
+                                <td>{{ \Carbon\Carbon::parse($presensi->date)->translatedFormat('l') }}</td>
+                                <td>
+                                    @if ($presensi->izin)
+                                        <!-- Jika ada izin -->
+                                        <span class="text-warning">{{ $presensi->izin->jenis }}</span>
+                                    @elseif ($presensi->time_in)
+                                        <!-- Status dengan warna hijau jika datang tepat waktu, merah jika terlambat -->
+                                        <span
+                                            class="{{ \Carbon\Carbon::parse($presensi->time_in)->greaterThan(\Carbon\Carbon::parse('07:00:00')) ? 'text-danger' : 'text-success' }}">
                                             @if (\Carbon\Carbon::parse($presensi->time_in)->greaterThan(\Carbon\Carbon::parse('07:00:00')))
-                                                Datang Terlambat
+                                                Terlambat
                                             @else
-                                                Datang Tepat Waktu
+                                                Tepat Waktu
                                             @endif
+                                        </span>
+                                    @else
+                                        Tidak Hadir
+                                    @endif
+                                </td>
+                                <td>
+                                    @if ($presensi->izin)
+                                        <!-- Jika ada izin -->
+                                        <span class="text-warning">Alasan: {{ $presensi->izin->alasan }}</span>
+                                    @elseif ($presensi->time_in && $presensi->time_out)
+                                        <!-- Keterangan pulang setelah jam 16:00 -->
+                                        @if (\Carbon\Carbon::parse($presensi->time_out)->greaterThanOrEqualTo(\Carbon\Carbon::parse('16:00:00')))
+                                            Full
                                         @else
-                                            Belum presensi
+                                            Kamu pulang jam {{ $presensi->time_out }}
                                         @endif
-                                    </td>
-                                </tr>
-                            @endif
+                                    @elseif($presensi->time_in)
+                                        <!-- Jika hanya time_in ada -->
+                                        @if (\Carbon\Carbon::parse($presensi->time_in)->greaterThan(\Carbon\Carbon::parse('07:00:00')))
+                                            Datang Terlambat
+                                        @else
+                                            Datang Tepat Waktu
+                                        @endif
+                                    @else
+                                        Belum presensi
+                                    @endif
+                                </td>
+                            </tr>
                         @endforeach
 
                         @if ($presensiList->isEmpty())
@@ -102,6 +104,8 @@
                         @endif
                     </tbody>
                 </table>
+
+
 
 
 
@@ -132,7 +136,7 @@
                 if (data.success) {
                     Swal.fire({
                         icon: 'success',
-                        title: 'Presensi Masuk',
+                        title: 'Berhasil Presensi Datang',
                         text: data.success,
                     });
                 } else {
@@ -168,7 +172,7 @@
                 if (data.success) {
                     Swal.fire({
                         icon: 'success',
-                        title: 'Presensi Keluar',
+                        title: 'Berhasil Presensi Keluar',
                         text: data.success,
                     });
                 } else {

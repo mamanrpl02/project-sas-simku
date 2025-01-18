@@ -34,7 +34,7 @@ class PresensiController extends Controller
             ]);
 
             Log::info('Presensi Berhasil Masuk: ' . $siswa->id);
-            return response()->json(['success' => 'Berhasil presensi masuk!']);
+            return response()->json(['success' => 'Berhasil presensi Datang!']);
         }
 
         Log::info('Presensi Gagal: Sudah presensi hari ini');
@@ -57,9 +57,9 @@ class PresensiController extends Controller
                 'time_out' => Carbon::now()->toTimeString(),
             ]);
 
-            return response()->json(['success' => 'Berhasil presensi keluar!']);
+            return response()->json(['success' => 'Berhasil presensi pulang!']);
         }
 
-        return response()->json(['error' => 'Gagal presensi keluar, Anda belum melakukan presensi masuk!']);
+        return response()->json(['error' => 'Gagal presensi pulang, Anda belum melakukan presensi masuk!']);
     }
 }

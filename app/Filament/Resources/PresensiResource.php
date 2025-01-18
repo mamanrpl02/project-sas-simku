@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use Filament\Forms;
 use Filament\Tables;
+use App\Models\Siswa;
 use App\Models\Presensi;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
@@ -13,7 +14,10 @@ use Filament\Forms\Components\Checkbox;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\BadgeColumn;
 use Filament\Forms\Components\TimePicker;
+use Filament\Tables\Columns\ToggleColumn;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Tables\Columns\CheckboxColumn;
+use Filament\Forms\Components\DateTimePicker;
 use App\Filament\Resources\PresensiResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\PresensiResource\RelationManagers;
@@ -28,22 +32,28 @@ class PresensiResource extends Resource
     {
         return $form
             ->schema([
+                Select::make('siswa_id')
+                    ->label('Siswa')
+                    ->options(Siswa::all()->pluck('nama', 'id'))
+                    ->searchable()->required(),
+
                 Select::make('status')
                     ->options([
                         'masuk' => 'Masuk',
                         'keluar' => 'Keluar',
                     ])
                     ->required(),
-                TimePicker::make('time_in')
+                DateTimePicker::make('time_in')
                     ->label('Waktu Masuk')
                     ->nullable()
                     ->required(),
-                TimePicker::make('time_out')
+                DateTimePicker::make('time_out')
                     ->label('Waktu Keluar')
                     ->nullable()
                     ->required(),
+
                 Checkbox::make('is_approved')
-                    ->label('Disetujui oleh Wali Kelas')
+                    ->label('Aprove')
                     ->default(false),
             ]);
     }
@@ -52,25 +62,34 @@ class PresensiResource extends Resource
     {
         return $table
             ->columns([
+                TextColumn::make('siswa.nama')
+                    ->label('Nama Siswa')
+                    ->sortable()
+                    ->searchable(),
+
                 TextColumn::make('date')
                     ->label('Tanggal')
                     ->sortable(),
-                TextColumn::make('status')
-                    ->label('Status')
+
+
+                TextColumn::make('time_in')
+                    ->label('Datang')
                     ->sortable(),
-                BadgeColumn::make('is_approved')
-                    ->label('Status Persetujuan')
-                    ->enum([
-                        true => 'Disetujui',
-                        false => 'Belum Disetujui',
-                    ])
-                    ->color(fn(string $state) => $state === 'true' ? 'success' : 'danger'),
+
+                TextColumn::make('time_out')
+                    ->label('Pulang')
+                    ->sortable(),
+
+                ToggleColumn::make('is_approved')
+                    ->label('Setuju')
+                    ->sortable(),
             ])
             ->filters([
-                //
+                
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make()
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

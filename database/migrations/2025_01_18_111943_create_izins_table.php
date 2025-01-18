@@ -18,6 +18,7 @@ return new class extends Migration
             $table->text('alasan');
             $table->boolean('is_approved')->default(false); // Status disetujui atau tidak
             $table->string('bukti')->nullable(); // Kolom untuk menyimpan file bukti
+            $table->date('date'); 
             $table->timestamps();
         });
     }

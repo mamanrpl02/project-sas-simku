@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
+use App\Models\Izin;
 use App\Models\Siswa;
 use App\Models\Tagihan;
 use App\Models\Presensi;
@@ -52,21 +53,32 @@ class DashboardSiswaController extends Controller
             '08' => 'Agustus',
             '09' => 'September',
             '10' => 'Oktober',
-            '11' => 'Novmber',
+            '11' => 'November',
             '12' => 'Desember'
         ];
 
-        // Ambil bulan yang dipilih atau gunakan bulan sekarang
+        // Ambil bulan yang dipilih atau bulan sekarang
         $bulanDipilih = $request->input('bulan', Carbon::now()->format('m'));
 
-        // Ambil presensi siswa untuk bulan yang dipilih
+        // Ambil data presensi siswa berdasarkan bulan yang dipilih
         $presensiList = Presensi::where('siswa_id', $siswa->id)
             ->whereMonth('date', $bulanDipilih)
             ->get();
 
-        return view('siswa.presensi', compact('siswa', 'bulanList', 'presensiList'));
-    }
+        // Ambil data izin siswa berdasarkan bulan yang dipilih
+        $izinList = Izin::where('siswa_id', $siswa->id)
+            ->whereMonth('date', $bulanDipilih)
+            ->get();
 
+        // Gabungkan data izin ke dalam data presensi berdasarkan tanggal yang sama
+        foreach ($presensiList as $presensi) {
+            $izin = $izinList->firstWhere('date', $presensi->date);
+            $presensi->izin = $izin; // Menambahkan data izin ke dalam objek presensi
+        }
+
+        // Return ke view dengan data presensi dan izin yang sudah digabungkan
+        return view('siswa.presensi', compact('siswa', 'presensiList', 'bulanList'));
+    }
 
 
 
