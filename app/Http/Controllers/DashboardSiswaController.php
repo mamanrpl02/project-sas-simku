@@ -40,8 +40,10 @@ class DashboardSiswaController extends Controller
 
     public function presensi(Request $request)
     {
+        // Mendapatkan data siswa yang sedang login
         $siswa = Auth::user();
 
+        // Daftar bulan
         $bulanList = [
             '01' => 'Januari',
             '02' => 'Februari',
@@ -57,12 +59,16 @@ class DashboardSiswaController extends Controller
             '12' => 'Desember'
         ];
 
+        // Mengambil data presensi dan mengurutkannya berdasarkan tanggal terbaru
+        $shortData = Presensi::orderBy('date', 'desc')->get();
+
         // Ambil bulan yang dipilih atau bulan sekarang
         $bulanDipilih = $request->input('bulan', Carbon::now()->format('m'));
 
-        // Ambil data presensi siswa berdasarkan bulan yang dipilih
+        // Ambil data presensi siswa berdasarkan bulan yang dipilih, urutkan dari terbaru ke lama
         $presensiList = Presensi::where('siswa_id', $siswa->id)
             ->whereMonth('date', $bulanDipilih)
+            ->orderBy('date', 'desc') // Mengurutkan dari yang terbaru ke yang lama
             ->get();
 
         // Ambil data izin siswa berdasarkan bulan yang dipilih
@@ -77,11 +83,8 @@ class DashboardSiswaController extends Controller
         }
 
         // Return ke view dengan data presensi dan izin yang sudah digabungkan
-        return view('siswa.presensi', compact('siswa', 'presensiList', 'bulanList'));
+        return view('siswa.presensi', compact('siswa', 'presensiList', 'bulanList', 'shortData'));
     }
-
-
-
 
 
 

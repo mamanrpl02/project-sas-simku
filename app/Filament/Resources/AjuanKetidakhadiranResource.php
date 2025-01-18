@@ -3,28 +3,27 @@
 namespace App\Filament\Resources;
 
 use Filament\Forms;
+use App\Models\Izin;
 use Filament\Tables;
 use App\Models\Siswa;
-use App\Models\Presensi;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
+use App\Models\AjuanKetidakhadiran;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Checkbox;
+use Filament\Forms\Components\Textarea;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\TimePicker;
-use Filament\Tables\Columns\ToggleColumn;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Tables\Columns\CheckboxColumn;
 use Filament\Forms\Components\DateTimePicker;
-use App\Filament\Resources\PresensiResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\PresensiResource\RelationManagers;
+use App\Filament\Resources\AjuanKetidakhadiranResource\Pages;
+use App\Filament\Resources\AjuanKetidakhadiranResource\RelationManagers;
 
-class PresensiResource extends Resource
+class AjuanKetidakhadiranResource extends Resource
 {
-    protected static ?string $model = Presensi::class;
+    protected static ?string $model = Izin::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -37,22 +36,25 @@ class PresensiResource extends Resource
                     ->options(Siswa::all()->pluck('nama', 'id'))
                     ->searchable()->required(),
 
-                DatePicker::make('date')
+                Select::make('jenis')
+                    ->options([
+                        'Sakit' => 'Sakit',
+                        'Izin' => 'Izin',
+                    ])->required(),
+
+                DateTimePicker::make('date')
                     ->label('Tanggal')
                     ->nullable()
                     ->required(),
 
-                TimePicker::make('time_in')
-                    ->label('Waktu Masuk')
-                    ->nullable(),
-
-                TimePicker::make('time_out')
-                    ->label('Waktu Keluar')
-                    ->nullable(),
+                Textarea::make('alasan')
+                    ->autosize()
+                    ->required(),
 
                 Checkbox::make('is_approved')
                     ->label('Aprove')
                     ->default(false),
+
             ]);
     }
 
@@ -65,16 +67,16 @@ class PresensiResource extends Resource
                     ->sortable()
                     ->searchable(),
 
+                TextColumn::make('jenis')
+                    ->label('Jenis')
+                    ->sortable(),
+
                 TextColumn::make('date')
                     ->label('Tanggal')
                     ->sortable(),
 
-                TextColumn::make('time_in')
-                    ->label('Datang')
-                    ->sortable(),
-
-                TextColumn::make('time_out')
-                    ->label('Pulang')
+                TextColumn::make('alasan')
+                    ->label('Alasan')
                     ->sortable(),
 
                 CheckboxColumn::make('is_approved')
@@ -85,6 +87,7 @@ class PresensiResource extends Resource
                             'is_approved' => $state ? 1 : 0, // Jika dicentang, bernilai 1, jika tidak, bernilai 0
                         ]);
                     })
+
             ])
             ->filters([
                 //
@@ -110,9 +113,9 @@ class PresensiResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListPresensis::route('/'),
-            'create' => Pages\CreatePresensi::route('/create'),
-            // 'edit' => Pages\EditPresensi::route('/{record}/edit'),
+            'index' => Pages\ListAjuanKetidakhadirans::route('/'),
+            'create' => Pages\CreateAjuanKetidakhadiran::route('/create'),
+            'edit' => Pages\EditAjuanKetidakhadiran::route('/{record}/edit'),
         ];
     }
 }
