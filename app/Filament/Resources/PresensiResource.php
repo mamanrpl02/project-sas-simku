@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use Carbon\Carbon;
 use Filament\Forms;
 use Filament\Tables;
 use App\Models\Siswa;
@@ -9,12 +10,15 @@ use App\Models\Presensi;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
+use Filament\Tables\Filters\Filter;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Checkbox;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\DateFilter;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\TimePicker;
 use Filament\Tables\Columns\ToggleColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Tables\Columns\CheckboxColumn;
 use Filament\Forms\Components\DateTimePicker;
@@ -22,11 +26,14 @@ use App\Filament\Resources\PresensiResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\PresensiResource\RelationManagers;
 
+
 class PresensiResource extends Resource
 {
     protected static ?string $model = Presensi::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-calendar-days';
+    protected static ?string $navigationGroup = 'Presensi';
+
 
     public static function form(Form $form): Form
     {
@@ -87,7 +94,21 @@ class PresensiResource extends Resource
                     })
             ])
             ->filters([
-                //
+                SelectFilter::make('siswa_id')->label('Nama Siswa')
+                    ->relationship('siswa', 'nama'),
+                Filter::make('date')
+                    ->label('Tanggal')
+                    ->form([
+                        DatePicker::make('date')->label('Filter berdasarkan Tanggal'),
+                    ])
+                    ->query(function (Builder $query, array $data) {
+                        return $query->when(
+                            $data['date'],
+                            fn($query, $date) => $query->whereDate('date', $date)
+                        );
+                    }),
+
+
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

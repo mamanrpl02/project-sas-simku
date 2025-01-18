@@ -7,7 +7,7 @@
                 <h3>Tandai Kehadiranmu</h3>
             </div>
             <div class="card-date">
-                <p></p> {{-- Tanggal saat ini --}}
+                <p>{{ \Carbon\Carbon::now()->translatedFormat('l, d F Y') }}</p>
             </div>
             <div class="card-button">
                 <form class="form">
@@ -18,7 +18,7 @@
             <div class="card-deskripsi">
                 <p>Absensi kamu setiap hari harus disetujui oleh seksi Absensi atau Walikelas. Jadi, pastikan kamu masuk
                     pada saat jam pelajaran ya!</p>
-                <p><a href="{{ route('pengajuan') }}">Klik di sini</a> jika anda Mengajukan Ketidakhadiran</p>
+                <p><strong><a href="{{ route('pengajuan') }}">Klik di sini</a></strong> jika anda ingin mengajukan ketidakhadiran ( Sakit, Izin , dll )</p>
             </div>
         </div>
 
@@ -104,14 +104,6 @@
                     </tbody>
                 </table>
 
-
-
-
-
-
-
-
-
                 <!-- Pagination -->
                 <div class="pagination justify-content-center">
                     {{-- {{ $presensiList->links() }} --}}
@@ -139,7 +131,7 @@
                 if (data.success) {
                     Swal.fire({
                         icon: 'success',
-                        title: 'Berhasil Presensi Datang',
+                        title: 'Presensi Datang Berhasil',
                         text: data.success,
                     });
                 } else {
@@ -175,7 +167,7 @@
                 if (data.success) {
                     Swal.fire({
                         icon: 'success',
-                        title: 'Berhasil Presensi Keluar',
+                        title: 'Presensi Pulang Berhasil',
                         text: data.success,
                     });
                 } else {

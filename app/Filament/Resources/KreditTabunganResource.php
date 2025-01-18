@@ -8,9 +8,11 @@ use Filament\Forms\Form;
 use Filament\Tables\Table;
 use App\Models\KreditTabungan;
 use Filament\Resources\Resource;
+use Filament\Tables\Filters\Filter;
 use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\DatePicker;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Tables\Actions\BulkActionGroup;
@@ -60,7 +62,19 @@ class KreditTabunganResource extends Resource
             ])
             ->filters([
                 SelectFilter::make('siswa_id')
-                    ->relationship('siswa', 'nama')
+                    ->relationship('siswa', 'nama'),
+                Filter::make('created_at')
+                    ->label('Tanggal')
+                    ->form([
+                        DatePicker::make('created_at')->label('Filter berdasarkan Tanggal'),
+                    ])
+                    ->query(function (Builder $query, array $data) {
+                        return $query->when(
+                            $data['created_at'],
+                            fn($query, $created_at) => $query->whereDate('created_at', $created_at)
+                        );
+                    }),
+
 
             ])
             ->actions([

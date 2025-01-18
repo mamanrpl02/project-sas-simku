@@ -8,6 +8,7 @@ use App\Models\Tagihan;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
+use Filament\Tables\Filters\Filter;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\DatePicker;
@@ -22,6 +23,8 @@ class TagihanResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-document-currency-dollar';
     protected static ?string $navigationLabel = 'Tagihan Kas';
+    protected static ?string $navigationGroup = 'Kas';
+
 
     public static function form(Form $form): Form
     {
@@ -32,7 +35,7 @@ class TagihanResource extends Resource
                     ->label('Tanggal')
                     ->required()
                     ->default(now()) // Default tanggal saat ini
-                    ->placeholder('Pilih Tanggal'), 
+                    ->placeholder('Pilih Tanggal'),
             ]);
     }
 
@@ -43,7 +46,17 @@ class TagihanResource extends Resource
                 TextColumn::make('tanggal')->searchable()->sortable()->date('l, d F Y'),
             ])
             ->filters([
-                //
+                Filter::make('tanggal')
+                    ->label('Tanggal')
+                    ->form([
+                        DatePicker::make('tanggal')->label('Filter berdasarkan Tanggal'),
+                    ])
+                    ->query(function (Builder $query, array $data) {
+                        return $query->when(
+                            $data['tanggal'],
+                            fn($query, $tanggal) => $query->whereDate('tanggal', $tanggal)
+                        );
+                    }),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

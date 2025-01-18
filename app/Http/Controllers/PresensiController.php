@@ -34,7 +34,7 @@ class PresensiController extends Controller
             ]);
 
             Log::info('Presensi Berhasil Masuk: ' . $siswa->id);
-            return response()->json(['success' => 'Berhasil presensi Datang!']);
+            return response()->json(['success' => 'Presensi berhasil, tunggu di approve oleh seksi absensi yaa!']);
         }
 
         Log::info('Presensi Gagal: Sudah presensi hari ini');

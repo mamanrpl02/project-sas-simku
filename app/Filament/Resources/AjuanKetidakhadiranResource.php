@@ -10,10 +10,13 @@ use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
 use App\Models\AjuanKetidakhadiran;
+use Filament\Tables\Filters\Filter;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\Textarea;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Forms\Components\DatePicker;
+use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Tables\Columns\CheckboxColumn;
 use Filament\Forms\Components\DateTimePicker;
@@ -25,7 +28,8 @@ class AjuanKetidakhadiranResource extends Resource
 {
     protected static ?string $model = Izin::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-chat-bubble-bottom-center-text';
+    protected static ?string $navigationGroup = 'Presensi';
 
     public static function form(Form $form): Form
     {
@@ -90,7 +94,20 @@ class AjuanKetidakhadiranResource extends Resource
 
             ])
             ->filters([
-                //
+                SelectFilter::make('siswa_id')->label('Nama Siswa')
+                    ->relationship('siswa', 'nama'),
+                Filter::make('date')
+                    ->label('Tanggal')
+                    ->form([
+                        DatePicker::make('date')->label('Filter berdasarkan Tanggal'),
+                    ])
+                    ->query(function (Builder $query, array $data) {
+                        return $query->when(
+                            $data['date'],
+                            fn($query, $date) => $query->whereDate('date', $date)
+                        );
+                    }),
+
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
