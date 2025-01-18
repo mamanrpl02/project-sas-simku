@@ -15,6 +15,7 @@
             </div>
             <div class="card-deskripsi">
                 <p>Absensi kamu setiap hari harus disetujui oleh seksi Absensi atau Walikelas, Jadi pastikan kamu harus masuk pada saat jam pelajaran yaaa, biar seksi Absensi tauu!!</p>
+                <p><a href="#">Klik di sini</a> jika anda Mengajukan Ketidakhadiran</p>
             </div>
         </div>
 

@@ -16,7 +16,8 @@ Route::fallback(function () {
 Route::middleware(['auth:siswa'])->group(function () {
     Route::get('/dashboard', [DashboardSiswaController::class, 'index'])->name('dashboard');
     Route::get('/presensi', [DashboardSiswaController::class, 'presensi'])->name('presensi');
-    Route::get('/pengajuan-izin', [DashboardSiswaController::class, 'pengajuan'])->name('pengajuan');
+    // Route::get('/siswa/presensi', [DashboardSiswaController::class, 'presensi'])->name('siswa.presensi');
+    Route::get('/pengajuan-ketidakhadiran', [DashboardSiswaController::class, 'pengajpuan'])->name('pengajuan');
     Route::get('/riwayat-transaksi', [DashboardSiswaController::class, 'riwayat'])->name('transaksi');
     Route::get('/pengeluaran-kas', [DashboardSiswaController::class, 'pengeluaranKas'])->name('pengeluaran-kas');
     Route::get('/pemasukan-kas', [DashboardSiswaController::class, 'pemasukanKas'])->name('pemasukan-kas');

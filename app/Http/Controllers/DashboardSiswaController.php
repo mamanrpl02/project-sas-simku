@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Siswa;
 use App\Models\Tagihan;
+use App\Models\Presensi;
 use App\Models\PemasukanKas;
 use Illuminate\Http\Request;
 use App\Models\DebitTabungan;
@@ -18,7 +19,7 @@ class DashboardSiswaController extends Controller
     {
         // Mendapatkan data siswa yang login
         $siswa = Auth::user();
-        $pengeluaran = PengeluaranKas::orderBy('created_at','desc')->get();
+        $pengeluaran = PengeluaranKas::orderBy('created_at', 'desc')->get();
 
         $siswaId = auth()->user()->id; // Sesuaikan dengan sistem autentikasi Anda
 
@@ -33,23 +34,26 @@ class DashboardSiswaController extends Controller
         return view('siswa.index', compact('siswa', 'pengeluaran'));
     }
 
+
+
     public function presensi()
     {
-        // Mendapatkan data siswa yang login
         $siswa = Auth::user();
-        // $siswaId = auth()->user()->id; // Sesuaikan dengan sistem autentikasi Anda
 
-
-        // Mengirimkan data siswa ke view
         return view('siswa.presensi', compact('siswa'));
     }
+
+
+
+
+
+
 
     public function pengajuan()
     {
         // Mendapatkan data siswa yang login
         $siswa = Auth::user();
         // $siswaId = auth()->user()->id; // Sesuaikan dengan sistem autentikasi Anda
-
 
         // Mengirimkan data siswa ke view
         return view('siswa.pengajuan', compact('siswa'));
