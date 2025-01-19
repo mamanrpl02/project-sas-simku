@@ -18,7 +18,8 @@
             <div class="card-deskripsi">
                 <p>Absensi kamu setiap hari harus disetujui oleh seksi Absensi atau Walikelas. Jadi, pastikan kamu masuk
                     pada saat jam pelajaran ya!</p>
-                <p><strong><a href="{{ route('pengajuan') }}">Klik di sini</a></strong> jika anda ingin mengajukan ketidakhadiran ( Sakit, Izin , dll )</p>
+                <p><strong><a href="{{ route('pengajuan') }}">Klik di sini</a></strong> jika anda ingin mengajukan
+                    ketidakhadiran ( Sakit, Izin , dll )</p>
             </div>
         </div>
 
@@ -115,7 +116,25 @@
 @endsection
 
 <script>
+    // Fungsi untuk mendapatkan hari saat ini
+    function cekHariIni() {
+        const hariIni = new Date().getDay(); // 0 untuk Minggu, 6 untuk Sabtu
+        if (hariIni === 0 || hariIni === 6) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Tidak Dapat Presensi',
+                text: 'Presensi tidak diizinkan pada hari Sabtu dan Minggu.',
+            });
+            return false; // Hentikan presensi jika hari Sabtu atau Minggu
+        }
+        return true;
+    }
+
     function presensiMasuk() {
+        if (!cekHariIni()) {
+            return; // Batalkan presensi jika hari Sabtu atau Minggu
+        }
+
         fetch("{{ route('presensi.masuk') }}", {
                 method: "POST",
                 headers: {
@@ -152,6 +171,10 @@
     }
 
     function presensiKeluar() {
+        if (!cekHariIni()) {
+            return; // Batalkan presensi jika hari Sabtu atau Minggu
+        }
+
         fetch("{{ route('presensi.keluar') }}", {
                 method: "POST",
                 headers: {
