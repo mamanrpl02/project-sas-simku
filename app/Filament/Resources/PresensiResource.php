@@ -125,10 +125,9 @@ class PresensiResource extends Resource
             ])
             ->headerActions([
                 ExportAction::make()
-                    ->exporter(PresensiExporter::class)
-                    // ->columnMapping(false)
-            ])
-        ;
+                    ->disableQueue() // Menonaktifkan penggunaan queue
+                    ->exporter(PresensiExporter::class), // Exporter yang sudah dibuat
+            ]);;
     }
 
     public static function getRelations(): array
