@@ -11,12 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('kas', function (Blueprint $table) {
+        Schema::create('failed_import_rows', function (Blueprint $table) {
             $table->id();
-            $table->string('jenis_transaksi');
-            $table->foreignId('siswa_id')->nullable()->constrained('siswas')->onDelete('set null'); // Relasi ke Siswa hanya untuk Kas Masuk
-            $table->integer('jumlah');
-            $table->text('keterangan')->nullable();
+            $table->json('data');
+            $table->foreignId('import_id')->constrained()->cascadeOnDelete();
+            $table->text('validation_error')->nullable();
             $table->timestamps();
         });
     }
@@ -26,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('kas');
+        Schema::dropIfExists('failed_import_rows');
     }
 };

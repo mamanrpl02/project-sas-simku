@@ -17,11 +17,14 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\DateFilter;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\TimePicker;
+use Filament\Tables\Actions\ExportAction;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Exports\PresensiExporter;
 use Filament\Tables\Columns\CheckboxColumn;
 use Filament\Forms\Components\DateTimePicker;
+use Filament\Tables\Actions\ExportBulkAction;
 use App\Filament\Resources\PresensiResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\PresensiResource\RelationManagers;
@@ -116,9 +119,16 @@ class PresensiResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
+                    ExportBulkAction::make()->exporter(PresensiExporter::class),
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->headerActions([
+                ExportAction::make()
+                    ->exporter(PresensiExporter::class)
+                    // ->columnMapping(false)
+            ])
+        ;
     }
 
     public static function getRelations(): array
