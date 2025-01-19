@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class DebitTabungan extends Model
 {
@@ -11,7 +12,7 @@ class DebitTabungan extends Model
         'nominal',
     ];
 
-    public function siswa()
+    public function siswa(): BelongsTo
     {
         return $this->belongsTo(Siswa::class);
     }

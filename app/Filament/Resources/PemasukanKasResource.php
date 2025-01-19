@@ -17,6 +17,8 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\DatePicker;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Tables\Actions\ExportBulkAction;
+use App\Filament\Exports\PemasukanKasExporter;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\PemasukanKasResource\Pages;
 use App\Filament\Resources\PemasukanKasResource\RelationManagers;
@@ -96,9 +98,9 @@ class PemasukanKasResource extends Resource
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                ExportBulkAction::make('export') // Menggunakan bulk export
+                    ->exporter(PemasukanKasExporter::class), // Menghubungkan dengan exporter yang kamu buat
+                Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
 

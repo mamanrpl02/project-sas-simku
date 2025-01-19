@@ -2,8 +2,10 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Exports\KreditTabunganExporter;
 use Filament\Forms;
 use Filament\Tables;
+use App\Models\Siswa;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use App\Models\KreditTabungan;
@@ -17,9 +19,11 @@ use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Tables\Actions\BulkActionGroup;
 use Filament\Tables\Columns\TextInputColumn;
+use Filament\Tables\Actions\ExportBulkAction;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\KreditTabunganResource\Pages;
 use App\Filament\Resources\KreditTabunganResource\RelationManagers;
+use Filament\Actions\ExportAction;
 
 class KreditTabunganResource extends Resource
 {
@@ -36,8 +40,10 @@ class KreditTabunganResource extends Resource
         return $form
             ->schema([
                 Select::make('siswa_id')
-                    ->required()
-                    ->relationship('siswa', 'nama'),
+                    ->label('Siswa')
+                    ->options(Siswa::all()->pluck('nama', 'id'))
+                    ->searchable()->required(),
+
                 TextInput::make('nominal')
                     ->numeric()
                     ->required()
@@ -82,10 +88,11 @@ class KreditTabunganResource extends Resource
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
+                ExportBulkAction::make('export') // Menggunakan bulk export
+                    ->exporter(KreditTabunganExporter::class), // Menghubungkan dengan exporter yang kamu buat
+                Tables\Actions\DeleteBulkAction::make(),
+            ])
+        ;
     }
 
     public static function getRelations(): array

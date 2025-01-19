@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use Actions\Action;
 use Filament\Forms;
 use Filament\Tables;
+use App\Models\Siswa;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use App\Models\DebitTabungan;
@@ -16,8 +16,8 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\DatePicker;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
-use Filament\Widgets\StatsOverviewWidget\Card;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Exports\DebitTabunganExporter;
+use Filament\Tables\Actions\ExportBulkAction;
 use App\Filament\Resources\DebitTabunganResource\Pages;
 use App\Filament\Resources\DebitTabunganResource\RelationManagers;
 
@@ -27,7 +27,6 @@ class DebitTabunganResource extends Resource
 
     protected static ?string $navigationGroup = 'Tabungan';
     protected static ?string $navigationLabel = 'Debit Tabungan';
-
     protected static ?string $navigationIcon = 'heroicon-o-credit-card';
 
     public static function form(Form $form): Form
@@ -35,8 +34,10 @@ class DebitTabunganResource extends Resource
         return $form
             ->schema([
                 Select::make('siswa_id')
-                    ->required()
-                    ->relationship('siswa', 'nama'),
+                    ->label('Siswa')
+                    ->options(Siswa::all()->pluck('nama', 'id'))
+                    ->searchable()->required(),
+
                 TextInput::make('nominal')
                     ->numeric()
                     ->required()
@@ -75,12 +76,11 @@ class DebitTabunganResource extends Resource
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                ExportBulkAction::make('export') // Menggunakan bulk export
+                    ->exporter(DebitTabunganExporter::class), // Menghubungkan dengan exporter yang kamu buat
+                Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
-
 
     public static function getRelations(): array
     {
