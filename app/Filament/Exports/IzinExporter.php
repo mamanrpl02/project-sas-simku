@@ -14,7 +14,15 @@ class IzinExporter extends Exporter
     public static function getColumns(): array
     {
         return [
-            //
+            ExportColumn::make('id')
+                ->label('ID'),
+            ExportColumn::make('siswa.nama'),
+            ExportColumn::make('jenis'),
+            ExportColumn::make('alasan'),
+            ExportColumn::make('is_approved'),
+            ExportColumn::make('date'),
+            ExportColumn::make('created_at'),
+            ExportColumn::make('updated_at'),
         ];
     }
 

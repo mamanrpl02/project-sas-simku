@@ -12,14 +12,17 @@ use Filament\Resources\Resource;
 use App\Models\AjuanKetidakhadiran;
 use Filament\Tables\Filters\Filter;
 use Filament\Forms\Components\Select;
+use App\Filament\Exports\IzinExporter;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\Textarea;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\DatePicker;
+use Filament\Tables\Actions\ExportAction;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Tables\Columns\CheckboxColumn;
 use Filament\Forms\Components\DateTimePicker;
+use Filament\Tables\Actions\ExportBulkAction;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\AjuanKetidakhadiranResource\Pages;
 use App\Filament\Resources\AjuanKetidakhadiranResource\RelationManagers;
@@ -115,8 +118,14 @@ class AjuanKetidakhadiranResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
+                    ExportBulkAction::make()->exporter(IzinExporter::class),
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
+            ])
+            ->headerActions([
+                ExportAction::make()
+                    ->exporter(IzinExporter::class)
+                // ->columnMapping(false)
             ]);
     }
 

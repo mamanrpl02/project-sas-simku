@@ -41,12 +41,4 @@ class PresensiExporter extends Exporter
 
         return $body;
     }
-
-    public function getXlsxHeaderCellStyle(): ?Style
-    {
-        return (new Style())
-            ->setFontBold()
-            ->setFontSize(14)
-            ->setFontName('Consolas')  ;
-    }
 }
