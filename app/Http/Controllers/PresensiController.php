@@ -62,4 +62,41 @@ class PresensiController extends Controller
 
         return response()->json(['error' => 'Gagal presensi pulang, Anda belum melakukan presensi masuk!']);
     }
+
+    public function create()
+    {
+        return view('siswa.pengajuan'); // Mengarahkan ke form pengajuan izin
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'jenis' => 'required|string',
+            'alasan' => 'required|string',
+            'bukti' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+        ]);
+
+        // Simpan file bukti jika ada
+        $buktiPath = null;
+        if ($request->hasFile('bukti')) {
+            $buktiPath = $request->file('bukti')->store('bukti', 'public');
+        }
+
+        // Buat data presensi baru
+        Presensi::create([
+            'siswa_id' => Auth::id(),
+            'jenis' => $request->jenis,
+            'alasan' => $request->alasan,
+            'bukti' => $buktiPath,
+            'date' => now()->toDateString(), // Simpan tanggal hari ini
+        ]);
+
+        // Redirect dengan pesan sukses
+        return redirect()->back()->with('success', 'Data berhasil di ajukan, tunggu di setujui oleh absensi yaa.');
+    }
+
+    public function render()
+    {
+        return view('livewire.presensi');
+    }
 }

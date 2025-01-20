@@ -13,11 +13,13 @@ use Filament\Resources\Resource;
 use Filament\Tables\Filters\Filter;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Checkbox;
+use Filament\Forms\Components\Textarea;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\DateFilter;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\TimePicker;
 use Filament\Tables\Actions\ExportAction;
+use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
@@ -60,6 +62,10 @@ class PresensiResource extends Resource
                     ->label('Waktu Keluar')
                     ->nullable(),
 
+                Textarea::make('alasan')
+                    ->autosize()
+                    ->required(),
+
                 Checkbox::make('is_approved')
                     ->label('Aprove')
                     ->default(false),
@@ -77,15 +83,28 @@ class PresensiResource extends Resource
 
                 TextColumn::make('date')
                     ->label('Tanggal')
-                    ->sortable(),
+                    ->sortable()
+                    ->searchable(),
 
                 TextColumn::make('time_in')
-                    ->label('Datang')
-                    ->sortable(),
+                    ->sortable()
+                    ->searchable(),
 
                 TextColumn::make('time_out')
                     ->label('Pulang')
-                    ->sortable(),
+                    ->sortable()
+                    ->searchable(),
+
+                SelectColumn::make('jenis')
+                    ->options([
+                        'S' => 'S',
+                        'I' => 'I',
+                        'A' => 'A',
+                        'H' => 'H',
+                    ])
+                    ->sortable()
+                    ->searchable(),
+
 
                 CheckboxColumn::make('is_approved')
                     ->label('Setujui')
@@ -114,6 +133,7 @@ class PresensiResource extends Resource
 
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
@@ -126,7 +146,7 @@ class PresensiResource extends Resource
             ->headerActions([
                 ExportAction::make()
                     ->exporter(PresensiExporter::class)
-                    // ->columnMapping(false)
+                // ->columnMapping(false)
 
             ])
         ;

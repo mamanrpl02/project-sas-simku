@@ -6,11 +6,6 @@ use App\Models\Presensi;
 use Filament\Actions\Exports\ExportColumn;
 use Filament\Actions\Exports\Exporter;
 use Filament\Actions\Exports\Models\Export;
-use OpenSpout\Common\Entity\Style\CellAlignment;
-use OpenSpout\Common\Entity\Style\CellVerticalAlignment;
-use OpenSpout\Common\Entity\Style\Color;
-use OpenSpout\Common\Entity\Style\Style;
-
 
 class PresensiExporter extends Exporter
 {
@@ -21,8 +16,9 @@ class PresensiExporter extends Exporter
         return [
             ExportColumn::make('id')
                 ->label('ID'),
-            ExportColumn::make('siswa.nama'),
+            ExportColumn::make('siswa.id'),
             ExportColumn::make('date'),
+            ExportColumn::make('jenis'),
             ExportColumn::make('time_in'),
             ExportColumn::make('time_out'),
             ExportColumn::make('is_approved'),

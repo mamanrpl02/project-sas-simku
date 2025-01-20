@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Livewire\Presensi;
 use Carbon\Carbon;
 use App\Models\Izin;
 use Illuminate\Http\Request;
@@ -28,7 +29,7 @@ class IzinPengajuanController extends Controller
             $buktiPath = $request->file('bukti')->store('bukti', 'public');
         }
 
-        Izin::create([
+        Presensi::create([
             'siswa_id' => Auth::id(),
             'jenis' => $request->jenis,
             'alasan' => $request->alasan,

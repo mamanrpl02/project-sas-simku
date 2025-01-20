@@ -13,8 +13,11 @@ class Presensi extends Model
     protected $fillable = [
         'siswa_id',
         'date',
+        'jenis',
+        'alasan',
         'time_in',
         'time_out',
+        'bukti',
         'is_approved'
     ];
 

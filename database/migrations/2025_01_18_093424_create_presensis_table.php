@@ -14,9 +14,12 @@ return new class extends Migration
         Schema::create('presensis', function (Blueprint $table) {
             $table->id();
             $table->foreignId('siswa_id')->constrained()->onDelete('cascade'); // Relasi ke user (siswa)
-            $table->date('date'); 
+            $table->date('date');
+            $table->enum('jenis', ['S','I','A','H'])->default('H');
+            $table->text('alasan')->nullable();
             $table->time('time_in')->nullable();
             $table->time('time_out')->nullable();
+            $table->string('bukti')->nullable();
             $table->boolean('is_approved')->default(false); // Status disetujui atau tidak
             $table->timestamps();
         });

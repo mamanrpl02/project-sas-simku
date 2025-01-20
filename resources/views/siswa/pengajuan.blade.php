@@ -4,21 +4,15 @@
     <div class="form-pengajuan">
         <h2>Ajukan Izin</h2>
 
-        @if (session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-        @endif
-
         <form action="{{ route('siswa.izin.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="form-group">
                 <label for="jenis_izin">Jenis Izin</label>
                 <div>
-                    <input type="radio" id="sakit" name="jenis" value="Sakit" required>
+                    <input type="radio" id="sakit" name="jenis" value="S" required>
                     <label for="sakit">Sakit</label><br>
 
-                    <input type="radio" id="izin" name="jenis" value="Izin" required>
+                    <input type="radio" id="izin" name="jenis" value="I" required>
                     <label for="izin">Izin</label><br>
                 </div>
             </div>
@@ -36,13 +30,26 @@
             <button class="submit-pengajuan" type="submit" class="btn btn-primary">Ajukan Izin</button>
         </form>
     </div>
-    @if (session('swal'))
+
+    <!-- Tambahkan SweetAlert -->
+    @if (session('success'))
         <script>
             Swal.fire({
-                title: "{{ session('swal')['title'] }}",
-                text: "{{ session('swal')['text'] }}",
-                icon: "{{ session('swal')['icon'] }}",
-                confirmButtonText: "{{ session('swal')['button'] }}"
+                title: 'Berhasil!',
+                text: '{{ session('success') }}',
+                icon: 'success',
+                confirmButtonText: 'Oke'
+            });
+        </script>
+    @endif
+
+    @if (session('error'))
+        <script>
+            Swal.fire({
+                title: 'Gagal!',
+                text: '{{ session('error') }}',
+                icon: 'error',
+                confirmButtonText: 'Coba Lagi'
             });
         </script>
     @endif

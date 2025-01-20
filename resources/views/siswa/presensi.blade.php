@@ -51,46 +51,70 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($presensiList as $presensi)
-                            @if ($presensi->is_approved)
-                                <!-- Tampilkan hanya jika is_approved bernilai 1 -->
+                        @foreach ($presensiList->groupBy('date') as $presensiGroup)
+                            <!-- Ambil tanggal dari grup -->
+                            @php
+                                $hasNonH = false;
+                                $presensiHadir = null;
+                            @endphp
+
+                            @foreach ($presensiGroup as $presensi)
+                                @if ($presensi->jenis !== 'H' && $presensi->is_approved)
+                                    <!-- Jika ada izin selain H yang di-approve -->
+                                    @php
+                                        $hasNonH = true;
+                                    @endphp
+                                @elseif ($presensi->jenis === 'H' && $presensi->is_approved)
+                                    <!-- Simpan presensi Hadir untuk ditampilkan jika tidak ada izin selain H -->
+                                    @php
+                                        $presensiHadir = $presensi;
+                                    @endphp
+                                @endif
+                            @endforeach
+
+                            <!-- Tampilkan presensi jika ada izin selain H atau jika tidak ada izin tampilkan presensi H -->
+                            @if ($hasNonH)
+                                @foreach ($presensiGroup as $presensi)
+                                    @if ($presensi->jenis !== 'H' && $presensi->is_approved)
+                                        <tr>
+                                            <td>{{ \Carbon\Carbon::parse($presensi->date)->format('d F Y') }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($presensi->date)->translatedFormat('l') }}</td>
+                                            <td>
+                                                <!-- Ubah tampilan S, I, A menjadi teks deskriptif -->
+                                                @if ($presensi->jenis == 'S')
+                                                    <span class="text-warning">Sakit</span>
+                                                @elseif ($presensi->jenis == 'I')
+                                                    <span class="text-warning">Izin</span>
+                                                @elseif ($presensi->jenis == 'A')
+                                                    <span class="text-warning">Alfa</span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                <span
+                                                    class="text-warning">{{ $presensi->alasan ?? 'Tidak ada alasan' }}</span>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                @endforeach
+                            @elseif ($presensiHadir)
                                 <tr>
-                                    <td>{{ \Carbon\Carbon::parse($presensi->date)->format('d F Y') }}</td>
-                                    <td>{{ \Carbon\Carbon::parse($presensi->date)->translatedFormat('l') }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($presensiHadir->date)->format('d F Y') }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($presensiHadir->date)->translatedFormat('l') }}</td>
                                     <td>
-                                        @if ($presensi->izin && $presensi->izin->is_approved)
-                                            <!-- Jika ada izin yang sudah di-approve -->
-                                            <span class="text-warning">{{ $presensi->izin->jenis }}</span>
-                                        @elseif ($presensi->time_in)
-                                            <!-- Status dengan warna hijau jika datang tepat waktu, merah jika terlambat -->
-                                            <span
-                                                class="{{ \Carbon\Carbon::parse($presensi->time_in)->greaterThan(\Carbon\Carbon::parse('07:00:00')) ? 'text-danger' : 'text-success' }}">
-                                                Hadir Jam {{ $presensi->time_in }}
-                                            </span>
-                                        @else
-                                            Alpha <!-- Tidak Hadir jika tidak ada time_in -->
-                                        @endif
+                                        <span
+                                            class="{{ \Carbon\Carbon::parse($presensiHadir->time_in)->greaterThan(\Carbon\Carbon::parse('07:00:00')) ? 'text-danger' : 'text-success' }}">
+                                            Hadir Jam {{ $presensiHadir->time_in }}
+                                        </span>
                                     </td>
                                     <td>
-                                        @if ($presensi->izin && $presensi->izin->is_approved)
-                                            <!-- Jika ada izin yang sudah di-approve -->
-                                            <span class="text-warning">{{ $presensi->izin->alasan }}</span>
-                                        @elseif ($presensi->time_in && $presensi->time_out)
-                                            <!-- Keterangan pulang setelah jam 16:00 -->
-                                            @if (\Carbon\Carbon::parse($presensi->time_out)->greaterThanOrEqualTo(\Carbon\Carbon::parse('16:00:00')))
-                                                <span class="text-success">Pulang jam {{ $presensi->time_out }}</span>
+                                        @if ($presensiHadir->time_out)
+                                            @if (\Carbon\Carbon::parse($presensiHadir->time_out)->greaterThanOrEqualTo(\Carbon\Carbon::parse('16:00:00')))
+                                                <span class="text-success">Pulang jam {{ $presensiHadir->time_out }}</span>
                                             @else
-                                                <span class="text-danger">Pulang jam {{ $presensi->time_out }}</span>
-                                            @endif
-                                        @elseif($presensi->time_in)
-                                            <!-- Jika hanya time_in ada -->
-                                            @if (\Carbon\Carbon::parse($presensi->time_in)->greaterThan(\Carbon\Carbon::parse('07:00:00')))
-                                                Belum Pulang
-                                            @else
-                                                Belum Pulang
+                                                <span class="text-danger">Pulang jam {{ $presensiHadir->time_out }}</span>
                                             @endif
                                         @else
-                                            Belum presensi
+                                            Belum Pulang
                                         @endif
                                     </td>
                                 </tr>
@@ -104,6 +128,7 @@
                         @endif
                     </tbody>
                 </table>
+
 
                 <!-- Pagination -->
                 <div class="pagination justify-content-center">

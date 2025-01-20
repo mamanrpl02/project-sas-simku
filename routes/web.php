@@ -6,6 +6,7 @@ use App\Http\Controllers\PresensiController;
 use App\Http\Controllers\IzinPengajuanController;
 use App\Http\Controllers\DashboardSiswaController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Livewire\Presensi;
 
 Route::get('/', function () {
     return view('index');
@@ -24,8 +25,8 @@ Route::middleware(['auth:siswa'])->group(function () {
 
 
 
-    Route::get('/pengajuan-izin', [IzinPengajuanController::class, 'create'])->name('pengajuan');
-    Route::post('/pengajuan-izin', [IzinPengajuanController::class, 'store'])->name('siswa.izin.store');
+    Route::get('/pengajuan-izin', [PresensiController::class, 'create'])->name('pengajuan');
+    Route::post('/pengajuan-izin', [PresensiController::class, 'store'])->name('siswa.izin.store');
 
     Route::get('/riwayat-transaksi', [DashboardSiswaController::class, 'riwayat'])->name('transaksi');
     Route::get('/pengeluaran-kas', [DashboardSiswaController::class, 'pengeluaranKas'])->name('pengeluaran-kas');
