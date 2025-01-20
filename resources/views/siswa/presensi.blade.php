@@ -41,7 +41,7 @@
                     </div>
                 </form>
 
-                <table class="table mt-4 tabel-presensi">
+                <table class="tabel-presensi">
                     <thead>
                         <tr>
                             <th>Tanggal</th>
