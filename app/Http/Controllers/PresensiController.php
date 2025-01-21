@@ -10,36 +10,95 @@ use Illuminate\Support\Facades\Auth;
 
 class PresensiController extends Controller
 {
+
+    public function presensi(Request $request)
+    {
+        // Mendapatkan data siswa yang sedang login
+        $siswa = Auth::user();
+
+        // Daftar bulan
+        $bulanList = [
+            '01' => 'Januari',
+            '02' => 'Februari',
+            '03' => 'Maret',
+            '04' => 'April',
+            '05' => 'Mei',
+            '06' => 'Juni',
+            '07' => 'Juli',
+            '08' => 'Agustus',
+            '09' => 'September',
+            '10' => 'Oktober',
+            '11' => 'November',
+            '12' => 'Desember'
+        ];
+
+        // Ambil bulan yang dipilih atau bulan sekarang
+        $bulanDipilih = $request->input('bulan', Carbon::now()->format('m'));
+
+        // Ambil data presensi siswa berdasarkan bulan yang dipilih, urutkan dari terbaru ke lama
+        $presensiList = Presensi::where('siswa_id', $siswa->id)
+            ->whereMonth('date', $bulanDipilih)
+            ->orderBy('date', 'desc') // Mengurutkan dari yang terbaru ke yang lama
+            ->get();
+
+        // Return ke view dengan data presensi
+        return view('siswa.presensi', compact('siswa', 'presensiList', 'bulanList'));
+    }
+
+
     public function presensiMasuk(Request $request)
     {
-        // Cek apakah data siswa_id ada di request
-        Log::info('Siswa ID: ' . $request->siswa_id);
+        // Mendapatkan data siswa yang sedang login
+        $siswa = Auth::user();
 
-        // Ambil siswa yang sedang login
-        $siswa = Auth::guard('siswa')->user();
+        // Tanggal hari ini
+        $today = Carbon::today();
 
-        // Cek apakah siswa login sudah valid
-        Log::info('Siswa Login: ' . $siswa->id);
+        // Tanggal kemarin
+        $yesterday = Carbon::yesterday();
 
-        // Cek apakah presensi sudah ada hari ini
-        $presensi = Presensi::where('siswa_id', $siswa->id)
-            ->whereDate('date', Carbon::today())
+        // Cek apakah sudah presensi kemarin
+        $presensiKemarin = Presensi::where('siswa_id', $siswa->id)
+            ->whereDate('date', $yesterday)
             ->first();
 
-        if (!$presensi) {
+        // Jika tidak ada presensi kemarin, tambahkan dengan status Alpha (A)
+        if (!$presensiKemarin) {
             Presensi::create([
                 'siswa_id' => $siswa->id,
-                'date' => Carbon::today(),
-                'time_in' => Carbon::now()->toTimeString(),
+                'date' => $yesterday,
+                'jenis' => 'A', // Alpha
+                'is_approved' => true, // Bisa disesuaikan, mungkin perlu disetujui dulu
             ]);
-
-            Log::info('Presensi Berhasil Masuk: ' . $siswa->id);
-            return response()->json(['success' => 'Presensi berhasil, tunggu di approve oleh seksi absensi yaa!']);
         }
 
-        Log::info('Presensi Gagal: Sudah presensi hari ini');
-        return response()->json(['error' => 'Anda sudah melakukan presensi hari ini!']);
+        // Cek apakah sudah presensi hari ini
+        $presensiHariIni = Presensi::where('siswa_id', $siswa->id)
+            ->whereDate('date', $today)
+            ->first();
+
+        // Jika sudah presensi hari ini, tidak perlu presensi lagi
+        if ($presensiHariIni) {
+            return response()->json([
+                'error' => 'Anda sudah melakukan presensi hari ini!',
+            ]);
+        }
+
+        // Jika belum presensi, buat data presensi hari ini
+        $presensi = Presensi::create([
+            'siswa_id' => $siswa->id,
+            'date' => $today,
+            'time_in' => Carbon::now()->format('H:i:s'),
+            'jenis' => 'H', // Hadir
+            'is_approved' => false, // Misalnya perlu disetujui dulu oleh pihak tertentu
+        ]);
+
+        return response()->json([
+            'success' => 'Presensi datang berhasil!',
+            'data' => $presensi,
+        ]);
     }
+
 
     public function presensiKeluar(Request $request)
     {
@@ -63,11 +122,9 @@ class PresensiController extends Controller
         return response()->json(['error' => 'Gagal presensi pulang, Anda belum melakukan presensi masuk!']);
     }
 
-    public function create()
-    {
-        return view('siswa.pengajuan'); // Mengarahkan ke form pengajuan izin
-    }
 
+
+    // Store data izin
     public function store(Request $request)
     {
         $request->validate([
@@ -98,5 +155,11 @@ class PresensiController extends Controller
     public function render()
     {
         return view('livewire.presensi');
+    }
+
+    // Method pengajuan izin
+    public function create()
+    {
+        return view('siswa.pengajuan'); // Mengarahkan ke form pengajuan izin
     }
 }

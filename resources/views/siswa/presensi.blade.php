@@ -51,84 +51,68 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($presensiList->groupBy('date') as $presensiGroup)
-                            <!-- Ambil tanggal dari grup -->
+                        @forelse ($presensiList as $presensi)
                             @php
-                                $hasNonH = false;
-                                $presensiHadir = null;
+                                $date = \Carbon\Carbon::parse($presensi->date);
+                                $timeIn = $presensi->time_in ? \Carbon\Carbon::parse($presensi->time_in) : null;
+                                $timeOut = $presensi->time_out ? \Carbon\Carbon::parse($presensi->time_out) : null;
                             @endphp
 
-                            @foreach ($presensiGroup as $presensi)
-                                @if ($presensi->jenis !== 'H' && $presensi->is_approved)
-                                    <!-- Jika ada izin selain H yang di-approve -->
-                                    @php
-                                        $hasNonH = true;
-                                    @endphp
-                                @elseif ($presensi->jenis === 'H' && $presensi->is_approved)
-                                    <!-- Simpan presensi Hadir untuk ditampilkan jika tidak ada izin selain H -->
-                                    @php
-                                        $presensiHadir = $presensi;
-                                    @endphp
-                                @endif
-                            @endforeach
-
-                            <!-- Tampilkan presensi jika ada izin selain H atau jika tidak ada izin tampilkan presensi H -->
-                            @if ($hasNonH)
-                                @foreach ($presensiGroup as $presensi)
-                                    @if ($presensi->jenis !== 'H' && $presensi->is_approved)
-                                        <tr>
-                                            <td>{{ \Carbon\Carbon::parse($presensi->date)->format('d F Y') }}</td>
-                                            <td>{{ \Carbon\Carbon::parse($presensi->date)->translatedFormat('l') }}</td>
-                                            <td>
-                                                <!-- Ubah tampilan S, I, A menjadi teks deskriptif -->
-                                                @if ($presensi->jenis == 'S')
-                                                    <span class="text-warning">Sakit</span>
-                                                @elseif ($presensi->jenis == 'I')
-                                                    <span class="text-warning">Izin</span>
-                                                @elseif ($presensi->jenis == 'A')
-                                                    <span class="text-warning">Alfa</span>
-                                                @endif
-                                            </td>
-                                            <td>
-                                                <span
-                                                    class="text-warning">{{ $presensi->alasan ?? 'Tidak ada alasan' }}</span>
-                                            </td>
-                                        </tr>
-                                    @endif
-                                @endforeach
-                            @elseif ($presensiHadir)
+                            @if ($presensi->is_approved || (($presensi->jenis === 'I' || $presensi->jenis === 'S') && $presensi->is_approved))
                                 <tr>
-                                    <td>{{ \Carbon\Carbon::parse($presensiHadir->date)->format('d F Y') }}</td>
-                                    <td>{{ \Carbon\Carbon::parse($presensiHadir->date)->translatedFormat('l') }}</td>
+                                    <!-- Tanggal -->
+                                    <td>{{ $date->format('d F Y') }}</td>
+
+                                    <!-- Hari -->
+                                    <td>{{ $date->translatedFormat('l') }}</td>
+
+                                    <!-- Status Presensi -->
                                     <td>
-                                        <span
-                                            class="{{ \Carbon\Carbon::parse($presensiHadir->time_in)->greaterThan(\Carbon\Carbon::parse('07:00:00')) ? 'text-danger' : 'text-success' }}">
-                                            Hadir Jam {{ $presensiHadir->time_in }}
-                                        </span>
-                                    </td>
-                                    <td>
-                                        @if ($presensiHadir->time_out)
-                                            @if (\Carbon\Carbon::parse($presensiHadir->time_out)->greaterThanOrEqualTo(\Carbon\Carbon::parse('16:00:00')))
-                                                <span class="text-success">Pulang jam {{ $presensiHadir->time_out }}</span>
-                                            @else
-                                                <span class="text-danger">Pulang jam {{ $presensiHadir->time_out }}</span>
-                                            @endif
+                                        @if ($presensi->jenis === 'I' || $presensi->jenis === 'S')
+                                            <!-- Izin atau Sakit -->
+                                            <span
+                                                class="text-warning">{{ ucfirst($presensi->jenis == 'I' ? 'Izin' : 'Sakit') }}</span>
+                                        @elseif ($timeIn)
+                                            <!-- Hadir -->
+                                            <span
+                                                class="{{ $timeIn->greaterThan(\Carbon\Carbon::parse('07:00:00')) ? 'text-danger' : 'text-success' }}">
+                                                Hadir Jam {{ $presensi->time_in }}
+                                            </span>
                                         @else
-                                            Belum Pulang
+                                            <!-- Alpha -->
+                                            <span class="text-danger">Alpha</span>
+                                        @endif
+                                    </td>
+
+                                    <!-- Keterangan -->
+                                    <td>
+                                        @if ($presensi->jenis === 'I' || $presensi->jenis === 'S')
+                                            <!-- Keterangan Izin atau Sakit -->
+                                            <span class="text-warning">{{ $presensi->alasan }}</span>
+                                        @elseif ($timeIn && $timeOut)
+                                            <!-- Keterangan Pulang -->
+                                            <span
+                                                class="{{ $timeOut->greaterThanOrEqualTo(\Carbon\Carbon::parse('16:00:00')) ? 'text-success' : 'text-danger' }}">
+                                                Pulang jam {{ $presensi->time_out }}
+                                            </span>
+                                        @elseif($timeIn)
+                                            <!-- Jika belum pulang -->
+                                            <span class="text-warning">Belum Pulang</span>
+                                        @else
+                                            <!-- Belum presensi -->
+                                            <span class="text-danger">Belum presensi</span>
                                         @endif
                                     </td>
                                 </tr>
                             @endif
-                        @endforeach
-
-                        @if ($presensiList->isEmpty())
+                        @empty
+                            <!-- Jika tidak ada data presensi -->
                             <tr>
-                                <td colspan="4">Tidak ada data presensi untuk bulan ini.</td>
+                                <td colspan="4" class="text-center">Tidak ada data presensi untuk bulan ini.</td>
                             </tr>
-                        @endif
+                        @endforelse
                     </tbody>
                 </table>
-
 
                 <!-- Pagination -->
                 <div class="pagination justify-content-center">

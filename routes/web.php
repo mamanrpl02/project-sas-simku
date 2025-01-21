@@ -19,7 +19,7 @@ Route::fallback(function () {
 Route::middleware(['auth:siswa'])->group(function () {
     Route::get('/dashboard', [DashboardSiswaController::class, 'index'])->name('dashboard');
 
-    Route::get('/presensi', [DashboardSiswaController::class, 'presensi'])->name('presensi');
+    Route::get('/presensi', [PresensiController::class, 'presensi'])->name('presensi');
     Route::post('/presensi/masuk', [PresensiController::class, 'presensiMasuk'])->name('presensi.masuk');
     Route::post('/presensi/keluar', [PresensiController::class, 'presensiKeluar'])->name('presensi.keluar');
 

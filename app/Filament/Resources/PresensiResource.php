@@ -118,6 +118,16 @@ class PresensiResource extends Resource
             ->filters([
                 SelectFilter::make('siswa_id')->label('Nama Siswa')
                     ->relationship('siswa', 'nama'),
+
+                SelectFilter::make('jenis')
+                    ->label('Jenis Presensi')
+                    ->options([
+                        'S' => 'Sakit',
+                        'I' => 'Izin',
+                        'A' => 'Alfa',
+                        'H' => 'Hadir',
+                    ]) ,
+
                 Filter::make('date')
                     ->label('Tanggal')
                     ->form([

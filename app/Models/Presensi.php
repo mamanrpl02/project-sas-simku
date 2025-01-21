@@ -25,12 +25,5 @@ class Presensi extends Model
     public function siswa() : BelongsTo
     {
         return $this->belongsTo(Siswa::class);
-    }
-
-    // Relasi dengan model Izin, satu presensi bisa memiliki satu izin (di tanggal yang sama)
-    public function izin()
-    {
-        return $this->hasOne(Izin::class, 'siswa_id', 'siswa_id')
-            ->where('date', $this->date); // Cek jika izin pada tanggal yang sama
-    }
+    } 
 }

@@ -36,68 +36,6 @@ class DashboardSiswaController extends Controller
         return view('siswa.index', compact('siswa', 'pengeluaran'));
     }
 
-
-
-    public function presensi(Request $request)
-    {
-        // Mendapatkan data siswa yang sedang login
-        $siswa = Auth::user();
-
-        // Daftar bulan
-        $bulanList = [
-            '01' => 'Januari',
-            '02' => 'Februari',
-            '03' => 'Maret',
-            '04' => 'April',
-            '05' => 'Mei',
-            '06' => 'Juni',
-            '07' => 'Juli',
-            '08' => 'Agustus',
-            '09' => 'September',
-            '10' => 'Oktober',
-            '11' => 'November',
-            '12' => 'Desember'
-        ];
-
-        // Mengambil data presensi dan mengurutkannya berdasarkan tanggal terbaru
-        $shortData = Presensi::orderBy('date', 'desc')->get();
-
-        // Ambil bulan yang dipilih atau bulan sekarang
-        $bulanDipilih = $request->input('bulan', Carbon::now()->format('m'));
-
-        // Ambil data presensi siswa berdasarkan bulan yang dipilih, urutkan dari terbaru ke lama
-        $presensiList = Presensi::where('siswa_id', $siswa->id)
-            ->whereMonth('date', $bulanDipilih)
-            ->orderBy('date', 'desc') // Mengurutkan dari yang terbaru ke yang lama
-            ->get();
-
-        // Ambil data izin siswa berdasarkan bulan yang dipilih
-        $izinList = Izin::where('siswa_id', $siswa->id)
-            ->whereMonth('date', $bulanDipilih)
-            ->get();
-
-        // Gabungkan data izin ke dalam data presensi berdasarkan tanggal yang sama
-        foreach ($presensiList as $presensi) {
-            $izin = $izinList->firstWhere('date', $presensi->date);
-            $presensi->izin = $izin; // Menambahkan data izin ke dalam objek presensi
-        }
-
-        // Return ke view dengan data presensi dan izin yang sudah digabungkan
-        return view('siswa.presensi', compact('siswa', 'presensiList', 'bulanList', 'shortData'));
-    }
-
-
-
-    public function pengajuan()
-    {
-        // Mendapatkan data siswa yang login
-        $siswa = Auth::user();
-        // $siswaId = auth()->user()->id; // Sesuaikan dengan sistem autentikasi Anda
-
-        // Mengirimkan data siswa ke view
-        return view('siswa.pengajuan', compact('siswa'));
-    }
-
     public function riwayat()
     {
         $siswa = Auth::user();
