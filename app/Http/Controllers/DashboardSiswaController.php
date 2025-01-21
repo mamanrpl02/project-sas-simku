@@ -21,7 +21,7 @@ class DashboardSiswaController extends Controller
     {
         // Mendapatkan data siswa yang login
         $siswa = Auth::user();
-        $pengeluaran = PengeluaranKas::orderBy('created_at', 'desc')->get();
+        $pengeluaran = PengeluaranKas::orderBy('created_at', 'desc')->take(6)->get();
 
         $siswaId = auth()->user()->id; // Sesuaikan dengan sistem autentikasi Anda
 
@@ -65,7 +65,7 @@ class DashboardSiswaController extends Controller
     public function pengeluaranKas()
     {
         $siswa = Auth::user();
-        $pengeluaran = PengeluaranKas::orderBy('created_at', 'desc')->get(); // Urutkan berdasarkan 'created_at' terbaru
+        $pengeluaran = PengeluaranKas::orderBy('created_at', 'desc')->take(6)->get(); // Urutkan berdasarkan 'created_at' terbaru
 
         $pemasukan = PemasukanKas::sum('nominal');
         $pengeluaranKas = PengeluaranKas::sum('nominal');
