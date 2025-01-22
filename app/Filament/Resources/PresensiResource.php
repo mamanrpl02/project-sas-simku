@@ -16,7 +16,9 @@ use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\Textarea;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\DateFilter;
+use Filament\Tables\Columns\ImageColumn;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TimePicker;
 use Filament\Tables\Actions\ExportAction;
 use Filament\Tables\Columns\SelectColumn;
@@ -29,6 +31,8 @@ use Filament\Forms\Components\DateTimePicker;
 use Filament\Tables\Actions\ExportBulkAction;
 use App\Filament\Resources\PresensiResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use App\Filament\Resources\PresensiResource\RelationManagers;
 
 
@@ -62,9 +66,9 @@ class PresensiResource extends Resource
                     ->label('Waktu Keluar')
                     ->nullable(),
 
-                Textarea::make('alasan')
-                    ->autosize()
-                    ->required(),
+                SpatieMediaLibraryFileUpload::make('bukti')
+                    ->customProperties(['zip_filename_prefix' => 'bukti/']),
+
 
                 Checkbox::make('is_approved')
                     ->label('Aprove')
@@ -105,6 +109,7 @@ class PresensiResource extends Resource
                     ->sortable()
                     ->searchable(),
 
+                // SpatieMediaLibraryImageColumn::make('bukti'),
 
                 CheckboxColumn::make('is_approved')
                     ->label('Setujui')
@@ -126,7 +131,7 @@ class PresensiResource extends Resource
                         'I' => 'Izin',
                         'A' => 'Alfa',
                         'H' => 'Hadir',
-                    ]) ,
+                    ]),
 
                 Filter::make('date')
                     ->label('Tanggal')
