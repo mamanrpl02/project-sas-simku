@@ -102,9 +102,7 @@ class PengeluaranKasResource extends Resource
                 Tables\Actions\DeleteAction::make(),
 
             ])
-            ->bulkActions([
-                ExportBulkAction::make('export') // Menggunakan bulk export
-                    ->exporter(PengeluaranKasExporter::class), // Menghubungkan dengan exporter yang kamu buat
+            ->bulkActions([ 
                 Tables\Actions\DeleteBulkAction::make(),
             ]);
     }

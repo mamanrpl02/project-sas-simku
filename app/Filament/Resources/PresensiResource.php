@@ -66,8 +66,19 @@ class PresensiResource extends Resource
                     ->label('Waktu Keluar')
                     ->nullable(),
 
+                Select::make('jenis')
+                    ->options([
+                        'S' => 'Sakit',
+                        'I' => 'Izin',
+                        'A' => 'Alpha',
+                        'H' => 'Hadir',
+                    ]),
+
                 SpatieMediaLibraryFileUpload::make('bukti')
-                    ->customProperties(['zip_filename_prefix' => 'bukti/']),
+                    ->collection('bukti') // Koleksi yang terdaftar di model
+                    ->disk('public')      // Disk penyimpanan
+                    ->preserveFilenames(), // Mempertahankan nama file asli
+
 
 
                 Checkbox::make('is_approved')
@@ -153,16 +164,9 @@ class PresensiResource extends Resource
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    ExportBulkAction::make()->exporter(PresensiExporter::class),
+                Tables\Actions\BulkActionGroup::make([ 
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ])
-            ->headerActions([
-                ExportAction::make()
-                    ->exporter(PresensiExporter::class)
-                // ->columnMapping(false)
-
             ])
         ;
     }

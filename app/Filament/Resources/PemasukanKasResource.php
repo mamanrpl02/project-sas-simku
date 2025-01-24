@@ -97,9 +97,7 @@ class PemasukanKasResource extends Resource
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
-            ->bulkActions([
-                ExportBulkAction::make('export') // Menggunakan bulk export
-                    ->exporter(PemasukanKasExporter::class), // Menghubungkan dengan exporter yang kamu buat
+            ->bulkActions([ 
                 Tables\Actions\DeleteBulkAction::make(),
             ]);
     }

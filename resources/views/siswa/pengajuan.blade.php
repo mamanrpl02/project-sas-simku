@@ -29,7 +29,7 @@
 
             <button class="submit-pengajuan" type="submit" class="btn btn-primary">Ajukan Izin</button>
         </form>
-        
+
     </div>
 
     <!-- Tambahkan SweetAlert -->
