@@ -6,6 +6,7 @@ use App\Http\Controllers\PresensiController;
 use App\Http\Controllers\IzinPengajuanController;
 use App\Http\Controllers\DashboardSiswaController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\ExportController;
 use App\Livewire\Presensi;
 
 Route::get('/', function () {
@@ -33,15 +34,20 @@ Route::middleware(['auth:siswa'])->group(function () {
     Route::get('/pemasukan-kas', [DashboardSiswaController::class, 'pemasukanKas'])->name('pemasukan-kas');
     Route::get('/pemberitahuan-kas', [DashboardSiswaController::class, 'notifkas'])->name('notif.kas');
 
-
-
-
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
 
     Route::post('/siswa/logout', [AuthenticatedSessionController::class, 'destroy'])
         ->name('siswa.logout');
 });
+
+Route::get('/export/presensi', [ExportController::class, 'exportPresensi'])->name('presensi.export');
+Route::get('/export/presensi/{bulan?}', [ExportController::class, 'exportPresensi'])->name('presensi.export');
+
+Route::get('/export/debit', [ExportController::class, 'exportDebit'])->name('debit.export');
+Route::get('/export/debit/{bulan?}', [ExportController::class, 'exportDebit'])->name('debit.export');
+
+
 
 Route::middleware(['guest'])->group(function () {
     Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
