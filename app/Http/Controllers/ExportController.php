@@ -11,6 +11,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\KreditTabunganExport;
 use App\Exports\PengeluaranKasExport;
 use App\Exports\SiswaExport;
+use App\Livewire\Presensi;
 use App\Models\PengeluaranKas;
 
 class ExportController extends Controller
@@ -26,7 +27,7 @@ class ExportController extends Controller
         }
 
         // Ekspor presensi berdasarkan bulan yang dipilih
-        return Excel::download(new PresensiExport($bulan), 'Presensi.xlsx');
+        return Excel::download(new PresensiExport($bulan), 'presensi-bulan' . $bulan . '.xlsx');
     }
 
     public function exportDebit(Request $request)
@@ -37,7 +38,7 @@ class ExportController extends Controller
             abort(400, 'Bulan tidak valid');
         }
 
-        return Excel::download(new DebitTabunganExport($bulan), 'debit-tabungan-' . $bulan . '.xlsx');
+        return Excel::download(new DebitTabunganExport($bulan), 'debit-tabungan-bulan' . $bulan . '.xlsx');
     }
 
     public function exportKredit(Request $request)
@@ -47,7 +48,7 @@ class ExportController extends Controller
         if ($bulan < 1 || $bulan > 12) {
             abort(400, 'Bulan tidak valid');
         }
-        return Excel::download(new KreditTabunganExport($bulan), 'kredit-tabungan-' . $bulan . '.xlsx');
+        return Excel::download(new KreditTabunganExport($bulan), 'kredit-tabungan-bulan' . $bulan . '.xlsx');
     }
 
     public function exportPemasukanKas(Request $request)
@@ -59,7 +60,7 @@ class ExportController extends Controller
         }
 
         // Pastikan menggunakan PemasukanKasExport, bukan PemasukanKas
-        return Excel::download(new PemasukanKasExport($bulan), 'pemasukan-kas-' . $bulan . '.xlsx');
+        return Excel::download(new PemasukanKasExport($bulan), 'pemasukan-kas-bulan' . $bulan . '.xlsx');
     }
 
     public function exportpengeluaranKas(Request $request)
@@ -71,7 +72,7 @@ class ExportController extends Controller
         }
 
         // Pastikan menggunakan PemasukanKasExport, bukan PemasukanKas
-        return Excel::download(new PengeluaranKasExport($bulan), 'pengeluaran-kas-' . $bulan . '.xlsx');
+        return Excel::download(new PengeluaranKasExport($bulan), 'pengeluaran-kas-bulan' . $bulan . '.xlsx');
     }
 
 
@@ -84,6 +85,6 @@ class ExportController extends Controller
         }
 
         // Pastikan menggunakan PemasukanKasExport, bukan PemasukanKas
-        return Excel::download(new SiswaExport($bulan), 'pengeluaran-kas-' . $bulan . '.xlsx');
+        return Excel::download(new SiswaExport($bulan), 'pengeluaran-kas-bulan' . $bulan . '.xlsx');
     }
 }

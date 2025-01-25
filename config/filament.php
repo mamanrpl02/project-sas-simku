@@ -90,4 +90,9 @@ return [
 
     'livewire_loading_delay' => 'default',
 
+    // <img src="{{ asset('img/logoUnesco.png') }}" alt="">
+
+    // 'brand' => '<img src="img/logoUnesco.png" alt="Logo" style="height: 30px;">',
+    // <img src="{{ asset('img/logoUnesco.png') }}" alt="">
+
 ];

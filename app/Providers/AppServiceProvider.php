@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Filament\Facades\Filament;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\ServiceProvider;
 

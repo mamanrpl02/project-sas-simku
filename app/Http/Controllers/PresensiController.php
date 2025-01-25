@@ -4,12 +4,20 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Models\Presensi;
+use App\Models\HariLibur;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Libur;  // Asumsikan ada model Libur
 
 class PresensiController extends Controller
 {
+
+    public function isHoliday($date)
+    {
+        // Cek apakah tanggal ada di tabel hari_libur
+        return HariLibur::where('tanggal', $date->toDateString())->exists();
+    }
 
     public function presensi(Request $request)
     {
@@ -44,33 +52,19 @@ class PresensiController extends Controller
         $presensi = Presensi::all();
 
         // Return ke view dengan data presensi
-        return view('siswa.presensi', compact('siswa', 'presensiList', 'bulanList','presensi'));
+        return view('siswa.presensi', compact('siswa', 'presensiList', 'bulanList', 'presensi'));
     }
 
 
     public function presensiMasuk(Request $request)
     {
-        // Mendapatkan data siswa yang sedang login
         $siswa = Auth::user();
-
-        // Tanggal hari ini
         $today = Carbon::today();
 
-        // Tanggal kemarin
-        $yesterday = Carbon::yesterday();
-
-        // Cek apakah sudah presensi kemarin
-        $presensiKemarin = Presensi::where('siswa_id', $siswa->id)
-            ->whereDate('date', $yesterday)
-            ->first();
-
-        // Jika tidak ada presensi kemarin, tambahkan dengan status Alpha (A)
-        if (!$presensiKemarin) {
-            Presensi::create([
-                'siswa_id' => $siswa->id,
-                'date' => $yesterday,
-                'jenis' => 'A', // Alpha
-                'is_approved' => true, // Bisa disesuaikan, mungkin perlu disetujui dulu
+        // Periksa apakah hari ini Sabtu, Minggu, atau hari libur
+        if ($today->isWeekend() || $this->isHoliday($today)) {
+            return response()->json([
+                'error' => 'Hari ini adalah hari libur atau tanggal merah, Anda tidak dapat melakukan presensi.',
             ]);
         }
 
@@ -79,20 +73,18 @@ class PresensiController extends Controller
             ->whereDate('date', $today)
             ->first();
 
-        // Jika sudah presensi hari ini, tidak perlu presensi lagi
         if ($presensiHariIni) {
             return response()->json([
                 'error' => 'Anda sudah melakukan presensi hari ini!',
             ]);
         }
 
-        // Jika belum presensi, buat data presensi hari ini
         $presensi = Presensi::create([
             'siswa_id' => $siswa->id,
             'date' => $today,
             'time_in' => Carbon::now()->format('H:i:s'),
-            'jenis' => 'H', // Hadir
-            'is_approved' => false, // Misalnya perlu disetujui dulu oleh pihak tertentu
+            'jenis' => 'H',
+            'is_approved' => false,
         ]);
 
         return response()->json([

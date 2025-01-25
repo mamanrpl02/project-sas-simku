@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Exports;
 
 use Carbon\Carbon;
@@ -67,9 +66,8 @@ class PresensiExport implements FromArray, WithHeadings
                         $alpha++;
                     }
                 } else {
-                    // Jika tidak ada data presensi, berarti Alpha (A)
-                    $row['Hari ' . $i] = 'A';
-                    $alpha++; // Tambahkan ke alpha
+                    // Jika tidak ada data presensi yang diapprove, biarkan kosong
+                    $row['Hari ' . $i] = '';
                 }
             }
 
@@ -84,8 +82,6 @@ class PresensiExport implements FromArray, WithHeadings
 
         return $data;
     }
-
-
 
     public function headings(): array
     {
