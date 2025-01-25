@@ -56,6 +56,9 @@ Route::get('/export/pemasukanKas/{bulan?}', [ExportController::class, 'exportPem
 Route::get('/export/pengeluaranKas', [ExportController::class, 'exportpengeluaranKas'])->name('pengeluaranKas.export');
 Route::get('/export/pengeluaranKas/{bulan?}', [ExportController::class, 'exportpengeluaranKas'])->name('pengeluaranKas.export');
 
+Route::get('/export/siswa', [ExportController::class, 'exportsiswa'])->name('siswa.export');
+Route::get('/export/siswa/{bulan?}', [ExportController::class, 'exportsiswa'])->name('siswa.export');
+
 
 
 Route::middleware(['guest'])->group(function () {
