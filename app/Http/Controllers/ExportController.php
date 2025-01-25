@@ -9,6 +9,8 @@ use App\Exports\PemasukanKasExport;
 use App\Exports\DebitTabunganExport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\KreditTabunganExport;
+use App\Exports\PengeluaranKasExport;
+use App\Models\PengeluaranKas;
 
 class ExportController extends Controller
 {
@@ -57,5 +59,17 @@ class ExportController extends Controller
 
         // Pastikan menggunakan PemasukanKasExport, bukan PemasukanKas
         return Excel::download(new PemasukanKasExport($bulan), 'pemasukan-kas-' . $bulan . '.xlsx');
+    }
+
+    public function exportpengeluaranKas(Request $request)
+    {
+
+        $bulan = intval($request->input('bulan', now()->month));
+        if ($bulan < 1 || $bulan > 12) {
+            abort(400, 'Bulan tidak valid');
+        }
+
+        // Pastikan menggunakan PemasukanKasExport, bukan PemasukanKas
+        return Excel::download(new PengeluaranKasExport($bulan), 'pengeluaran-kas-' . $bulan . '.xlsx');
     }
 }

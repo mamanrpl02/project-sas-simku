@@ -15,6 +15,11 @@ class ListPengeluaranKas extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
+            Actions\Action::make('export')
+                ->label('Export Pengeluaran Kas') // Label tombol export
+                // ->icon('heroicon-o-download') // Ikon yang ditampilkan pada tombol
+                ->url(route('pengeluaranKas.export')) // URL menuju ke route export
+                ->openUrlInNewTab(), // Agar link terbuka di tab baru
             Actions\CreateAction::make(),
         ];
     }

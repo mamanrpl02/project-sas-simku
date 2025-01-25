@@ -62,8 +62,7 @@ class PengeluaranKasResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->columns([
-
+            ->columns([ 
                 TextColumn::make('judul')
                     ->label('Judul')
                     ->sortable()
@@ -76,7 +75,7 @@ class PengeluaranKasResource extends Resource
                     ->searchable(),
 
                 TextColumn::make('nominal')
-                    ->label('nominal')
+                    ->label('Nominal')
                     ->money('IDR')
                     ->sortable(),
 
@@ -102,7 +101,7 @@ class PengeluaranKasResource extends Resource
                 Tables\Actions\DeleteAction::make(),
 
             ])
-            ->bulkActions([ 
+            ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
