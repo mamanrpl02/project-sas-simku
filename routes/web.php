@@ -47,6 +47,9 @@ Route::get('/export/presensi/{bulan?}', [ExportController::class, 'exportPresens
 Route::get('/export/debit', [ExportController::class, 'exportDebit'])->name('debit.export');
 Route::get('/export/debit/{bulan?}', [ExportController::class, 'exportDebit'])->name('debit.export');
 
+Route::get('/export/kredit', [ExportController::class, 'exportkredit'])->name('kredit.export');
+Route::get('/export/kredit/{bulan?}', [ExportController::class, 'exportkredit'])->name('kredit.export');
+
 
 
 Route::middleware(['guest'])->group(function () {

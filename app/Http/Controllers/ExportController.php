@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\DebitTabunganExport;
+use App\Exports\KreditTabunganExport;
 use App\Exports\PresensiExport;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
@@ -24,5 +25,11 @@ class ExportController extends Controller
     {
         $bulan = $request->input('bulan', now()->month);
         return Excel::download(new DebitTabunganExport($bulan), 'debit-tabungan-' . $bulan . '.xlsx');
+    }
+
+    public function exportKredit(Request $request)
+    {
+        $bulan = $request->input('bulan', now()->month);
+        return Excel::download(new KreditTabunganExport($bulan), 'kredit-tabungan-' . $bulan . '.xlsx');
     }
 }
