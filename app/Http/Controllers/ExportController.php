@@ -22,13 +22,7 @@ class ExportController extends Controller
 
     public function exportDebit(Request $request)
     {
-        // Ambil bulan dari request atau gunakan bulan saat ini jika tidak ada
         $bulan = $request->input('bulan', now()->month);
-
-        // Ekspor presensi berdasarkan bulan yang dipilih
-        return Excel::download(new DebitTabunganExport($bulan), 'DebitTabungan.xlsx');
+        return Excel::download(new DebitTabunganExport($bulan), 'debit-tabungan-' . $bulan . '.xlsx');
     }
-
-
-
 }

@@ -10,6 +10,7 @@ class DebitTabungan extends Model
     protected $fillable = [
         'siswa_id',
         'nominal',
+        'created_at'
     ];
 
     public function siswa(): BelongsTo
