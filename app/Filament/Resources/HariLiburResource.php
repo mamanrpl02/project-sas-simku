@@ -20,6 +20,7 @@ class HariLiburResource extends Resource
     protected static ?string $model = HariLibur::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-megaphone';
+    protected static ?string $navigationGroup = 'Presensi';
 
     public static function form(Form $form): Form
     {

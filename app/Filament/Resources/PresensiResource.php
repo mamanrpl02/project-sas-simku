@@ -76,11 +76,6 @@ class PresensiResource extends Resource
                         'H' => 'Hadir',
                     ]),
 
-                // SpatieMediaLibraryFileUpload::make('bukti')
-                //     ->collection('bukti') // Koleksi yang terdaftar di model
-                //     ->disk('public')      // Disk penyimpanan
-                //     ->preserveFilenames(), // Mempertahankan nama file asli
-
                 FileUpload::make('bukti')
                     ->acceptedFileTypes(['image/png', 'image/jpeg', 'image/jpg'])
                     ->directory('bukti')
