@@ -36,13 +36,41 @@ class DashboardSiswaController extends Controller
         return view('siswa.index', compact('siswa', 'pengeluaran'));
     }
 
-    public function riwayat()
+    public function riwayat(Request $request)
     {
         $siswa = Auth::user();
 
-        // Mendapatkan semua transaksi debit dan kredit siswa
-        $debitTabungan = $siswa->debitTabungans()->orderBy('created_at', 'desc')->get();
-        $kreditTabungan = $siswa->kreditTabungans()->orderBy('created_at', 'desc')->get();
+        // Daftar bulan
+        $bulanList = [
+            1 => 'Januari',
+            2 => 'Februari',
+            3 => 'Maret',
+            4 => 'April',
+            5 => 'Mei',
+            6 => 'Juni',
+            7 => 'Juli',
+            8 => 'Agustus',
+            9 => 'September',
+            10 => 'Oktober',
+            11 => 'November',
+            12 => 'Desember'
+        ];
+
+        // Filter berdasarkan bulan yang dipilih
+        $bulan = $request->get('bulan');
+        $debitTabungan = $siswa->debitTabungans()
+            ->when($bulan, function ($query) use ($bulan) {
+                return $query->whereMonth('created_at', $bulan);
+            })
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $kreditTabungan = $siswa->kreditTabungans()
+            ->when($bulan, function ($query) use ($bulan) {
+                return $query->whereMonth('created_at', $bulan);
+            })
+            ->orderBy('created_at', 'desc')
+            ->get();
 
         // Menggabungkan semua transaksi untuk tabel riwayat
         $transaksi = $debitTabungan->map(function ($debit) {
@@ -59,35 +87,97 @@ class DashboardSiswaController extends Controller
             ];
         }))->sortByDesc('tanggal'); // Urutkan transaksi berdasarkan tanggal
 
-        return view('siswa.transaksi', compact('siswa', 'transaksi'));
+        return view('siswa.transaksi', compact('siswa', 'transaksi', 'bulanList'));
     }
 
-    public function pengeluaranKas()
+
+    public function pengeluaranKas(Request $request)
     {
         $siswa = Auth::user();
-        $pengeluaran = PengeluaranKas::orderBy('created_at', 'desc')->take(6)->get(); // Urutkan berdasarkan 'created_at' terbaru
 
+        // Mengambil bulan yang dipilih dari form, defaultnya adalah bulan saat ini
+        $bulan = $request->get('bulan', now()->month);
+
+        // Jika bulan yang dipilih adalah 'all', tampilkan semua data
+        if ($bulan == 'all') {
+            $pengeluaran = PengeluaranKas::orderBy('created_at', 'desc')->get();
+            $pengeluaranKas = PengeluaranKas::sum('nominal');
+        } else {
+            // Filter pengeluaran berdasarkan bulan yang dipilih
+            $pengeluaran = PengeluaranKas::whereMonth('created_at', $bulan)
+                ->orderBy('created_at', 'desc')
+                ->get();
+
+            $pengeluaranKas = PengeluaranKas::whereMonth('created_at', $bulan)->sum('nominal');
+        }
+
+        // Menghitung total pemasukan
         $pemasukan = PemasukanKas::sum('nominal');
-        $pengeluaranKas = PengeluaranKas::sum('nominal');
         $totalSaldo = $pemasukan - $pengeluaranKas;
 
-        return view('siswa.catatanKas', compact('pengeluaran', 'pengeluaranKas', 'pemasukan', 'totalSaldo'));
+        // Membuat list bulan untuk dropdown
+        $bulanList = [ 
+            1 => 'Januari',
+            2 => 'Februari',
+            3 => 'Maret',
+            4 => 'April',
+            5 => 'Mei',
+            6 => 'Juni',
+            7 => 'Juli',
+            8 => 'Agustus',
+            9 => 'September',
+            10 => 'Oktober',
+            11 => 'November',
+            12 => 'Desember'
+        ];
+
+        return view('siswa.catatanKas', compact('pengeluaran', 'pengeluaranKas', 'pemasukan', 'totalSaldo', 'bulanList'));
     }
 
-    public function pemasukanKas()
+
+
+    public function pemasukanKas(Request $request)
     {
-        // Ambil data pemasukan kas dengan relasi 'siswa' dan 'tagihan', diurutkan berdasarkan 'created_at' (terbaru)
-        $pemasukanKas = PemasukanKas::with(['siswa', 'tagihan'])
-            ->orderBy('created_at', 'desc') // Urutkan berdasarkan 'created_at' terbaru
-            ->get();
+        // Ambil data bulan dari request
+        $bulan = $request->input('bulan', 'all'); // Default 'all' jika tidak ada filter bulan
 
-        // Total pemasukan dan pengeluaran
+        // Dapatkan list bulan untuk dropdown
+        $bulanList = [
+            1 => 'Januari',
+            2 => 'Februari',
+            3 => 'Maret',
+            4 => 'April',
+            5 => 'Mei',
+            6 => 'Juni',
+            7 => 'Juli',
+            8 => 'Agustus',
+            9 => 'September',
+            10 => 'Oktober',
+            11 => 'November',
+            12 => 'Desember'
+        ];
+
+        // Query pemasukanKas dengan filter bulan jika dipilih
+        if ($bulan == 'all') {
+            $pemasukanKas = PemasukanKas::with(['siswa', 'tagihan'])
+                ->orderBy('created_at', 'desc')
+                ->get();
+        } else {
+            $pemasukanKas = PemasukanKas::with(['siswa', 'tagihan'])
+                ->whereMonth('created_at', $bulan) // Filter berdasarkan bulan yang dipilih
+                ->orderBy('created_at', 'desc')
+                ->get();
+        }
+
+        // Hitung total pemasukan, pengeluaran dan saldo
         $pemasukan = PemasukanKas::sum('nominal');
         $pengeluaranKas = PengeluaranKas::sum('nominal');
         $totalSaldo = $pemasukan - $pengeluaranKas;
 
-        return view('siswa.pemasukanKas', compact('pemasukanKas', 'totalSaldo', 'pemasukan'));
+        // Kirim data ke view
+        return view('siswa.pemasukanKas', compact('pemasukanKas', 'totalSaldo', 'pemasukan', 'bulanList'));
     }
+
 
     public function notifkas()
     {

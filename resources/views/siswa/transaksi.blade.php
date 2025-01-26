@@ -23,35 +23,59 @@
         </div>
     </div>
 
-    <div class="containerTransaksi mt-5">
-        <h2 class="text-center mb-4">Riwayat Transaksi</h2>
+    <div class="containerTransaksi">
+        <h2 class="text-center mb-4" style="color: black">Riwayat Transaksi Kamu</h2>
 
-        <div class="table-responsive">
-            <table class="table table-striped table-bordered">
-                <thead class="thead-dark">
-                    <tr>
-                        <th scope="col">Tanggal</th>
-                        <th scope="col">Nominal</th>
-                        <th scope="col">Keterangan</th>
+        <!-- Filter Bulan -->
+        <form method="GET" action="{{ route('transaksi') }}">
+            <div class="form-group">
+                <label for="bulan">Pilih Bulan</label>
+                <select name="bulan" id="bulan" class="form-control" onchange="this.form.submit()">
+                    @foreach ($bulanList as $key => $bulan)
+                        <option value="{{ $key }}" {{ request('bulan') == $key ? 'selected' : '' }}>
+                            {{ $bulan }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+        </form>
+
+        <table class="tabel-presensi">
+            <thead>
+                <tr>
+                    <th>Tanggal</th>
+                    <th>Hari</th>
+                    <th>Status</th>
+                    <th>Keterangan</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse ($transaksi as $data)
+                    @php
+                        $tanggal = \Carbon\Carbon::parse($data['tanggal']);
+                    @endphp
+                    <tr class="baris {{ $data['keterangan'] == 'Debit' ? 'text-success' : 'text-danger' }}">
+                        <td>{{ $tanggal->format('d F Y') }}</td>
+                        <td>{{ $tanggal->translatedFormat('l') }}</td>
+                        <td>
+                            @if ($data['keterangan'] == 'Debit')
+                                <span class="text-success">Debit</span>
+                            @else
+                                <span class="text-danger">Kredit</span>
+                            @endif
+                        </td>
+                        <td>{{ $data['keterangan'] }}</td>
                     </tr>
-                </thead>
-                <tbody>
-                    @forelse ($transaksi as $data)
-                        <tr class="baris {{ $data['keterangan'] == 'Debit' ? 'text-success' : 'text-danger' }}">
-                            <td>{{ $data['tanggal']->translatedFormat('l, d M Y') }}</td>
-                            <td>Rp {{ number_format($data['nominal'], 0, ',', '.') }}</td>
-                            <td>{{ $data['keterangan'] }}</td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="4" class="text-center">Tidak ada data</td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
-        </div>
+                @empty
+                    <tr>
+                        <td colspan="4" class="text-center">Tidak ada data transaksi</td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </table>
     </div>
 @endsection
+
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {

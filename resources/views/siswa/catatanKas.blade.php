@@ -14,7 +14,7 @@
         </div>
     </div>
 
-    <div class="containerTransaksi mt-5">
+    <div class="containerTransaksi">
         <div class="text-center count warning mb-4">
             <h2>Jumlah Pengeluaran Kas Sebesar <br><span> Rp.
                     {{ number_format($pengeluaranKas, 0, ',', '.') }}
@@ -22,31 +22,45 @@
             <a href="{{ route('pemasukan-kas') }}">Lihat Pemasukan >> </a>
         </div>
 
-        <div class="table-responsive">
-            <table class="table table-striped table-bordered">
-                <thead class="thead-dark">
-                    <tr>
-                        <th scope="col">
-                            Tanggal
-                        </th>
-                        <th scope="col">Nominal</th>
-                        <th scope="col">Keterangan</th>
+        {{-- <h2 class="text-center" style="color: #292929; margin-top:1rem;">Pengeluaran Kas</h2> --}}
+
+        <!-- Filter Bulan -->
+        <form method="GET" action="{{ route('pengeluaran-kas') }}">
+            <div class="form-group" style="margin-top: 1rem">
+                <label for="bulan">Pilih Bulan</label>
+                <select name="bulan" id="bulan" class="form-control" onchange="this.form.submit()">
+                    <option value="all" {{ request('bulan') == 'all' ? 'selected' : '' }}>Semua</option>
+                    @foreach ($bulanList as $key => $bulan)
+                        <option value="{{ $key }}" {{ request('bulan') == $key ? 'selected' : '' }}>
+                            {{ $bulan }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+        </form>
+
+
+        <table class="tabel-presensi">
+            <thead>
+                <tr>
+                    <th scope="col">Tanggal</th>
+                    <th scope="col">Nominal</th>
+                    <th scope="col">Keterangan</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse ($pengeluaran as $data)
+                    <tr class="baris">
+                        <td>{{ \Carbon\Carbon::parse($data->tanggal)->translatedFormat('l, d M Y') ?? '-' }}</td>
+                        <td class="text-warning"><b>{{ number_format($data->nominal, 0, ',', '.') }}</b></td>
+                        <td class="text-left">{{ $data->keterangan }}</td>
                     </tr>
-                </thead>
-                <tbody>
-                    @forelse ($pengeluaran as $data)
-                        <tr class="baris">
-                            <td>{{ \Carbon\Carbon::parse($data->tanggal)->translatedFormat('l, d M Y') ?? '-' }}</td>
-                            <td class="text-warning"><b>{{ number_format($data->nominal, 0, ',', '.') }}</b></td>
-                            <td class="text-left">{{ $data->keterangan }}</td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="4" class="text-center">Tidak ada data</td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
-        </div>
+                @empty
+                    <tr>
+                        <td colspan="3" class="text-center">Tidak ada data pengeluaran</td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </table>
     </div>
 @endsection

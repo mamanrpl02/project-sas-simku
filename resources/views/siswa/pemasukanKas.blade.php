@@ -8,22 +8,40 @@
                 <p>Total Saldo Kas keseluruhan Sebesar </p>
             </div>
             <div class="isi">
-                <div class="isi"><i class="bi bi-credit-card-fill"></i> <strong>Rp :
-                    </strong>{{ number_format($totalSaldo, 0, ',', '.') }}</div>
+                <div class="isi"><i class="bi bi-credit-card-fill"></i> <strong>Rp
+                        :</strong>{{ number_format($totalSaldo, 0, ',', '.') }}</div>
             </div>
         </div>
     </div>
 
     <div class="containerTransaksi mt-5">
 
-        <div class="text-center count-masuk mb-4"><h2>Jumlah Pemasukan Kas Sebesar <br><span> Rp.
-                {{ number_format($pemasukan, 0, ',', '.') }}
-            </span></h2><br>
+        <div class="text-center count-masuk mb-4">
+            <h2>Jumlah Pemasukan Kas Sebesar <br><span> Rp.
+                    {{ number_format($pemasukan, 0, ',', '.') }}
+                </span></h2><br>
             <a href="{{ route('pengeluaran-kas') }}">Lihat Pengeluaran >> </a>
         </div>
 
+
+        <!-- Filter Bulan -->
+        <form method="GET" action="{{ route('pemasukan-kas') }}">
+            <div class="form-group" style="margin-top: 1rem">
+                <label for="bulan">Pilih Bulan</label>
+                <select name="bulan" id="bulan" class="form-control" onchange="this.form.submit()">
+                    <option value="all" {{ request('bulan') == 'all' ? 'selected' : '' }}>Semua</option>
+                    @foreach ($bulanList as $key => $bulan)
+                        <option value="{{ $key }}" {{ request('bulan') == $key ? 'selected' : '' }}>
+                            {{ $bulan }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+        </form>
+
+
         <div class="table-responsive">
-            <table class="table table-striped table-bordered">
+            <table class="tabel-presensi table table-striped table-bordered">
                 <thead class="thead-dark">
                     <tr>
                         <th scope="col">Nama</th>
@@ -34,14 +52,12 @@
                 </thead>
                 <tbody>
                     @forelse ($pemasukanKas as $kas)
-                        <tr>
-                            <td class="border border-gray-300 px-4 py-2">{{ $kas->siswa->nama ?? 'Tidak Diketahui' }}</td>
-                            <td class="border border-gray-300 px-4 py-2">
-                                {{ \Carbon\Carbon::parse($kas->tagihan->tanggal)->translatedFormat('l, d M Y') ?? '-' }}</td>
-                            <td class="border border-gray-300 px-4 py-2">
-                                {{ \Carbon\Carbon::parse($kas->created_at)->translatedFormat('l, d M Y') }}</td>
-                            <td class="border border-gray-300 px-4 py-2">Rp {{ number_format($kas->nominal, 0, ',', '.') }}
+                        <tr class="baris">
+                            <td class="text-left">{{ $kas->siswa->nama ?? 'Tidak Diketahui' }}</td>
+                            <td>{{ \Carbon\Carbon::parse($kas->tagihan->tanggal)->translatedFormat('l, d M Y') ?? '-' }}
                             </td>
+                            <td>{{ \Carbon\Carbon::parse($kas->created_at)->translatedFormat('l, d M Y') }}</td>
+                            <td class="text-warning"><b>Rp {{ number_format($kas->nominal, 0, ',', '.') }}</b></td>
                         </tr>
                     @empty
                         <tr>

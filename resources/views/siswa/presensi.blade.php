@@ -23,7 +23,7 @@
             </div>
         </div>
 
-        <div class="presensi mt-5">
+        <div class="presensi">
             <div class="your-presensi">
                 <h3>Presensi Kamu</h3>
 

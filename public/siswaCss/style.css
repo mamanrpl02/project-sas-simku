@@ -224,8 +224,11 @@ body {
 }
 
 .containerTransaksi {
-    margin: 8rem auto;
+    margin: 3rem auto;
+    border-radius: 10px;
+    padding: 20px;
     width: 90%;
+    background-color: #f9f9f9;
 }
 
 .containerTransaksi .count {
@@ -236,7 +239,7 @@ body {
     margin-bottom: 1.2rem;
 }
 .containerTransaksi .count-masuk {
-    background-color: rgb(1, 103, 40);
+    background-color: rgba(1, 103, 40, 0.968);
     display: inline-block;
     padding: 1rem;
     border-radius: 5px;
@@ -245,7 +248,7 @@ body {
 
 .containerTransaksi .warning {
     display: inline-block;
-    background-color: #ce9a00;
+    background-color: #ce9b00f6;
     color: rgb(255, 255, 255);
     border: 1px solid rgba(0, 0, 0, 0.568);
 }
