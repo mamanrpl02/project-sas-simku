@@ -26,4 +26,14 @@ class CreateDebitTabungan extends CreateRecord
         // Kirim email notifikasi
         Mail::to($siswa->email)->send(new DebitNotification($siswa, $nominal));
     }
+
+    protected function afterUpdate()
+    {
+        // Mengambil data siswa dan nominal dari record yang baru dibuat
+        $siswa = $this->record->siswa;
+        $nominal = $this->record->nominal;
+
+        // Kirim email notifikasi
+        Mail::to($siswa->email)->send(new DebitNotification($siswa, $nominal));
+    }
 }

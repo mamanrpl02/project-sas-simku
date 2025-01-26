@@ -2,52 +2,40 @@
 
 namespace App\Mail;
 
+use App\Models\Siswa;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
-use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Mail\Mailables\Envelope;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
 class KreditNotification extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public $siswa;
+    public $nominal;
+
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public function __construct(Siswa $siswa, $nominal)
     {
-        
+        $this->siswa = $siswa;
+        $this->nominal = $nominal;
     }
 
     /**
-     * Get the message envelope.
+     * Build the message.
      */
-    public function envelope(): Envelope
+    public function build()
     {
-        return new Envelope(
-            subject: 'Kredit Notification',
-        );
-    }
-
-    /**
-     * Get the message content definition.
-     */
-    public function content(): Content
-    {
-        return new Content(
-            view: 'view.name',
-        );
-    }
-
-    /**
-     * Get the attachments for the message.
-     *
-     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
-     */
-    public function attachments(): array
-    {
-        return [];
+        return $this->view('emails.kredit-notification')
+            ->subject('Debit Tabungan Anda Telah Ditambahkan')
+            ->with([
+                'namaSiswa' => $this->siswa->nama,
+                'nominal' => $this->nominal,
+            ]);
     }
 }

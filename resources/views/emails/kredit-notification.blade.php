@@ -23,7 +23,7 @@
         }
 
         h1 {
-            color: #4CAF50;
+            color: #f44336;
             font-size: 24px;
             margin-bottom: 10px;
         }
@@ -35,7 +35,7 @@
         }
 
         .highlight {
-            color: #2196F3;
+            color: #f44336;
             font-weight: bold;
         }
 
@@ -49,7 +49,7 @@
         .button {
             display: inline-block;
             padding: 12px 20px;
-            background-color: #4CAF50;
+            background-color: #f44336;
             color: #fff;
             text-decoration: none;
             border-radius: 5px;
@@ -58,7 +58,7 @@
         }
 
         .button:hover {
-            background-color: #45a049;
+            background-color: #e53935;
         }
     </style>
 </head>
@@ -66,13 +66,13 @@
 
     <div class="container">
         <h1>Halo {{ $namaSiswa }},</h1>
-        <p>Kami ingin memberitahukan bahwa tabungan Anda baru saja diperbarui.</p>
+        <p>Kami ingin memberitahukan bahwa tabungan Anda telah diperbarui.</p>
 
-        <p>Tabungan Anda kini bertambah sebesar: <span class="highlight">Rp{{ number_format($nominal, 0, ',', '.') }}</span></p>
+        <p>Tabungan Anda kini berkurang sebesar: <span class="highlight">Rp{{ number_format($nominal, 0, ',', '.') }}</span></p>
 
-        <p>Terima kasih telah konsisten menabung. Tabungan ini akan membantu Anda mencapai tujuan keuangan di masa depan.</p>
+        <p>Terima kasih telah menggunakan tabungan Anda dengan bijak. Pastikan untuk selalu menjaga keseimbangan agar dapat terus memenuhi tujuan keuangan Anda.</p>
 
-        <p>Untuk melihat rincian tabungan Anda atau melakukan pengelolaan lebih lanjut, silakan klik link di bawah ini:</p>
+        <p>Untuk melihat riwayat tabungan Anda atau melakukan pengelolaan lebih lanjut, silakan klik link di bawah ini:</p>
 
         <p>Lihat Tabungan Anda di: <a href="{{ route('dashboard') }}">{{ env('APP_URL') }}dashboard</a></p>
 
