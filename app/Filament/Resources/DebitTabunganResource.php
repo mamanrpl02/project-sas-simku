@@ -52,9 +52,16 @@ class DebitTabunganResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('siswa.nama')->label('Nama'),
-                TextColumn::make('nominal')->numeric()->label('Nominal'),
-                TextColumn::make('created_at')->dateTime('l, d F Y')->label('Tanggal'),
+                TextColumn::make('siswa.nama')
+                ->label('Nama')
+                ->sortable()
+                ->searchable(),
+                TextColumn::make('nominal')->numeric()->label('Nominal')
+                ->sortable()
+                ->searchable(),
+                TextColumn::make('created_at')->dateTime('l, d F Y')->label('Tanggal')
+                ->sortable()
+                ->searchable(),
             ])
             ->filters([
                 SelectFilter::make('siswa_id')->label('Nama Siswa')
@@ -75,7 +82,7 @@ class DebitTabunganResource extends Resource
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
-            ->bulkActions([ 
+            ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
             ]);
     }

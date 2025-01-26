@@ -62,9 +62,18 @@ class KreditTabunganResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('siswa.nama'),
-                TextColumn::make('nominal')->numeric(),
-                TextColumn::make('created_at')->dateTime('l, d F Y')->label('Tanggal'),
+                TextColumn::make('siswa.nama')
+                    ->sortable()
+                    ->searchable(),
+                TextColumn::make('nominal')
+                    ->numeric()
+                    ->sortable()
+                    ->searchable(),
+                TextColumn::make('created_at')
+                    ->dateTime('l, d F Y')
+                    ->label('Tanggal')
+                    ->sortable()
+                    ->searchable(),
             ])
             ->filters([
                 SelectFilter::make('siswa_id')
@@ -87,7 +96,7 @@ class KreditTabunganResource extends Resource
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
-            ->bulkActions([ 
+            ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
             ])
         ;
