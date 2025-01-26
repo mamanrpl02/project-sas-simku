@@ -6,11 +6,13 @@ use Carbon\Carbon;
 use Filament\Forms;
 use Filament\Tables;
 use App\Models\Siswa;
+use App\Mail\sendEmail;
 use App\Models\Presensi;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
 use Filament\Tables\Filters\Filter;
+use Illuminate\Support\Facades\Mail;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\Textarea;
@@ -80,7 +82,7 @@ class PresensiResource extends Resource
                 //     ->preserveFilenames(), // Mempertahankan nama file asli
 
                 FileUpload::make('bukti')
-                    ->acceptedFileTypes(['image/png', 'image/jpeg', 'image/jpg']) 
+                    ->acceptedFileTypes(['image/png', 'image/jpeg', 'image/jpg'])
                     ->directory('bukti')
                     ->preserveFilenames()
                     ->image()
@@ -129,13 +131,28 @@ class PresensiResource extends Resource
                 // SpatieMediaLibraryImageColumn::make('bukti'),
 
                 CheckboxColumn::make('is_approved')
-                    ->label('Setujui')
-                    ->afterStateUpdated(function ($record, $state) {
-                        // Mengubah nilai di database sesuai dengan checkbox
-                        $record->update([
-                            'is_approved' => $state ? 1 : 0, // Jika dicentang, bernilai 1, jika tidak, bernilai 0
-                        ]);
-                    })
+                ->label('Setujui')
+                ->afterStateUpdated(function ($record, $state) {
+                    // Mengubah nilai di database sesuai dengan checkbox
+                    $record->update([
+                        'is_approved' => $state ? 1 : 0,
+                    ]);
+
+                    // Jika is_approved adalah true (disetujui), kirim email ke siswa
+                    if ($state) {
+                        $siswa = $record->siswa;
+                        $presensi = [
+                            'date' => $record->date,
+                            'time_in' => $record->time_in,
+                            'time_out' => $record->time_out,
+                            'jenis' => $record->jenis,
+                            'bukti' => $record->bukti, // Pastikan field bukti diambil di sini
+                        ];
+
+                        // Kirim email
+                        Mail::to($siswa->email)->send(new sendEmail($siswa, $presensi));
+                    }
+                })
             ])
             ->filters([
                 SelectFilter::make('siswa_id')->label('Nama Siswa')

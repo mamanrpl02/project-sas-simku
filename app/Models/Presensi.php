@@ -24,6 +24,8 @@ class Presensi extends Model implements HasMedia
         'is_approved'
     ];
 
+    
+
     public function registerMediaCollections(): void
     {
         $this

@@ -2,13 +2,19 @@
 
 namespace App\Models;
 
-use Notifiable;
+use App\Models\Tagihan;
+use App\Models\DebitTabungan;
+use App\Models\KreditTabungan;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable; // Gunakan Authenticatable sebagai dasar
 
 class Siswa extends Authenticatable
 
 {
+
+    use HasFactory, Notifiable;
 
     protected $table = 'siswas'; // Ini harus sama dengan nama tabel Anda di database
 
@@ -20,6 +26,8 @@ class Siswa extends Authenticatable
         'email',
         'password',
     ];
+
+    
 
     protected $hidden = ['password', 'remember_token']; // Kolom yang perlu disembunyikan
     protected $casts = [
@@ -63,11 +71,7 @@ class Siswa extends Authenticatable
     public function presensis()
     {
         return $this->hasMany(Presensi::class);
-    } 
-
-    // Relasi dengan izin
-    public function izins()
-    {
-        return $this->hasMany(Izin::class);
     }
+
+
 }

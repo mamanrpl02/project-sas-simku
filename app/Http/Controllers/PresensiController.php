@@ -124,7 +124,7 @@ class PresensiController extends Controller
         $request->validate([
             'jenis' => 'required|string',
             'alasan' => 'required|string',
-            'bukti' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
+            'bukti' => 'required|file|mimes:jpg,jpeg,png|max:2048',
         ]);
 
         // Simpan file bukti jika ada
