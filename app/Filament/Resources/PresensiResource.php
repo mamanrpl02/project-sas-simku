@@ -69,6 +69,7 @@ class PresensiResource extends Resource
                     ->nullable(),
 
                 Select::make('jenis')
+                    ->required()
                     ->options([
                         'S' => 'Sakit',
                         'I' => 'Izin',
@@ -79,10 +80,8 @@ class PresensiResource extends Resource
                 FileUpload::make('bukti')
                     ->acceptedFileTypes(['image/png', 'image/jpeg', 'image/jpg'])
                     ->directory('bukti')
-                    ->preserveFilenames()
                     ->image()
                     ->imageEditor(),
-
 
                 Checkbox::make('is_approved')
                     ->label('Aprove')
@@ -126,28 +125,28 @@ class PresensiResource extends Resource
                 // SpatieMediaLibraryImageColumn::make('bukti'),
 
                 CheckboxColumn::make('is_approved')
-                ->label('Setujui')
-                ->afterStateUpdated(function ($record, $state) {
-                    // Mengubah nilai di database sesuai dengan checkbox
-                    $record->update([
-                        'is_approved' => $state ? 1 : 0,
-                    ]);
+                    ->label('Setujui')
+                    ->afterStateUpdated(function ($record, $state) {
+                        // Mengubah nilai di database sesuai dengan checkbox
+                        $record->update([
+                            'is_approved' => $state ? 1 : 0,
+                        ]);
 
-                    // Jika is_approved adalah true (disetujui), kirim email ke siswa
-                    if ($state) {
-                        $siswa = $record->siswa;
-                        $presensi = [
-                            'date' => $record->date,
-                            'time_in' => $record->time_in,
-                            'time_out' => $record->time_out,
-                            'jenis' => $record->jenis,
-                            'bukti' => $record->bukti, // Pastikan field bukti diambil di sini
-                        ];
+                        // Jika is_approved adalah true (disetujui), kirim email ke siswa
+                        if ($state) {
+                            $siswa = $record->siswa;
+                            $presensi = [
+                                'date' => $record->date,
+                                'time_in' => $record->time_in,
+                                'time_out' => $record->time_out,
+                                'jenis' => $record->jenis,
+                                'bukti' => $record->bukti, // Pastikan field bukti diambil di sini
+                            ];
 
-                        // Kirim email
-                        Mail::to($siswa->email)->send(new sendEmail($siswa, $presensi));
-                    }
-                })
+                            // Kirim email
+                            Mail::to($siswa->email)->send(new sendEmail($siswa, $presensi));
+                        }
+                    })
             ])
             ->filters([
                 SelectFilter::make('siswa_id')->label('Nama Siswa')

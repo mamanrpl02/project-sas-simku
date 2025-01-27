@@ -44,8 +44,7 @@
             <thead>
                 <tr>
                     <th>Tanggal</th>
-                    <th>Hari</th>
-                    <th>Status</th>
+                    <th>Nominal</th>
                     <th>Keterangan</th>
                 </tr>
             </thead>
@@ -54,9 +53,9 @@
                     @php
                         $tanggal = \Carbon\Carbon::parse($data['tanggal']);
                     @endphp
-                    <tr class="baris {{ $data['keterangan'] == 'Debit' ? 'text-success' : 'text-danger' }}">
-                        <td>{{ $tanggal->format('d F Y') }}</td>
-                        <td>{{ $tanggal->translatedFormat('l') }}</td>
+                    <tr class=" {{ $data['keterangan'] == 'Debit' ? 'text-success' : 'text-danger' }}">
+                        <td>{{ $tanggal->translatedFormat('l, d F Y') }}</td>
+                        <td>{{ number_format($data['nominal'], 0, ',', '.') }}</td>
                         <td>
                             @if ($data['keterangan'] == 'Debit')
                                 <span class="text-success">Debit</span>
@@ -64,15 +63,15 @@
                                 <span class="text-danger">Kredit</span>
                             @endif
                         </td>
-                        <td>{{ $data['keterangan'] }}</td>
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="4" class="text-center">Tidak ada data transaksi</td>
+                        <td colspan="3" class="text-center">Tidak ada data transaksi</td>
                     </tr>
                 @endforelse
             </tbody>
         </table>
+
     </div>
 @endsection
 

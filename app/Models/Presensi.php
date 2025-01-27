@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Illuminate\Support\Facades\Storage;
+
 
 class Presensi extends Model implements HasMedia
 {
@@ -24,13 +26,12 @@ class Presensi extends Model implements HasMedia
         'is_approved'
     ];
 
-    
-
-    public function registerMediaCollections(): void
+    protected static function booted()
     {
-        $this
-            ->addMediaCollection('bukti')
-            ->useDisk('public');
+        static::deleting(function ($presensi) {
+            // Hapus semua media terkait dengan koleksi 'bukti'
+            $presensi->clearMediaCollection('bukti');
+        });
     }
 
     // Relasi dengan model Siswa
