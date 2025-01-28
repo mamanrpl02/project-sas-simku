@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 
 
 class Presensi extends Model implements HasMedia
@@ -28,9 +29,11 @@ class Presensi extends Model implements HasMedia
 
     protected static function booted()
     {
+        // Hapus file 'bukti' ketika data presensi dihapus
         static::deleting(function ($presensi) {
-            // Hapus semua media terkait dengan koleksi 'bukti'
-            $presensi->clearMediaCollection('bukti');
+            if ($presensi->bukti) {
+                Storage::disk('public')->delete($presensi->bukti);
+            }
         });
     }
 
