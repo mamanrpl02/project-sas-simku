@@ -11,7 +11,7 @@ class StatsOverview extends BaseWidget
     protected function getStats(): array
     {
         return [
-            Stat::make('Total Kredit (Keluar)', 'Rp ' . number_format(KreditTabungan::sum('nominal'), 0, ',', '.'))
+            Stat::make('Total Kredit(Keluar) Tabungan', 'Rp ' . number_format(KreditTabungan::sum('nominal'), 0, ',', '.'))
                 ->description('Jumlah total semua kredit')
                 ->icon('heroicon-o-currency-dollar'),
         ];

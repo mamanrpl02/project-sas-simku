@@ -12,7 +12,7 @@ class StatsOverview extends BaseWidget
     protected function getStats(): array
     {
         return [
-            Stat::make('Total Debit (Masuk)', 'Rp ' . number_format(DebitTabungan::sum('nominal'), 0, ',', '.'))
+            Stat::make('Total Debit(Masuk) Tabungan', 'Rp ' . number_format(DebitTabungan::sum('nominal'), 0, ',', '.'))
             ->description('Jumlah total semua debit')
             ->icon('heroicon-o-currency-dollar'),
         ];

@@ -14,9 +14,9 @@ class MyWidget extends BaseWidget
     protected function getStats(): array
     {
         return [
-            Stat::make('Total Debit', 'Rp ' . number_format(DebitTabungan::sum('nominal'), 0, ',', '.')),
-            Stat::make('Total Kredit', 'Rp ' . number_format(KreditTabungan::sum('nominal'), 0, ',', '.')),
-            Stat::make('Total Saldo Keseluruhan', function () {
+            Stat::make('Total Debit Tabungan', 'Rp ' . number_format(DebitTabungan::sum('nominal'), 0, ',', '.')),
+            Stat::make('Total Kredit Tabungan', 'Rp ' . number_format(KreditTabungan::sum('nominal'), 0, ',', '.')),
+            Stat::make('Total Saldo Keseluruhan Tabungan', function () {
                 // Hitung total debit
                 $totalDebit = DebitTabungan::sum('nominal');
 
@@ -30,7 +30,7 @@ class MyWidget extends BaseWidget
             }),
             Stat::make('Total Pemasukan Kas', 'Rp ' . number_format(PemasukanKas::sum('nominal'), 0, ',', '.')),
             Stat::make('Total Pengeluaran Kas', 'Rp ' . number_format(PengeluaranKas::sum('nominal'), 0, ',', '.')),
-            Stat::make('Total Saldo Keseluruhan', function () {
+            Stat::make('Total Saldo Keseluruhan Kas', function () {
                 // Hitung total debit
                 $pemasukan = PemasukanKas::sum('nominal');
 
