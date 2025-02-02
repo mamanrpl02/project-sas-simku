@@ -61,7 +61,7 @@
     <main class="main">
         <!-- Hero Section -->
         <section id="hero" class="hero section dark-background">
-            <img src="{{ asset('assets/img/hero-bg.jpg') }}" alt="" data-aos="fade-in" />
+            <img src="{{ asset('assets/img/hero-bg1.jpg') }}" alt="" data-aos="fade-in" />
 
             <div class="container">
                 <h2 data-aos="fade-up" data-aos-delay="100">
