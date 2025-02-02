@@ -30,15 +30,17 @@ class ExportController extends Controller
     }
 
 
-    public function exportDebit(Request $request)
+    public function exportDebit(Request $request, $bulan = null )
     {
+        // dd($request->all());  // Melihat semua data yang dikirim
+         // Jika bulan tidak dikirimkan dari form, gunakan bulan saat ini
+         $bulan = $bulan ?? intval($request->input('bulan', now()->month));
 
-        $bulan = intval($request->input('bulan', now()->month));
-        if ($bulan < 1 || $bulan > 12) {
-            abort(400, 'Bulan tidak valid');
-        }
+         if ($bulan < 1 || $bulan > 12) {
+             abort(400, 'Bulan tidak valid');
+         }
 
-        return Excel::download(new DebitTabunganExport($bulan), 'debit-tabungan-bulan' . $bulan . '.xlsx');
+         return Excel::download(new DebitTabunganExport($bulan), 'debit-bulan-' . $bulan . '.xlsx');
     }
 
     public function exportKredit(Request $request)

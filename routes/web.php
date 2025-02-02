@@ -43,20 +43,15 @@ Route::middleware(['auth:siswa'])->group(function () {
 
 Route::get('/export/presensi/{bulan?}', [ExportController::class, 'exportPresensi'])->name('presensi.export');
 
-Route::get('/export/debit', [ExportController::class, 'exportDebit'])->name('debit.export');
 Route::get('/export/debit/{bulan?}', [ExportController::class, 'exportDebit'])->name('debit.export');
 
-Route::get('/export/kredit', [ExportController::class, 'exportkredit'])->name('kredit.export');
 Route::get('/export/kredit/{bulan?}', [ExportController::class, 'exportkredit'])->name('kredit.export');
 
-Route::get('/export/pemasukanKas', [ExportController::class, 'exportPemasukanKas'])->name('pemasukanKas.export');
 Route::get('/export/pemasukanKas/{bulan?}', [ExportController::class, 'exportPemasukanKas'])->name('pemasukanKas.export');
 
-Route::get('/export/pengeluaranKas', [ExportController::class, 'exportpengeluaranKas'])->name('pengeluaranKas.export');
 Route::get('/export/pengeluaranKas/{bulan?}', [ExportController::class, 'exportpengeluaranKas'])->name('pengeluaranKas.export');
 
 Route::get('/export/siswa', [ExportController::class, 'exportsiswa'])->name('siswa.export');
-Route::get('/export/siswa/{bulan?}', [ExportController::class, 'exportsiswa'])->name('siswa.export');
 
 
 
