@@ -30,30 +30,32 @@ class ExportController extends Controller
     }
 
 
-    public function exportDebit(Request $request, $bulan = null )
+    public function exportDebit(Request $request, $bulan = null)
     {
         // dd($request->all());  // Melihat semua data yang dikirim
-         // Jika bulan tidak dikirimkan dari form, gunakan bulan saat ini
-         $bulan = $bulan ?? intval($request->input('bulan', now()->month));
+        // Jika bulan tidak dikirimkan dari form, gunakan bulan saat ini
+        $bulan = $bulan ?? intval($request->input('bulan', now()->month));
 
-         if ($bulan < 1 || $bulan > 12) {
-             abort(400, 'Bulan tidak valid');
-         }
-
-         return Excel::download(new DebitTabunganExport($bulan), 'debit-bulan-' . $bulan . '.xlsx');
-    }
-
-    public function exportKredit(Request $request)
-    {
-
-        $bulan = intval($request->input('bulan', now()->month));
         if ($bulan < 1 || $bulan > 12) {
             abort(400, 'Bulan tidak valid');
         }
-        return Excel::download(new KreditTabunganExport($bulan), 'kredit-tabungan-bulan' . $bulan . '.xlsx');
+
+        return Excel::download(new DebitTabunganExport($bulan), 'debit-tabungan-bulan-' . $bulan . '.xlsx');
     }
 
-    public function exportPemasukanKas(Request $request)
+    public function exportKredit(Request $request, $bulan = null)
+    {
+
+        $bulan = $bulan ?? intval($request->input('bulan', now()->month));
+
+        if ($bulan < 1 || $bulan > 12) {
+            abort(400, 'Bulan tidak valid');
+        }
+
+        return Excel::download(new KreditTabunganExport($bulan), 'kredit-tabungan-bulan-' . $bulan . '.xlsx');
+    }
+
+    public function exportPemasukanKas(Request $request, $bulan = null)
     {
 
         $bulan = intval($request->input('bulan', now()->month));
@@ -65,7 +67,7 @@ class ExportController extends Controller
         return Excel::download(new PemasukanKasExport($bulan), 'pemasukan-kas-bulan' . $bulan . '.xlsx');
     }
 
-    public function exportpengeluaranKas(Request $request)
+    public function exportpengeluaranKas(Request $request, $bulan = null)
     {
 
         $bulan = intval($request->input('bulan', now()->month));
@@ -78,7 +80,7 @@ class ExportController extends Controller
     }
 
 
-    public function exportsiswa(Request $request)
+    public function exportsiswa(Request $request, $bulan = null)
     {
 
         $bulan = intval($request->input('bulan', now()->month));
