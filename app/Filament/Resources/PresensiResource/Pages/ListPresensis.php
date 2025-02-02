@@ -5,6 +5,8 @@ namespace App\Filament\Resources\PresensiResource\Pages;
 use App\Filament\Resources\PresensiResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
+use Filament\Forms\Components\Select; // Pastikan ini sudah diimpor dengan benar
+
 
 class ListPresensis extends ListRecords
 {
@@ -14,11 +16,36 @@ class ListPresensis extends ListRecords
     {
 
         return [
+
             Actions\Action::make('export')
-            ->label('Export Presensi') // Label tombol export
-            // ->icon('heroicon-o-download') // Ikon yang ditampilkan pada tombol
-            ->url(route('presensi.export')) // URL menuju ke route export
-            ->openUrlInNewTab(), // Agar link terbuka di tab baru
+                ->label('Export Presensi')
+                ->form([
+                    Select::make('bulan')
+                        ->label('Pilih Bulan')
+                        ->options([
+                            '1' => 'Januari',
+                            '2' => 'Februari',
+                            '3' => 'Maret',
+                            '4' => 'April',
+                            '5' => 'Mei',
+                            '6' => 'Juni',
+                            '7' => 'Juli',
+                            '8' => 'Agustus',
+                            '9' => 'September',
+                            '10' => 'Oktober',
+                            '11' => 'November',
+                            '12' => 'Desember',
+                        ])
+                        ->required(),
+                ])
+                ->action(function (array $data) {
+                    $bulan = $data['bulan'];
+                    // Redirect POST ke route export
+                    return redirect()->route('presensi.export', ['bulan' => $bulan])->with('bulan', $bulan);
+                })
+                ->modalHeading('Pilih Bulan untuk Export'),
+
+
             Actions\CreateAction::make(),
         ];
     }

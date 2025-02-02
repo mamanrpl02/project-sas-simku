@@ -41,7 +41,6 @@ Route::middleware(['auth:siswa'])->group(function () {
         ->name('siswa.logout');
 });
 
-Route::get('/export/presensi', [ExportController::class, 'exportPresensi'])->name('presensi.export');
 Route::get('/export/presensi/{bulan?}', [ExportController::class, 'exportPresensi'])->name('presensi.export');
 
 Route::get('/export/debit', [ExportController::class, 'exportDebit'])->name('debit.export');

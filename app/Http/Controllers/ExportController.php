@@ -17,18 +17,18 @@ use App\Models\PengeluaranKas;
 class ExportController extends Controller
 {
 
-
-    public function exportPresensi(Request $request)
+    public function exportPresensi(Request $request, $bulan = null)
     {
+        // Jika bulan tidak dikirimkan dari form, gunakan bulan saat ini
+        $bulan = $bulan ?? intval($request->input('bulan', now()->month));
 
-        $bulan = intval($request->input('bulan', now()->month));
         if ($bulan < 1 || $bulan > 12) {
             abort(400, 'Bulan tidak valid');
         }
 
-        // Ekspor presensi berdasarkan bulan yang dipilih
-        return Excel::download(new PresensiExport($bulan), 'presensi-bulan' . $bulan . '.xlsx');
+        return Excel::download(new PresensiExport($bulan), 'presensi-bulan-' . $bulan . '.xlsx');
     }
+
 
     public function exportDebit(Request $request)
     {
