@@ -6,8 +6,9 @@ use App\Models\Siswa;
 use App\Models\Presensi;
 use Maatwebsite\Excel\Concerns\FromArray;
 use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\WithColumnWidths;
 
-class PresensiExport implements FromArray, WithHeadings
+class PresensiExport implements FromArray, WithHeadings, WithColumnWidths
 {
     protected $bulan;
 
@@ -98,5 +99,13 @@ class PresensiExport implements FromArray, WithHeadings
         $headings[] = 'Total Alpha';
 
         return $headings;
+    }
+
+    public function columnWidths(): array
+    {
+        return [
+            'A' => 15, // NIS
+            'B' => 30, // Nama
+        ];
     }
 }

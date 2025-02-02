@@ -7,8 +7,9 @@ use App\Models\Siswa;
 use App\Models\DebitTabungan;
 use Maatwebsite\Excel\Concerns\FromArray;
 use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\WithColumnWidths;
 
-class DebitTabunganExport implements FromArray, WithHeadings
+class DebitTabunganExport implements FromArray, WithHeadings, WithColumnWidths
 {
     protected $bulan;
 
@@ -18,25 +19,18 @@ class DebitTabunganExport implements FromArray, WithHeadings
     }
 
     function format_rupiah($angka) {
-
-        return number_format($angka, 0 , '.');
+        return number_format($angka, 0, '.');
     }
 
     public function array(): array
     {
-        // Ambil data siswa
         $siswaList = Siswa::all();
-
-        // Ambil data debit tabungan berdasarkan bulan
         $debitTabunganList = DebitTabungan::whereMonth('created_at', $this->bulan)->get();
 
-        // Inisialisasi array hasil export
         $data = [];
-
-        // Tentukan jumlah hari dalam bulan
         $daysInMonth = Carbon::create(null, $this->bulan, 1)->daysInMonth;
+        $grandTotal = 0;
 
-        // Looping tiap siswa untuk menampilkan data debit tabungan mereka
         foreach ($siswaList as $siswa) {
             $row = [
                 'NIS' => $siswa->nisn,
@@ -58,34 +52,48 @@ class DebitTabunganExport implements FromArray, WithHeadings
                     ? $formattedDebit->implode(', ')
                     : '';
 
-                // Tambahkan nominal ke total debit (tanpa perkalian 1000, tetap menggunakan nilai asli)
                 $totalDebit += $debitNominal->sum();
             }
 
-            // Format total debit dengan 1000 untuk tampilan
             $row['Total Debit'] = number_format($totalDebit, 0, '.');
-
+            $grandTotal += $totalDebit;
             $data[] = $row;
         }
+
+        // Tambahkan baris total di bagian akhir
+        $totalRow = [
+            'NIS' => '',
+            'Nama' => 'Total Seluruh Debit'
+        ];
+
+        for ($i = 1; $i <= $daysInMonth; $i++) {
+            $totalRow['Hari ' . $i] = ''; // Kosongkan kolom hari
+        }
+
+        $totalRow['Total Debit'] = number_format($grandTotal, 0, '.');
+        $data[] = $totalRow;
 
         return $data;
     }
 
-
-
-
     public function headings(): array
     {
-        // Buat heading dengan kolom tanggal
         $headings = ['NIS', 'Nama'];
         $daysInMonth = Carbon::create(null, $this->bulan, 1)->daysInMonth;
         for ($i = 1; $i <= $daysInMonth; $i++) {
             $headings[] = 'Hari ' . $i;
         }
 
-        // Tambahkan heading untuk total debit
         $headings[] = 'Total Debit';
 
         return $headings;
+    }
+
+    public function columnWidths(): array
+    {
+        return [
+            'A' => 15,
+            'B' => 30,
+        ];
     }
 }

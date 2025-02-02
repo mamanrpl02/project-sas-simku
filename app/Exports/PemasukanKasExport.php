@@ -92,7 +92,7 @@ class PemasukanKasExport implements FromArray, WithHeadings, WithColumnWidths
         // Menentukan lebar kolom secara manual
         $columnWidths = [
             'A' => 20, // NISN
-            'B' => 25, // Nama
+            'B' => 30, // Nama
         ];
 
         // Menentukan lebar untuk kolom tanggal berdasarkan posisi
@@ -105,4 +105,6 @@ class PemasukanKasExport implements FromArray, WithHeadings, WithColumnWidths
 
         return $columnWidths;
     }
+
+
 }

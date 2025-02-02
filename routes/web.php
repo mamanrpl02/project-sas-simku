@@ -8,6 +8,8 @@ use App\Http\Controllers\DashboardSiswaController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\ExportController;
 use App\Livewire\Presensi;
+use Illuminate\Support\Facades\Gate;
+
 
 Route::get('/', function () {
     return view('index');
@@ -41,19 +43,21 @@ Route::middleware(['auth:siswa'])->group(function () {
         ->name('siswa.logout');
 });
 
-Route::get('/export/presensi/{bulan?}', [ExportController::class, 'exportPresensi'])->name('presensi.export');
-
-Route::get('/export/debit/{bulan?}', [ExportController::class, 'exportDebit'])->name('debit.export');
-
-Route::get('/export/kredit/{bulan?}', [ExportController::class, 'exportkredit'])->name('kredit.export');
-
-Route::get('/export/pemasukanKas/{bulan?}', [ExportController::class, 'exportPemasukanKas'])->name('pemasukanKas.export');
-
-Route::get('/export/pengeluaranKas/{bulan?}', [ExportController::class, 'exportpengeluaranKas'])->name('pengeluaranKas.export');
-
-Route::get('/export/siswa', [ExportController::class, 'exportsiswa'])->name('siswa.export');
 
 
+Route::middleware(['auth', 'can:access-export'])->group(function () {
+    Route::get('/export/presensi/{bulan?}', [ExportController::class, 'exportPresensi'])->name('presensi.export');
+
+    Route::get('/export/debit/{bulan?}', [ExportController::class, 'exportDebit'])->name('debit.export');
+
+    Route::get('/export/kredit/{bulan?}', [ExportController::class, 'exportkredit'])->name('kredit.export');
+
+    Route::get('/export/pemasukanKas/{bulan?}', [ExportController::class, 'exportPemasukanKas'])->name('pemasukanKas.export');
+
+    Route::get('/export/pengeluaranKas/{bulan?}', [ExportController::class, 'exportpengeluaranKas'])->name('pengeluaranKas.export');
+
+    Route::get('/export/siswa', [ExportController::class, 'exportsiswa'])->name('siswa.export');
+});
 
 Route::middleware(['guest'])->group(function () {
     Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');

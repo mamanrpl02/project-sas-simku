@@ -66,15 +66,8 @@ class ExportController extends Controller
     }
 
 
-    public function exportsiswa(Request $request, $bulan = null)
+    public function exportsiswa()
     {
-
-        $bulan = intval($request->input('bulan', now()->month));
-        if ($bulan < 1 || $bulan > 12) {
-            abort(400, 'Bulan tidak valid');
-        }
-
-        // Pastikan menggunakan PemasukanKasExport, bukan PemasukanKas
-        return Excel::download(new SiswaExport($bulan), 'pengeluaran-kas-bulan' . $bulan . '.xlsx');
+        return Excel::download(new SiswaExport(), 'siswa.xlsx');
     }
 }
