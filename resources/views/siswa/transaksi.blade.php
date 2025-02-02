@@ -31,8 +31,9 @@
             <div class="form-group">
                 <label for="bulan">Pilih Bulan</label>
                 <select name="bulan" id="bulan" class="form-control" onchange="this.form.submit()">
+                    <option value="0" {{ request('bulan') == '0' ? 'selected' : '' }}>Semua</option>
                     @foreach ($bulanList as $key => $bulan)
-                        <option value="{{ $key }}" {{ request('bulan') == $key ? 'selected' : '' }}>
+                        <option value="{{ $key }}" {{ request('bulan') == (string) $key ? 'selected' : '' }}>
                             {{ $bulan }}
                         </option>
                     @endforeach

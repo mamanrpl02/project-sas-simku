@@ -29,16 +29,14 @@
             <div class="form-group" style="margin-top: 1rem">
                 <label for="bulan">Pilih Bulan</label>
                 <select name="bulan" id="bulan" class="form-control" onchange="this.form.submit()">
-                    <option value="all" {{ request('bulan') == 'all' ? 'selected' : '' }}>Semua</option>
-                    @foreach ($bulanList as $key => $bulan)
-                        <option value="{{ $key }}" {{ request('bulan') == $key ? 'selected' : '' }}>
-                            {{ $bulan }}
+                    @foreach ($bulanList as $key => $namaBulan)
+                        <option value="{{ $key }}" {{ request('bulan', now()->month) == $key ? 'selected' : '' }}>
+                            {{ $namaBulan }}
                         </option>
                     @endforeach
                 </select>
             </div>
         </form>
-
 
         <table class="tabel-presensi">
             <thead>
@@ -51,7 +49,7 @@
             <tbody>
                 @forelse ($pengeluaran as $data)
                     <tr class="baris">
-                        <td>{{ \Carbon\Carbon::parse($data->tanggal)->translatedFormat('l, d M Y') ?? '-' }}</td>
+                        <td>{{ \Carbon\Carbon::parse($data->created_at)->translatedFormat('l, d M Y') }}</td>
                         <td class="text-warning"><b>{{ number_format($data->nominal, 0, ',', '.') }}</b></td>
                         <td class="text-left">{{ $data->keterangan }}</td>
                     </tr>

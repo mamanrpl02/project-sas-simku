@@ -20,40 +20,49 @@ class PresensiController extends Controller
     }
 
     public function presensi(Request $request)
-    {
-        // Mendapatkan data siswa yang sedang login
-        $siswa = Auth::user();
+{
+    // Mendapatkan data siswa yang sedang login
+    $siswa = Auth::user();
 
-        // Daftar bulan
-        $bulanList = [
-            '01' => 'Januari',
-            '02' => 'Februari',
-            '03' => 'Maret',
-            '04' => 'April',
-            '05' => 'Mei',
-            '06' => 'Juni',
-            '07' => 'Juli',
-            '08' => 'Agustus',
-            '09' => 'September',
-            '10' => 'Oktober',
-            '11' => 'November',
-            '12' => 'Desember'
-        ];
+    // Daftar bulan
+    $bulanList = [
+        '01' => 'Januari',
+        '02' => 'Februari',
+        '03' => 'Maret',
+        '04' => 'April',
+        '05' => 'Mei',
+        '06' => 'Juni',
+        '07' => 'Juli',
+        '08' => 'Agustus',
+        '09' => 'September',
+        '10' => 'Oktober',
+        '11' => 'November',
+        '12' => 'Desember'
+    ];
 
-        // Ambil bulan yang dipilih atau bulan sekarang
-        $bulanDipilih = $request->input('bulan', Carbon::now()->format('m'));
+    // Ambil bulan yang dipilih atau bulan sekarang
+    $bulanDipilih = $request->input('bulan', '0'); // default '0' jika tidak ada bulan yang dipilih
 
-        // Ambil data presensi siswa berdasarkan bulan yang dipilih, urutkan dari terbaru ke lama
+    // Ambil data presensi siswa berdasarkan bulan yang dipilih
+    if ($bulanDipilih == '0') {
+        // Jika memilih "Semua", ambil semua presensi tanpa filter bulan
+        $presensiList = Presensi::where('siswa_id', $siswa->id)
+            ->orderBy('date', 'desc') // Mengurutkan dari yang terbaru ke yang lama
+            ->get();
+    } else {
+        // Jika ada bulan yang dipilih, filter berdasarkan bulan tersebut
         $presensiList = Presensi::where('siswa_id', $siswa->id)
             ->whereMonth('date', $bulanDipilih)
             ->orderBy('date', 'desc') // Mengurutkan dari yang terbaru ke yang lama
             ->get();
-
-        $presensi = Presensi::all();
-
-        // Return ke view dengan data presensi
-        return view('siswa.presensi', compact('siswa', 'presensiList', 'bulanList', 'presensi'));
     }
+
+    $presensi = Presensi::all();
+
+    // Return ke view dengan data presensi
+    return view('siswa.presensi', compact('siswa', 'presensiList', 'bulanList', 'presensi'));
+}
+
 
 
     public function presensiMasuk(Request $request)
