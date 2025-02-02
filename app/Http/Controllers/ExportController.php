@@ -55,28 +55,14 @@ class ExportController extends Controller
         return Excel::download(new KreditTabunganExport($bulan), 'kredit-tabungan-bulan-' . $bulan . '.xlsx');
     }
 
-    public function exportPemasukanKas(Request $request, $bulan = null)
+    public function exportPemasukanKas()
     {
-
-        $bulan = intval($request->input('bulan', now()->month));
-        if ($bulan < 1 || $bulan > 12) {
-            abort(400, 'Bulan tidak valid');
-        }
-
-        // Pastikan menggunakan PemasukanKasExport, bukan PemasukanKas
-        return Excel::download(new PemasukanKasExport($bulan), 'pemasukan-kas-bulan' . $bulan . '.xlsx');
+        return Excel::download(new PemasukanKasExport(), 'pemasukan-kas.xlsx');
     }
 
-    public function exportpengeluaranKas(Request $request, $bulan = null)
+    public function exportpengeluaranKas()
     {
-
-        $bulan = intval($request->input('bulan', now()->month));
-        if ($bulan < 1 || $bulan > 12) {
-            abort(400, 'Bulan tidak valid');
-        }
-
-        // Pastikan menggunakan PemasukanKasExport, bukan PemasukanKas
-        return Excel::download(new PengeluaranKasExport($bulan), 'pengeluaran-kas-bulan' . $bulan . '.xlsx');
+        return Excel::download(new PengeluaranKasExport(), 'pengeluaran-kas.xlsx');
     }
 
 

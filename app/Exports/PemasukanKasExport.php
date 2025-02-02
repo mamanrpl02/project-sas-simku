@@ -12,13 +12,10 @@ use Maatwebsite\Excel\Concerns\WithColumnWidths;
 
 class PemasukanKasExport implements FromArray, WithHeadings, WithColumnWidths
 {
-    protected $bulan;
     protected $tanggalTagihan;
 
-    public function __construct($bulan)
+    public function __construct()
     {
-        $this->bulan = $bulan;
-
         // Ambil semua tanggal dari tabel tagihan
         $this->tanggalTagihan = Tagihan::select('tanggal')
             ->distinct()
@@ -32,8 +29,8 @@ class PemasukanKasExport implements FromArray, WithHeadings, WithColumnWidths
         // Ambil data siswa
         $siswaList = Siswa::all();
 
-        // Ambil data pemasukan kas berdasarkan bulan
-        $pemasukanKasList = PemasukanKas::whereMonth('created_at', $this->bulan)->get();
+        // Ambil semua data pemasukan kas
+        $pemasukanKasList = PemasukanKas::all();
 
         // Inisialisasi array hasil export
         $data = [];

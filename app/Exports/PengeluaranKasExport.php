@@ -17,6 +17,7 @@ class PengeluaranKasExport implements FromArray, WithHeadings, WithColumnWidths
 
         // Inisialisasi array hasil export
         $data = [];
+        $totalNominal = 0;
 
         // Looping untuk setiap data pengeluaran kas
         foreach ($pengeluaranKasList as $pengeluaranKas) {
@@ -28,8 +29,17 @@ class PengeluaranKasExport implements FromArray, WithHeadings, WithColumnWidths
                 'Nominal' => number_format($pengeluaranKas->nominal, 0, '.'),
             ];
 
+            $totalNominal += $pengeluaranKas->nominal;
             $data[] = $row;
         }
+
+        // Tambahkan total di baris akhir
+        $data[] = [
+            'Judul' => 'Total',
+            'Keterangan' => '',
+            'Tanggal' => '',
+            'Nominal' => number_format($totalNominal, 0, '.'),
+        ];
 
         return $data;
     }

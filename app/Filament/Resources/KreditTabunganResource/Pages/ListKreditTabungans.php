@@ -16,7 +16,7 @@ class ListKreditTabungans extends ListRecords
     {
         return [
             Actions\Action::make('export')
-            ->label('Export Debit')
+            ->label('Export Kredit')
             ->form([
                 Select::make('bulan')
                     ->label('Pilih Bulan')
