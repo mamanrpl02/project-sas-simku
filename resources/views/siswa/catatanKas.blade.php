@@ -21,9 +21,7 @@
                 </span></h2><br>
             <a href="{{ route('pemasukan-kas') }}">Lihat Pemasukan >> </a>
         </div>
-
-        {{-- <h2 class="text-center" style="color: #292929; margin-top:1rem;">Pengeluaran Kas</h2> --}}
-
+ 
         <!-- Filter Bulan -->
         <form method="GET" action="{{ route('pengeluaran-kas') }}">
             <div class="form-group" style="margin-top: 1rem">

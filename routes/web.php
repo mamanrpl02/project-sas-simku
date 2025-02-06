@@ -1,14 +1,15 @@
 <?php
 
+use App\Livewire\Presensi;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ExportController;
+use App\Http\Controllers\FonnteController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PresensiController;
 use App\Http\Controllers\IzinPengajuanController;
 use App\Http\Controllers\DashboardSiswaController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
-use App\Http\Controllers\ExportController;
-use App\Livewire\Presensi;
-use Illuminate\Support\Facades\Gate;
 
 
 Route::get('/', function () {
@@ -43,6 +44,7 @@ Route::middleware(['auth:siswa'])->group(function () {
         ->name('siswa.logout');
 });
 
+Route::post('/send-group', [FonnteController::class, 'sendMessage']);
 
 
 Route::middleware(['auth', 'can:access-export'])->group(function () {

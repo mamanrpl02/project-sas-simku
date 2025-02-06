@@ -78,4 +78,14 @@
             }
         });
     </script>
+
+
+
+<form action="/send-group" method="POST">
+    @csrf
+    {{-- <input type="text" name="group_id" placeholder="Masukkan ID Grup"> --}}
+    <textarea name="message" placeholder="Pesan ke grup"></textarea>
+    <button type="submit">Kirim</button>
+</form>
+
 @endsection
