@@ -2,10 +2,11 @@
 
 namespace App\Filament\Resources\PresensiResource\Pages;
 
-use App\Filament\Resources\PresensiResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
+use App\Filament\Resources\PresensiResource;
 use Filament\Forms\Components\Select; // Pastikan ini sudah diimpor dengan benar
+use Filament\Actions\Action;
 
 
 class ListPresensis extends ListRecords
@@ -16,7 +17,6 @@ class ListPresensis extends ListRecords
     {
 
         return [
-
             Actions\Action::make('export')
                 ->label('Export Presensi')
                 ->form([
@@ -45,6 +45,9 @@ class ListPresensis extends ListRecords
                 })
                 ->modalHeading('Pilih Bulan untuk Export'),
 
+            Action::make('Kirim Notif')
+                ->url(route('send.absen'))
+                ->openUrlInNewTab(),
 
             Actions\CreateAction::make(),
         ];

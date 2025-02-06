@@ -44,7 +44,8 @@ Route::middleware(['auth:siswa'])->group(function () {
         ->name('siswa.logout');
 });
 
-Route::post('/send-group', [FonnteController::class, 'sendMessage']);
+// Route::post('/send-group', [FonnteController::class, 'sendMessage']);
+Route::get('/send-absent-report', [FonnteController::class, 'sendAbsentStudentsToGroup'])->name('send.absen');
 
 
 Route::middleware(['auth', 'can:access-export'])->group(function () {
