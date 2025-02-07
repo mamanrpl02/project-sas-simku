@@ -5,36 +5,38 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\DB;
-use Carbon\Carbon; // Import Carbon untuk manipulasi tanggal
-use App\Models\Siswa; // Model Siswa
-use App\Models\Presensi; // Model Presensi
+use Carbon\Carbon;
+use App\Models\Siswa;
+use App\Models\Presensi;
+use Filament\Notifications\Notification; // Import Filament Notification
 
 class FonnteController extends Controller
 {
     public function sendAbsentStudentsToGroup()
     {
         // ID Grup WhatsApp
-        $groupId = '120363397369324112@g.us'; // Ganti dengan ID grup yang valid
+        $groupId = '120363397369324112@g.us';
+
+        // Ambil tanggal hari ini dalam format yang lebih terbaca
+        $tanggalHariIni = Carbon::now()->toDateString();
+        $tanggalFormatIndo = Carbon::now()->translatedFormat('d F Y'); // Contoh: 07 Februari 2025
 
         // Ambil daftar siswa yang belum presensi hari ini
-        $tanggalHariIni = Carbon::now()->toDateString(); // Format YYYY-MM-DD
-
         $siswaBelumPresensi = Siswa::whereDoesntHave('presensis', function ($query) use ($tanggalHariIni) {
             $query->where('date', $tanggalHariIni)
-                  ->where('jenis', 'H') // Hanya yang hadir
-                  ->where('is_approved', true); // Sudah disetujui
-        })->pluck('nama'); // Ambil hanya nama siswa
+                ->where('jenis', 'H')
+                ->where('is_approved', true);
+        })->pluck('nama');
 
         // Jika semua siswa sudah presensi
         if ($siswaBelumPresensi->isEmpty()) {
             $message = "✅ Semua siswa telah presensi hari ini!";
         } else {
-            // Format daftar siswa dalam bentuk pesan WhatsApp
-            $message = "⚠️ *Daftar Siswa yang Belum Presensi Hari Ini:*\n";
+            $message = "⚠️ *Daftar siswa yang belum presensi hari ini tanggal $tanggalFormatIndo :*\n";
             foreach ($siswaBelumPresensi as $index => $nama) {
                 $message .= ($index + 1) . ". " . $nama . "\n";
             }
-            $message .= "\nMohon segera melakukan presensi! 📢";
+            $message .= "\nMohon segera melakukan presensi di website " . env('APP_URL') . "\nMohon kerja samanya agar seksi absensi dapat merekap dengan mudah" . "\nCara Mengajukan izin atau sakit https://youtube.com";
         }
 
         // Kirim pesan ke grup WhatsApp menggunakan Fonnte API
@@ -47,17 +49,19 @@ class FonnteController extends Controller
 
         // Cek hasil response dari Fonnte
         if ($response->successful()) {
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Pesan berhasil dikirim ke grup!',
-                'data' => $response->json()
-            ]);
+            Notification::make()
+                ->title('Pesan Terkirim')
+                ->body('Pesan berhasil dikirim ke grup WhatsApp.')
+                ->success()
+                ->send();
         } else {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Gagal mengirim pesan ke grup.',
-                'error' => $response->body()
-            ], 500);
+            Notification::make()
+                ->title('Gagal Mengirim Pesan')
+                ->body('Terjadi kesalahan saat mengirim pesan ke grup WhatsApp.')
+                ->danger()
+                ->send();
         }
+
+        return back(); // Kembali ke halaman sebelumnya
     }
 }

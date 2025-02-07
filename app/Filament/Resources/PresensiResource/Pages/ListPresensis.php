@@ -46,8 +46,7 @@ class ListPresensis extends ListRecords
                 ->modalHeading('Pilih Bulan untuk Export'),
 
             Action::make('Kirim Notif')
-                ->url(route('send.absen'))
-                ->openUrlInNewTab(),
+                ->url(route('send.absen')),
 
             Actions\CreateAction::make(),
         ];
