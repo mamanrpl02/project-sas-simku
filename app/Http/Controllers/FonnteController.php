@@ -30,18 +30,23 @@ class FonnteController extends Controller
 
         // Jika semua siswa sudah presensi
         if ($siswaBelumPresensi->isEmpty()) {
-            $message = "✅ Semua siswa telah presensi hari ini!";
+            $message = "✅ *Informasi Presensi* \nSeluruh siswa telah melakukan presensi pada hari ini, $tanggalFormatIndo. Terima kasih atas kedisiplinannya.";
         } else {
-            $message = "⚠️ *Daftar siswa yang belum presensi hari ini tanggal $tanggalFormatIndo :*\n";
+            $message = "⚠️ *Informasi Presensi* \nBerikut adalah daftar siswa yang belum melakukan presensi pada tanggal *$tanggalFormatIndo*: \n\n";
+
             foreach ($siswaBelumPresensi as $index => $nama) {
                 $message .= ($index + 1) . ". " . $nama . "\n";
             }
-            $message .= "\nMohon segera melakukan presensi di website " . env('APP_URL') . "\nMohon kerja samanya agar seksi absensi dapat merekap dengan mudah" . "\nCara Mengajukan izin atau sakit https://youtube.com";
+
+            $message .= "\n🗓 Mohon segera melakukan presensi melalui tautan berikut: " . env('APP_URL') . "/presensi \n";
+            $message .= "\n📩 Untuk mengajukan izin atau sakit , silahkan klik pada bagian menu pengajuan izin : " . env('APP_URL') . "/pengajuan-izin\n";
+            $message .= "\nMohon kerja samanya agar seksi absensi dapat merekap dengan mudah 🙏🏻." . "\n\n";
+            $message .= "\nTerima kasih atas perhatian dan kerja samanya.";
         }
 
         // Kirim pesan ke grup WhatsApp menggunakan Fonnte API
         $response = Http::withHeaders([
-            'Authorization' => 'zb6NfMAHH9FkwHvyQeh5', // Ganti dengan API Key Fonnte Anda
+            'Authorization' => env('FONNTE_API_KEY'),
         ])->post('https://api.fonnte.com/send', [
             'target' => $groupId,
             'message' => $message,
@@ -51,13 +56,13 @@ class FonnteController extends Controller
         if ($response->successful()) {
             Notification::make()
                 ->title('Pesan Terkirim')
-                ->body('Pesan berhasil dikirim ke grup WhatsApp.')
+                ->body('Pesan pengingat presensi telah berhasil dikirim ke grup WhatsApp.')
                 ->success()
                 ->send();
         } else {
             Notification::make()
                 ->title('Gagal Mengirim Pesan')
-                ->body('Terjadi kesalahan saat mengirim pesan ke grup WhatsApp.')
+                ->body('Terjadi kendala saat mengirim pesan ke grup WhatsApp. Silakan coba lagi.')
                 ->danger()
                 ->send();
         }
