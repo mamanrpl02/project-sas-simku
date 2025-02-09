@@ -28,5 +28,9 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('access-export', function (User $user) {
             return true; // Semua user yang sudah login bisa mengakses
         });
+
+        Gate::define('access-idGroup', function (User $user) {
+            return true; // Semua user yang sudah login bisa mengakses
+        });
     }
 }

@@ -17,6 +17,12 @@ class ListPresensis extends ListRecords
     {
 
         return [
+
+            Action::make('List Group Id')
+            ->label('List Id Group')
+            ->url(route('whatsapp.groups')),
+
+
             Actions\Action::make('export')
                 ->label('Export Presensi')
                 ->form([

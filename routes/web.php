@@ -1,6 +1,5 @@
 <?php
 
-use App\Livewire\Presensi;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ExportController;
@@ -10,7 +9,7 @@ use App\Http\Controllers\PresensiController;
 use App\Http\Controllers\IzinPengajuanController;
 use App\Http\Controllers\DashboardSiswaController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
-
+use App\Http\Controllers\WhatsAppGroupController;
 
 Route::get('/', function () {
     return view('index');
@@ -27,8 +26,6 @@ Route::middleware(['auth:siswa'])->group(function () {
     Route::post('/presensi/masuk', [PresensiController::class, 'presensiMasuk'])->name('presensi.masuk');
     Route::post('/presensi/keluar', [PresensiController::class, 'presensiKeluar'])->name('presensi.keluar');
 
-
-
     Route::get('/pengajuan-izin', [PresensiController::class, 'create'])->name('pengajuan');
     Route::post('/pengajuan-izin', [PresensiController::class, 'store'])->name('siswa.izin.store');
 
@@ -44,9 +41,11 @@ Route::middleware(['auth:siswa'])->group(function () {
         ->name('siswa.logout');
 });
 
-// Route::post('/send-group', [FonnteController::class, 'sendMessage']);
-Route::get('/send-absent-report', [FonnteController::class, 'sendAbsentStudentsToGroup'])->name('send.absen');
-
+Route::middleware(['auth', 'can:access-idGroup'])->group(function () {
+    Route::get('/whatsapp-groups', [WhatsAppGroupController::class, 'index'])->name('whatsapp.groups');
+    Route::post('/whatsapp-groups/update', [WhatsAppGroupController::class, 'updateGroup'])->name('update.group');
+    Route::get('/send-absent-report', [FonnteController::class, 'sendAbsentStudentsToGroup'])->name('send.absen');
+});
 
 Route::middleware(['auth', 'can:access-export'])->group(function () {
     Route::get('/export/presensi/{bulan?}', [ExportController::class, 'exportPresensi'])->name('presensi.export');
@@ -67,10 +66,10 @@ Route::middleware(['guest'])->group(function () {
     Route::post('/login', [AuthenticatedSessionController::class, 'store']);
 });
 
-// Route::middleware('auth')->group(function () {
-//     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-//     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-//     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-// });
+    // Route::middleware('auth')->group(function () {
+    //     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    //     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    //     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    // });
 
 require __DIR__ . '/auth.php';
