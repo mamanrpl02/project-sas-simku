@@ -274,6 +274,66 @@
         .tabel-presensi tr:hover {
             background-color: #f1f1f1;
         }
+
+        .upload-container {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 2px dashed #007BFF;
+            padding: 20px;
+            cursor: pointer;
+            width: 100%;
+            max-width: 300px;
+            text-align: center;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .upload-container:hover {
+            background: rgba(0, 123, 255, 0.1);
+        }
+
+        .upload-label {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #007BFF;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        #upload-text{
+            color: white
+        }
+        .upload-label:hover {
+            background: #0056b3;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 5px;
+            background: #ddd;
+            border-radius: 5px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+
+        .progress {
+            width: 0%;
+            height: 100%;
+            background: #28a745;
+            transition: width 0.5s ease-in-out;
+        }
+
+        #preview-image {
+            width: 100px;
+            margin-top: 10px;
+            border-radius: 5px;
+            display: none;
+        }
+
     </style>
 
 </head>

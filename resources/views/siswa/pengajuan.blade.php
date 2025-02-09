@@ -22,17 +22,27 @@
                 <textarea id="alasan" name="alasan" rows="4" required></textarea>
             </div>
 
+            <!-- Custom Upload File -->
             <div class="form-group">
                 <label for="bukti">Bukti Ketidakhadiran</label>
-                <input type="file" id="bukti" name="bukti" required accept="image/*, .pdf">
+                <div class="upload-container">
+                    <input type="file" id="bukti" name="bukti" required accept="image/*, .pdf" hidden>
+                    <label for="bukti" class="upload-label">
+                        <span id="upload-text">Pilih File</span>
+                    </label>
+                    <div class="progress-bar">
+                        <div class="progress"></div>
+                    </div>
+                    <img id="preview-image" src="#" alt="Preview" style="display: none;">
+                </div>
             </div>
 
-            <button class="submit-pengajuan" type="submit" class="btn btn-primary">Ajukan Izin</button>
+            <button class="submit-pengajuan" type="submit">Ajukan Izin</button>
         </form>
 
     </div>
 
-    <!-- Tambahkan SweetAlert -->
+    <!-- SweetAlert -->
     @if (session('success'))
         <script>
             Swal.fire({
@@ -56,36 +66,33 @@
     @endif
 
     <script>
-        // Fungsi untuk mendapatkan hari saat ini
-        function cekHariIni() {
-            const hariIni = new Date().getDay(); // 0 untuk Minggu, 6 untuk Sabtu
-            if (hariIni === 0 || hariIni === 6) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Tidak Dapat Presensi',
-                    text: 'Presensi tidak diizinkan pada hari Sabtu dan Minggu.',
-                });
-                return false; // Hentikan pengajuan jika hari Sabtu atau Minggu
-            }
-            return true;
-        }
+        document.getElementById('bukti').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            const uploadText = document.getElementById('upload-text');
+            const previewImage = document.getElementById('preview-image');
+            const progressBar = document.querySelector('.progress');
 
-        // Menangani submit form
-        document.getElementById('form-izin').addEventListener('submit', function(event) {
-            // Jika hari ini adalah Sabtu atau Minggu, hentikan submit
-            if (!cekHariIni()) {
-                event.preventDefault(); // Hentikan form submit
+            if (file) {
+                uploadText.textContent = file.name;
+
+                // Jika file gambar, tampilkan preview
+                if (file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        previewImage.src = e.target.result;
+                        previewImage.style.display = 'block';
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    previewImage.style.display = 'none';
+                }
+
+                // Animasi progress bar
+                progressBar.style.width = '0%';
+                setTimeout(() => {
+                    progressBar.style.width = '100%';
+                }, 300);
             }
         });
-    </script>
-
-
-
-<form action="/send-group" method="POST">
-    @csrf
-    {{-- <input type="text" name="group_id" placeholder="Masukkan ID Grup"> --}}
-    <textarea name="message" placeholder="Pesan ke grup"></textarea>
-    <button type="submit">Kirim</button>
-</form>
-
+    </script> 
 @endsection
