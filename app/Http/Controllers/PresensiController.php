@@ -20,48 +20,48 @@ class PresensiController extends Controller
     }
 
     public function presensi(Request $request)
-{
-    // Mendapatkan data siswa yang sedang login
-    $siswa = Auth::user();
+    {
+        // Mendapatkan data siswa yang sedang login
+        $siswa = Auth::user();
 
-    // Daftar bulan
-    $bulanList = [
-        '01' => 'Januari',
-        '02' => 'Februari',
-        '03' => 'Maret',
-        '04' => 'April',
-        '05' => 'Mei',
-        '06' => 'Juni',
-        '07' => 'Juli',
-        '08' => 'Agustus',
-        '09' => 'September',
-        '10' => 'Oktober',
-        '11' => 'November',
-        '12' => 'Desember'
-    ];
+        // Daftar bulan
+        $bulanList = [
+            '01' => 'Januari',
+            '02' => 'Februari',
+            '03' => 'Maret',
+            '04' => 'April',
+            '05' => 'Mei',
+            '06' => 'Juni',
+            '07' => 'Juli',
+            '08' => 'Agustus',
+            '09' => 'September',
+            '10' => 'Oktober',
+            '11' => 'November',
+            '12' => 'Desember'
+        ];
 
-    // Ambil bulan yang dipilih atau bulan sekarang
-    $bulanDipilih = $request->input('bulan', '0'); // default '0' jika tidak ada bulan yang dipilih
+        // Ambil bulan yang dipilih atau bulan sekarang
+        $bulanDipilih = $request->input('bulan', '0'); // default '0' jika tidak ada bulan yang dipilih
 
-    // Ambil data presensi siswa berdasarkan bulan yang dipilih
-    if ($bulanDipilih == '0') {
-        // Jika memilih "Semua", ambil semua presensi tanpa filter bulan
-        $presensiList = Presensi::where('siswa_id', $siswa->id)
-            ->orderBy('date', 'desc') // Mengurutkan dari yang terbaru ke yang lama
-            ->get();
-    } else {
-        // Jika ada bulan yang dipilih, filter berdasarkan bulan tersebut
-        $presensiList = Presensi::where('siswa_id', $siswa->id)
-            ->whereMonth('date', $bulanDipilih)
-            ->orderBy('date', 'desc') // Mengurutkan dari yang terbaru ke yang lama
-            ->get();
+        // Ambil data presensi siswa berdasarkan bulan yang dipilih
+        if ($bulanDipilih == '0') {
+            // Jika memilih "Semua", ambil semua presensi tanpa filter bulan
+            $presensiList = Presensi::where('siswa_id', $siswa->id)
+                ->orderBy('date', 'desc') // Mengurutkan dari yang terbaru ke yang lama
+                ->get();
+        } else {
+            // Jika ada bulan yang dipilih, filter berdasarkan bulan tersebut
+            $presensiList = Presensi::where('siswa_id', $siswa->id)
+                ->whereMonth('date', $bulanDipilih)
+                ->orderBy('date', 'desc') // Mengurutkan dari yang terbaru ke yang lama
+                ->get();
+        }
+
+        $presensi = Presensi::all();
+
+        // Return ke view dengan data presensi
+        return view('siswa.presensi', compact('siswa', 'presensiList', 'bulanList', 'presensi'));
     }
-
-    $presensi = Presensi::all();
-
-    // Return ke view dengan data presensi
-    return view('siswa.presensi', compact('siswa', 'presensiList', 'bulanList', 'presensi'));
-}
 
 
 
@@ -69,12 +69,31 @@ class PresensiController extends Controller
     {
         $siswa = Auth::user();
         $today = Carbon::today();
+        $kemarin = Carbon::yesterday();
 
         // Periksa apakah hari ini Sabtu, Minggu, atau hari libur
         if ($today->isWeekend() || $this->isHoliday($today)) {
             return response()->json([
                 'error' => 'Hari ini adalah hari libur atau tanggal merah, Anda tidak dapat melakukan presensi.',
             ]);
+        }
+
+        // Cek apakah hari kemarin adalah hari libur atau akhir pekan
+        if (!$kemarin->isWeekend() && !$this->isHoliday($kemarin)) {
+            // Cek apakah siswa sudah presensi kemarin
+            $presensiKemarin = Presensi::where('siswa_id', $siswa->id)
+                ->whereDate('date', $kemarin)
+                ->exists();
+
+            if (!$presensiKemarin) {
+                // Jika tidak ada presensi kemarin, tambahkan data Absen (A)
+                Presensi::create([
+                    'siswa_id' => $siswa->id,
+                    'date' => $kemarin,
+                    'jenis' => 'A',  // A = Absen
+                    'is_approved' => true,
+                ]);
+            }
         }
 
         // Cek apakah sudah presensi hari ini
@@ -101,6 +120,8 @@ class PresensiController extends Controller
             'data' => $presensi,
         ]);
     }
+
+
 
 
     public function presensiKeluar(Request $request)
