@@ -48,7 +48,7 @@ class SiswaResource extends Resource
                     ->password()
                     ->revealable()
                     ->dehydrated(fn(?string $state): bool => filled($state))
-                    ->label('Password'),
+                    ->label('Password')->requierd(),
 
                 Select::make('jenis_kelamin')
                     ->required()
@@ -112,7 +112,7 @@ class SiswaResource extends Resource
         return [
             'index' => Pages\ListSiswas::route('/'),
             'create' => Pages\CreateSiswa::route('/create'),
-            // 'edit' => Pages\EditSiswa::route('/{record}/edit'),
+            'edit' => Pages\EditSiswa::route('/{record}/edit'),
         ];
     }
 }

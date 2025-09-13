@@ -32,8 +32,6 @@ class DashboardSiswaController extends Controller
 
         return view('siswa.index', compact('tagihanBelumDibayar', 'siswa', 'pengeluaran'));
 
-        // Mengirimkan data siswa ke view
-        return view('siswa.index', compact('siswa', 'pengeluaran'));
     }
 
     public function riwayat(Request $request)

@@ -23,7 +23,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role', // Tambahkan jika ingin menyimpan role di database
+        'role',  
     ];
 
     /**
