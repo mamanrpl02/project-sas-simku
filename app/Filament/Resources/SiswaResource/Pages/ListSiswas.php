@@ -5,6 +5,7 @@ namespace App\Filament\Resources\SiswaResource\Pages;
 use App\Filament\Resources\SiswaResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
+use Illuminate\Contracts\View\View;
 
 class ListSiswas extends ListRecords
 {
@@ -20,6 +21,12 @@ class ListSiswas extends ListRecords
             ->openUrlInNewTab(), // Agar link terbuka di tab baru
             Actions\CreateAction::make(),
         ];
+    }
+
+    public function getHeader(): ?View
+    {
+        $data = Actions\CreateAction::make();
+        return view('filament.custom.upload-file', compact('data'));
     }
 
 

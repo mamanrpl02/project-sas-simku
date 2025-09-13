@@ -48,7 +48,7 @@ class SiswaResource extends Resource
                     ->password()
                     ->revealable()
                     ->dehydrated(fn(?string $state): bool => filled($state))
-                    ->label('Password')->requierd(),
+                    ->label('Password')->required(),
 
                 Select::make('jenis_kelamin')
                     ->required()
@@ -98,7 +98,11 @@ class SiswaResource extends Resource
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
             ]);
+            // ->headerActions([
+            //     Tables\Actions\CreateAction::make(),
+            // ])
     }
+
 
     public static function getRelations(): array
     {
