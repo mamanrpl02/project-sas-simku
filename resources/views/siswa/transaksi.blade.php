@@ -27,14 +27,35 @@
         <h2 class="text-center mb-4" style="color: black">Riwayat Transaksi Kamu</h2>
 
         <!-- Filter Bulan -->
-        <form method="GET" action="{{ route('transaksi') }}">
-            <div class="form-group">
-                <label for="bulan">Pilih Bulan</label>
-                    
-            </div>
+        <!-- Filter Bulan & Tahun -->
+        <form method="GET" action="{{ route('transaksi') }}" class="mb-4 flex items-center">
+            <select name="bulan" id="bulan" class="border rounded p-2 ">
+                <option value="0" {{ $bulan == 0 ? 'selected' : '' }}>Semua</option>
+                @for ($m = 1; $m <= 12; $m++)
+                    <option value="{{ $m }}" {{ $bulan == $m ? 'selected' : '' }}>
+                        {{ \Carbon\Carbon::create()->month($m)->translatedFormat('F') }}
+                    </option>
+                @endfor
+            </select>
+
+            <select name="tahun" id="tahun" class="border rounded p-2">
+                @php
+                    $tahunSekarang = date('Y');
+                @endphp
+                @for ($y = $tahunSekarang; $y <= $tahunSekarang + 3; $y++)
+                    <option value="{{ $y }}" {{ $tahun == $y ? 'selected' : '' }}>{{ $y }}</option>
+                @endfor
+            </select>
+
+            <button type="submit"
+                style="padding: 4px 10px; background-color: #6793f3; color: white; border-radius: 6px; border: none; cursor: pointer; transition:0.2s ease-in"
+                onmouseover="this.style.backgroundColor='#2966e7'" onmouseout="this.style.backgroundColor='#6793f3'">
+                Filter
+            </button>
+
         </form>
 
-        <table class="tabel-presensi">
+        <table class="tabel-presensi" style="margin-top: 0.4rem">
             <thead>
                 <tr>
                     <th>Tanggal</th>
@@ -47,16 +68,10 @@
                     @php
                         $tanggal = \Carbon\Carbon::parse($data['tanggal']);
                     @endphp
-                    <tr class=" {{ $data['keterangan'] == 'Debit' ? 'text-success' : 'text-danger' }}">
+                    <tr class="{{ $data['keterangan'] == 'Debit' ? 'text-success' : 'text-danger' }}">
                         <td>{{ $tanggal->translatedFormat('l, d F Y') }}</td>
-                        <td>{{ number_format($data['nominal'], 0, ',', '.') }}</td>
-                        <td>
-                            @if ($data['keterangan'] == 'Debit')
-                                <span class="text-success">Debit</span>
-                            @else
-                                <span class="text-danger">Kredit</span>
-                            @endif
-                        </td>
+                        <td>{{ number_format(abs($data['nominal']), 0, ',', '.') }}</td>
+                        <td>{{ $data['keterangan'] }}</td>
                     </tr>
                 @empty
                     <tr>
@@ -65,6 +80,7 @@
                 @endforelse
             </tbody>
         </table>
+
 
     </div>
 @endsection

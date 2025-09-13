@@ -50,7 +50,23 @@ class KreditTabunganResource extends Resource
                     ->minValue(1000)
                     ->maxValue(100000)
                     ->placeholder('Masukkan nominal')
-                    ->helperText('Minimal 1.000, dan maksimal 100.000'),
+                    ->helperText('Minimal 1.000, dan maksimal 100.000')
+                    ->rule(function ($get) {
+                        $siswaId = $get('siswa_id'); // ambil siswa yang dipilih
+                        if (!$siswaId) return []; // jika belum pilih siswa, skip
+
+                        $siswa = Siswa::find($siswaId);
+                        if (!$siswa) return [];
+
+                        return [
+                            function ($attribute, $value, $fail) use ($siswa) {
+                                if ($value > $siswa->saldo) {
+                                    $fail('Nominal kredit tidak boleh lebih besar dari saldo siswa (Rp ' . number_format($siswa->saldo, 0, ',', '.') . ').');
+                                }
+                            }
+                        ];
+                    })
+
             ]);
     }
 

@@ -2,7 +2,7 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Forms;
+use Filament\Tables\Actions\Action;
 use Filament\Tables;
 use Pages\ViewSiswa;
 use App\Models\Siswa;
@@ -97,10 +97,13 @@ class SiswaResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
+            ])
+            ->headerActions([
+                Action::make('export')
+                    ->label('Export Siswa')
+                    ->url(route('siswa.export'))
+                    ->openUrlInNewTab(),
             ]);
-            // ->headerActions([
-            //     Tables\Actions\CreateAction::make(),
-            // ])
     }
 
 

@@ -31,7 +31,6 @@ class DashboardSiswaController extends Controller
         })->paginate(1); // 1 data per halaman
 
         return view('siswa.index', compact('tagihanBelumDibayar', 'siswa', 'pengeluaran'));
-
     }
 
     public function riwayat(Request $request)
@@ -54,39 +53,38 @@ class DashboardSiswaController extends Controller
             12 => 'Desember'
         ];
 
-        // Ambil bulan yang dipilih atau defaultkan ke '0' (Semua)
-        $bulan = $request->get('bulan', '0');
+        // Ambil bulan & tahun yang dipilih atau default ke bulan & tahun sekarang
+        $bulan = $request->get('bulan', date('m'));
+        $tahun = $request->get('tahun', date('Y'));
 
-        // Jika bulan tidak '0', pastikan bulan diformat menjadi 2 digit
+        // Format 2 digit
         $bulanFormatted = str_pad($bulan, 2, '0', STR_PAD_LEFT);
 
-        // Filter berdasarkan bulan yang dipilih
+        // Ambil transaksi debit & kredit berdasarkan filter
         $debitTabungan = $siswa->debitTabungans()
-            ->when($bulan != '0', function ($query) use ($bulanFormatted) {
-                return $query->whereMonth('created_at', $bulanFormatted);
-            })
-            ->orderBy('created_at', 'desc')
+            ->when($bulan != '0', fn($q) => $q->whereMonth('created_at', $bulanFormatted))
+            ->when($tahun, fn($q) => $q->whereYear('created_at', $tahun))
             ->get();
 
         $kreditTabungan = $siswa->kreditTabungans()
-            ->when($bulan != '0', function ($query) use ($bulanFormatted) {
-                return $query->whereMonth('created_at', $bulanFormatted);
-            })
-            ->orderBy('created_at', 'desc')
+            ->when($bulan != '0', fn($q) => $q->whereMonth('created_at', $bulanFormatted))
+            ->when($tahun, fn($q) => $q->whereYear('created_at', $tahun))
             ->get();
 
-        // Menggabungkan semua transaksi untuk tabel riwayat
-        $transaksi = $debitTabungan->merge($kreditTabungan)->map(function ($item) {
-            return [
-                'tanggal' => $item->created_at,
-                'nominal' => $item->nominal,
-                'keterangan' => $item instanceof DebitTabungan ? 'Debit' : 'Kredit',
-            ];
-        })->sortByDesc('tanggal');
+        // Gabungkan dan sort descending
+        $transaksi = $debitTabungan->merge($kreditTabungan)
+            ->map(function ($item) {
+                return [
+                    'tanggal' => $item->created_at,
+                    'nominal' => $item->nominal,
+                    'keterangan' => $item instanceof \App\Models\DebitTabungan ? 'Debit' : 'Kredit',
+                ];
+            })
+            ->sortByDesc('tanggal');
 
-
-        return view('siswa.transaksi', compact('siswa', 'transaksi', 'bulanList'));
+        return view('siswa.transaksi', compact('siswa', 'transaksi', 'bulanList', 'bulan', 'tahun'));
     }
+
 
     public function pengeluaranKas(Request $request)
     {
