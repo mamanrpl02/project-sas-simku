@@ -26,7 +26,9 @@
             <div class="form-group">
                 <label for="bukti">Bukti Ketidakhadiran</label>
                 <div class="upload-container">
-                    <input type="file" id="bukti" name="bukti" required accept="image/*, .pdf" hidden>
+                    <input type="file" id="bukti" name="bukti" required accept="image/*, .pdf"
+                        style="opacity:0; position:absolute; z-index:-1;">
+
                     <label for="bukti" class="upload-label">
                         <span id="upload-text">Pilih File</span>
                     </label>
@@ -94,5 +96,5 @@
                 }, 300);
             }
         });
-    </script> 
+    </script>
 @endsection

@@ -8,7 +8,7 @@
                 <p>Total Saldo Kas keseluruhan Sebesar </p>
             </div>
             <div class="isi">
-                <div class="isi"><i class="bi bi-credit-card-fill"></i> <strong>Rp .
+                <div class="isi"><i class="bi bi-credit-card-fill"></i> <strong>Rp :
                     </strong>{{ number_format($totalSaldo, 0, ',', '.') }}</div>
             </div>
         </div>
@@ -21,7 +21,7 @@
                 </span></h2><br>
             <a href="{{ route('pemasukan-kas') }}">Lihat Pemasukan >> </a>
         </div>
- 
+
         <!-- Filter Bulan -->
         <form method="GET" action="{{ route('pengeluaran-kas') }}">
             <div class="form-group" style="margin-top: 1rem">

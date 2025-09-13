@@ -7,7 +7,7 @@
                 <h3>Tandai Kehadiranmu</h3>
             </div>
             <div class="card-date">
-                <p>{{ \Carbon\Carbon::now()->translatedFormat('l, d F Y') }}</p>
+                <p id="tanggalWaktu"></p>
             </div>
             <div class="card-button">
                 <form class="form">
@@ -127,98 +127,16 @@
     </div>
 @endsection
 
+
 <script>
-    // Fungsi untuk mendapatkan hari saat ini
-    function cekHariIni() {
-        const hariIni = new Date().getDay(); // 0 untuk Minggu, 6 untuk Sabtu
-        if (hariIni === 0 || hariIni === 6) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Tidak Dapat Presensi',
-                text: 'Presensi tidak diizinkan pada hari Sabtu dan Minggu.',
-            });
-            return false; // Hentikan presensi jika hari Sabtu atau Minggu
-        }
-        return true;
-    }
-
-    function presensiMasuk() {
-        if (!cekHariIni()) {
-            return; // Batalkan presensi jika hari Sabtu atau Minggu
-        }
-
-        fetch("{{ route('presensi.masuk') }}", {
-                method: "POST",
-                headers: {
-                    "X-CSRF-TOKEN": "{{ csrf_token() }}",
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    siswa_id: {{ auth()->id() }} // Kirim ID siswa yang sedang login
-                }),
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Presensi Datang Berhasil',
-                        text: data.success,
-                    });
-                } else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: data.error,
-                    });
-                }
-            })
-            .catch(error => {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'Terjadi kesalahan!',
-                });
-            });
-    }
-
-    function presensiKeluar() {
-        if (!cekHariIni()) {
-            return; // Batalkan presensi jika hari Sabtu atau Minggu
-        }
-
-        fetch("{{ route('presensi.keluar') }}", {
-                method: "POST",
-                headers: {
-                    "X-CSRF-TOKEN": "{{ csrf_token() }}",
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    siswa_id: {{ auth()->id() }} // Kirim ID siswa yang sedang login
-                }),
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Presensi Pulang Berhasil',
-                        text: data.success,
-                    });
-                } else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: data.error,
-                    });
-                }
-            })
-            .catch(error => {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'Terjadi kesalahan!',
-                });
-            });
-    }
+    // Variabel global untuk JS eksternal
+    window.presensiUrl = {
+        masuk: "{{ route('presensi.masuk') }}",
+        keluar: "{{ route('presensi.keluar') }}",
+        csrf: "{{ csrf_token() }}",
+        siswaId: {{ auth()->id() }}
+    };
 </script>
+
+<script src="{{ asset('js/presensi.js') }}"></script>
+<script src="{{ asset('js/tanggalWaktu.js') }}"></script>
