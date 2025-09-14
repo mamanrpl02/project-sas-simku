@@ -18,10 +18,12 @@ class ListPresensis extends ListRecords
 
         return [
 
-            Action::make('List Group Id')
-            ->label('List Id Group')
-            ->url(route('whatsapp.groups')),
-
+            // Action::make('List Group Id')
+            // ->label('List Id Group')
+            // ->url(route('whatsapp.groups')),
+            // Action::make('Kirim Notif')
+            //     ->label('Kirim Notif Grup')
+            //     ->url(route('send.absen')),
 
             Actions\Action::make('export')
                 ->label('Export Presensi')
@@ -50,11 +52,6 @@ class ListPresensis extends ListRecords
                     return redirect()->route('presensi.export', ['bulan' => $bulan])->with('bulan', $bulan);
                 })
                 ->modalHeading('Pilih Bulan untuk Export'),
-
-            Action::make('Kirim Notif')
-                ->label('Kirim Notif Grup')
-                ->url(route('send.absen')),
-
             Actions\CreateAction::make(),
         ];
     }

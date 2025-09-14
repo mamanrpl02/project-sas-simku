@@ -3,9 +3,12 @@
 namespace App\Filament\Widgets;
 
 use App\Models\DebitTabungan;
+use App\Models\HariLibur;
 use App\Models\KreditTabungan;
 use App\Models\PemasukanKas;
 use App\Models\PengeluaranKas;
+use App\Models\Siswa;
+use App\Models\Tagihan;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 
@@ -42,6 +45,9 @@ class MyWidget extends BaseWidget
 
                 return 'Rp ' . number_format($totalSaldo, 0, ',', '.');
             }),
+            Stat::make('Total Tagihan Kas', number_format(Tagihan::count()) . ' Hari'),
+            Stat::make('Total Siswa', number_format(Siswa::count())),
+            Stat::make('Total Hari Libur', number_format(HariLibur::count())),
         ];
     }
 }

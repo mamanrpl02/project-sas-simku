@@ -47,19 +47,19 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // =========================
     // Cek Hari Presensi
-    // =========================
-    function cekHariIni() {
-        const hariIni = new Date().getDay(); // 0=Minggu, 6=Sabtu
-        if (hariIni === 0 || hariIni === 6) {
-            Swal.fire({
-                icon: "error",
-                title: "Tidak Dapat Presensi",
-                text: "Presensi tidak diizinkan pada hari Sabtu dan Minggu.",
-            });
-            return false;
+        // =========================
+        function cekHariIni() {
+            const hariIni = new Date().getDay(); // 0=Minggu, 6=Sabtu
+            if (hariIni === 0 || hariIni === 6) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Tidak Dapat Presensi",
+                    text: "Presensi tidak diizinkan pada hari Sabtu dan Minggu.",
+                });
+                return false;
+            }
+            return true;
         }
-        return true;
-    }
 
     // =========================
     // Presensi Datang

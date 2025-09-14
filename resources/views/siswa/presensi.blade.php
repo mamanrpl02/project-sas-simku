@@ -122,8 +122,6 @@
                 </div>
             </div>
         </div>
-        {{-- <img src="{{ asset('storage/bukti' . $presensi->bukti) }}" alt="Bukti Presensi"> --}}
-
     </div>
 @endsection
 

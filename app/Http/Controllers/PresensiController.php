@@ -72,11 +72,11 @@ class PresensiController extends Controller
         $kemarin = Carbon::yesterday();
 
         // Periksa apakah hari ini Sabtu, Minggu, atau hari libur
-        if ($today->isWeekend() || $this->isHoliday($today)) {
-            return response()->json([
-                'error' => 'Hari ini adalah hari libur atau tanggal merah, Anda tidak dapat melakukan presensi.',
-            ]);
-        }
+        // if ($today->isWeekend() || $this->isHoliday($today)) {
+        //     return response()->json([
+        //         'error' => 'Hari ini adalah hari libur atau tanggal merah, Anda tidak dapat melakukan presensi.',
+        //     ]);
+        // }
 
         // Cek apakah hari kemarin adalah hari libur atau akhir pekan
         if (!$kemarin->isWeekend() && !$this->isHoliday($kemarin)) {

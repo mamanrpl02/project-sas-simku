@@ -27,6 +27,8 @@ Route::middleware(['auth:siswa'])->group(function () {
     Route::post('/presensi/masuk', [PresensiController::class, 'presensiMasuk'])->name('presensi.masuk');
     Route::post('/presensi/keluar', [PresensiController::class, 'presensiKeluar'])->name('presensi.keluar');
 
+
+
     Route::get('/pengajuan-izin', [PresensiController::class, 'create'])->name('pengajuan');
     Route::post('/pengajuan-izin', [PresensiController::class, 'store'])->name('siswa.izin.store');
 
@@ -49,11 +51,11 @@ Route::post('/siswas/import', [SiswaImportController::class, 'import'])->name('s
 
 
 
-Route::middleware(['auth', 'can:access-idGroup'])->group(function () {
-    Route::get('/whatsapp-groups', [WhatsAppGroupController::class, 'index'])->name('whatsapp.groups');
-    Route::post('/whatsapp-groups/update', [WhatsAppGroupController::class, 'updateGroup'])->name('update.group');
-    Route::get('/send-absent-report', [FonnteController::class, 'sendAbsentStudentsToGroup'])->name('send.absen');
-});
+// Route::middleware(['auth', 'can:access-idGroup'])->group(function () {
+//     Route::get('/whatsapp-groups', [WhatsAppGroupController::class, 'index'])->name('whatsapp.groups');
+//     Route::post('/whatsapp-groups/update', [WhatsAppGroupController::class, 'updateGroup'])->name('update.group');
+//     Route::get('/send-absent-report', [FonnteController::class, 'sendAbsentStudentsToGroup'])->name('send.absen');
+// });
 
 Route::middleware(['auth', 'can:access-export'])->group(function () {
     Route::get('/export/presensi/{bulan?}', [ExportController::class, 'exportPresensi'])->name('presensi.export');
